@@ -3,10 +3,13 @@ import { useForm } from 'react-hook-form';
 import { Box, TextField, Button, Grid, Typography} from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import routes from "../../../shared/constants/routes";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { toSignUp } from '../../../shared/apis/userAPI';
+import bcrypt from 'bcryptjs';
 
 function SignUp() {
 
+  const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const theme = createTheme({
@@ -24,12 +27,19 @@ function SignUp() {
     }
   });
 
-  const SignUp = () => {
-    return;
+  const SignUp = async (value) => {
+    const data = {
+      ...value,
+      password: bcrypt.hashSync(value.password, bcrypt.genSaltSync(11)),
+    }
+    const response = toSignUp({data});
+    console.log(response);
+    if(response)
+    navigate(routes.USERPAGE);
   }
   return (
     <ThemeProvider theme={theme}>
-    <Grid mt={15} container direction="column" justifyContent="center" alignItems="center">
+    <Grid mt={10} container direction="column" justifyContent="center" alignItems="center">
       <Box>
         <Typography variant="login">Sign Up</Typography>
       </Box>

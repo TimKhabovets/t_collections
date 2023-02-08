@@ -4,7 +4,7 @@ import Home from "../../app/home/Home";
 import LogIn from "../../app/auth/login/LogIn"
 import SignUp from "../../app/auth/signup/SignUp";
 import UserPage from "../../app/user/page/UserPage";
-import NewCol from "../../app/user/new-col/NewCol"
+import NewCol from "../../app/user/creation/NewCollection"
 
 export default function AppRoutes() {
   return (

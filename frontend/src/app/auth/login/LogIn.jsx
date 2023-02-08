@@ -29,7 +29,7 @@ function LogIn() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid mt={15} container direction="column" justifyContent="center" alignItems="center">
+      <Grid mt={10} container direction="column" justifyContent="center" alignItems="center">
         <Box>
           <Typography variant="login">Log In</Typography>
         </Box>

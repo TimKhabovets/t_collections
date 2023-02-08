@@ -12,3 +12,25 @@ code {
     monospace;
 }
 
+.comment {
+  width: 99.5%;
+  height: 100px;
+  min-width: 99.5%;
+  min-height: 40px;
+  max-width: 99.5%;
+  max-height: 200px;
+}
+
+.error {
+  margin-top: 3px;
+  margin-right: 14px;
+  margin-bottom: 0;
+  margin-left: 14px;
+  font-family: "Roboto","Helvetica","Arial",sans-serif;
+  color: #d32f2f;
+  font-weight: 400;
+  font-size: 0.75rem;
+  line-height: 1.66;
+  letter-spacing: 0.03333em;
+  text-align: left;
+}
