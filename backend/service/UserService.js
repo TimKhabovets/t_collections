@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import { generateToken, saveToken } from '../service/TokenService.js';
 import UserDTO from '../dtos/UserDTO.js';
 import ApiError from '../exceptions/ApiError.js';
-const apiError = new ApiError();
+const apiError = new ApiError;
 
 export const registerUser = async (name, email, password) => {
   const data = await UserModel.findOne({
