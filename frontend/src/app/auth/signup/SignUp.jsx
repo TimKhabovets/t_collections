@@ -5,10 +5,8 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import routes from "../../../shared/constants/routes";
 import { Link, useNavigate } from 'react-router-dom';
 import { toSignUp } from '../../../shared/apis/userAPI';
-import bcrypt from 'bcryptjs';
 
 function SignUp() {
-
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -28,15 +26,12 @@ function SignUp() {
   });
 
   const SignUp = async (value) => {
-    const data = {
-      ...value,
-      password: bcrypt.hashSync(value.password, bcrypt.genSaltSync(11)),
-    }
-    const response = toSignUp({data});
-    console.log(response);
-    if(response)
-    navigate(routes.USERPAGE);
+    await toSignUp({ value });
+    //console.log(response);
+    //if(response)
+    //navigate(routes.USERPAGE);
   }
+  
   return (
     <ThemeProvider theme={theme}>
     <Grid mt={10} container direction="column" justifyContent="center" alignItems="center">

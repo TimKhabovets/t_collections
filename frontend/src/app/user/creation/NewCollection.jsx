@@ -7,10 +7,10 @@ import { ErrorMessage } from '@hookform/error-message';
 import { useNavigate } from "react-router";
 import FormSelect from "../../../common/forms/FormSelect";
 import routes from "../../../shared/constants/routes";
-import Markdown from 'markdown-to-jsx';
+import MarkdownIt from 'markdown-it';
 
 function NewCollections() {
-  const [markdown, setMarkdown] = useState();
+  const md = new MarkdownIt();
   const { register, handleSubmit, control, formState: { errors } } = useForm();
 
   const theme = createTheme({
@@ -28,12 +28,9 @@ function NewCollections() {
   });
 
   const createNewCollection = (values) => {
-    setMarkdown(<Markdown>
-      values.markdown
-    </Markdown>);
     const data = {
       ...values,
-      markdown : markdown,
+      markdown : md.render(values.markdown),
       topic : values.topic.value,
     };
     return;

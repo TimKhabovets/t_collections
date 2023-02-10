@@ -1,43 +1,46 @@
 import User from '../models/UserModel.js';
+import { registerUser, loginUser } from '../service/UserService.js';
 
-export const getUsers = async (req, res) => {
-
+export const getUsers = async (req, res, next) => {
+  
   try {
     const response = await User.findAll();
-      res.status(200).json(response);
-  }
-  catch(err) {
-    console.log(err.msg);
-  }
-}
-
-export const getUsersByEmail = async (req, res) => {
-
-  try {
-    const response = await User.findOne({
-      where: { 
-        email: req.params.email
-      }
-    });
     res.status(200).json(response);
   }
   catch(err) {
-    console.log(err.msg);
+    next(err);
   }
 }
 
-export const createUser = async (req, res) => {
+export const login = async (req, res, next) => {
 
   try {
-    await User.create(req.body);
-    res.status(201).json({msg: 'User created'});
+    const { email, password } = req.body.value;
+    console.log( req.body.value );
+    const user = await loginUser(email, password);
+    console.log(user);
+    res.cookie('refreshToken', user.refreshToken, {maxAge: 30*24*60*60*1000, httpOnly: true});
+    res.json(user);
   }
   catch(err) {
-    console.log(err.msg);
+    next(err);
   }
 }
 
-export const updateUser = async (req, res) => {
+export const createUser = async (req, res, next) => {
+
+  try {
+    const { name, email, password } = req.body.value;
+    const user = await registerUser(name, email, password);
+    res.cookie('refreshToken', user.refreshToken, {maxAge: 30*24*60*60*1000, httpOnly: true});
+    res.json(user);
+  }
+  catch(err) {
+    next(err);
+  }
+}
+
+export const updateUser = async (req, res, next) => {
 
   try {
     await User.update(req.body, {
@@ -48,11 +51,11 @@ export const updateUser = async (req, res) => {
     res.status(200).json({msg: 'User updated'});
   }
   catch(err) {
-    console.log(err.msg);
+    next(err);
   }
 }
 
-export const deleteUser = async (req, res) => {
+export const deleteUser = async (req, res, next) => {
 
   try {
     await User.destroy({
@@ -63,6 +66,6 @@ export const deleteUser = async (req, res) => {
     res.status(200).json({msg: 'User deleted'});
   }
   catch(err) {
-    console.log(err.msg);
+    next(err);
   }
 }

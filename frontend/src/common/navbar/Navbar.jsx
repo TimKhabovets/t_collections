@@ -1,17 +1,14 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
+import React, { useContext } from 'react';
+import { Box, Grid, Toolbar, IconButton, Typography, InputBase, Button, AppBar } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import Button from '@mui/material/Button';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { styled, alpha } from '@mui/material/styles';
 import { useNavigate } from "react-router";
 import routes from '../../shared/constants/routes'
+import GlobalContext from "../../shared/contexts/GlobalContext"
+import { width } from '@mui/system';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -66,6 +63,7 @@ const theme = createTheme({
 
 export default function Navbar() {
   let navigate = useNavigate();
+  const { client } = useContext(GlobalContext);
 
   const logIn = () => {
     navigate(routes.LOGIN)
@@ -75,6 +73,9 @@ export default function Navbar() {
   }
   const toHome = () => {
     navigate(routes.HOME)
+  }
+  const toUserPage = () => {
+    navigate(routes.USERPAGE)
   }
 
   return (
@@ -91,23 +92,37 @@ export default function Navbar() {
             >
               <MenuIcon />
             </IconButton>
-            <Typography 
-              onClick={toHome}
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' }, cursor: 'pointer' }}	
+            <Box
+              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
             >
-              t_collection
-            </Typography>
-            <Box >
-              <Button onClick={logIn} color="inherit">Login</Button>
+              <Typography
+                onClick={toHome}
+                variant="h6"
+                sx={{ width: "101px", cursor: 'pointer' }}
+              >t_collection</Typography>
             </Box>
-            <Box mx={1} >
-              <Button onClick={signUp} color="inherit" variant="contained" >
-                <Box sx={{ color: 'text.dark' }}>Signup</Box>
-              </Button>
-            </Box>
+            {client.role === 'guest' ? (
+              <Grid sx={{ display: { xs: 'none', sm: 'flex' }, direction: "row" }}>
+                <Box >
+                  <Button onClick={logIn} color="inherit">Login</Button>
+                </Box>
+                <Box mx={1} >
+                  <Button onClick={signUp} color="inherit" variant="contained" >
+                    <Box sx={{ color: 'text.dark' }}>Signup</Box>
+                  </Button>
+                </Box>
+              </Grid>
+            ) : (
+              <Box
+                mx={2}
+                onClick={toUserPage}
+                sx={{ cursor: "pointer", display: 'flex' }}>
+                  <AccountBoxIcon sx={{ top: '2px', position: 'relative'}} />
+                <Typography variant="h6" mx={1}>
+                  {client.name}
+                </Typography>
+              </Box>
+            )}
             <Search>
               <SearchIconWrapper>
                 <SearchIcon />

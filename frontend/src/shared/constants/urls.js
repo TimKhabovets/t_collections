@@ -1,7 +1,8 @@
-const BASE_URL = "http://localhost:3006/api"
+const BASE_URL = "https://t-collections-api.vercel.app/api"
 
 const urls = {
-    USERS: `${BASE_URL}/users`,
+    SIGNUP: `${BASE_URL}/signup`,
+    LOGIN: `${BASE_URL}/login`,
 }
 
 export default urls;

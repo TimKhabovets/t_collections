@@ -5,6 +5,9 @@ const db = new Sequelize('sql8596215', 'sql8596215', 'NE7ZpDHl65', {
   host: 'sql8.freesqldatabase.com',
   dialect: 'mysql',
   dialectModule: mysql2,
+  define: {
+    timestamps: false
+  }
 }); 
 
 db.authenticate().then(() => {
