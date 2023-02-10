@@ -4,6 +4,7 @@ import { Box, TextField, Button, Grid, Typography } from '@mui/material'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Link } from 'react-router-dom'
 import routes from "../../../shared/constants/routes";
+import { toLogIn } from '../../../shared/apis/userAPI';
 
 function LogIn() {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -23,8 +24,9 @@ function LogIn() {
     }
   });
 
-  const LogIn = () => {
-    return;
+  const LogIn = async (value) => {
+    await toLogIn({ value });
+
   }
 
   return (
