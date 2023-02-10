@@ -3,7 +3,6 @@ import bcrypt from 'bcrypt';
 import { generateToken, saveToken } from '../service/TokenService.js';
 import UserDTO from '../dtos/UserDTO.js';
 import ApiError from '../exceptions/ApiError.js';
-const apiError = new ApiError;
 
 export const registerUser = async (name, email, password) => {
   const data = await UserModel.findOne({
@@ -12,7 +11,7 @@ export const registerUser = async (name, email, password) => {
     }
   });
   if (data) {
-    throw apiError.BadRequest(`User with email ${email} already registered`);
+    throw ApiError.BadRequest(`User with email ${email} already registered`);
   }
   const hashPassword = await bcrypt.hash(password, 11)
   const user = await UserModel.create({ name, email, password: hashPassword}); 
@@ -29,11 +28,11 @@ export const loginUser = async function(email, password) {
     }
   });
   if(!user) {
-    throw apiError('User not found'); 
+    throw ApiError('User not found'); 
   }
   const isPasswordEqual = await bcrypt.compare(password, user.password);
   if(!isPasswordEqual) {
-    throw apiError('Password is not equal'); 
+    throw ApiError('Password is not equal'); 
   }
   const userDTO = new UserDTO(user);
   const tokens = generateToken({...userDTO});
