@@ -32,7 +32,7 @@ export const loginUser = async function(email, password) {
   }
   const isPasswordEqual = await bcrypt.compare(password, user.password);
   if(!isPasswordEqual) {
-    throw ApiError('Password is not equal'); 
+    throw new ApiError('Password is not equal'); 
   }
   const userDTO = new UserDTO(user);
   const tokens = generateToken({...userDTO});
