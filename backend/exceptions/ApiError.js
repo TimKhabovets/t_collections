@@ -2,7 +2,7 @@ export default class ApiError extends Error {
   status;
   errors;
 
-  constructor (massage, status, errors = []) {
+  constructor ( status, massage, errors = []) {
     super(massage);
     this.status = status;
     this.errors = errors;

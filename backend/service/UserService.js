@@ -11,7 +11,7 @@ export const registerUser = async (name, email, password) => {
     }
   });
   if (data) {
-    throw ApiError.BadRequest(`User with email ${email} already registered`);
+    throw new ApiError.BadRequest(`User with email ${email} already registered`);
   }
   const hashPassword = await bcrypt.hash(password, 11)
   const user = await UserModel.create({ name, email, password: hashPassword}); 
@@ -28,11 +28,11 @@ export const loginUser = async function(email, password) {
     }
   });
   if(!user) {
-    throw ApiError('User not found'); 
+    throw new ApiError('User not found'); 
   }
   const isPasswordEqual = await bcrypt.compare(password, user.password);
   if(!isPasswordEqual) {
-    throw ApiError('Password is not equal'); 
+    throw new ApiError('Password is not equal'); 
   }
   const userDTO = new UserDTO(user);
   const tokens = generateToken({...userDTO});
