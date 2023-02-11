@@ -28,11 +28,19 @@ export const loginUser = async function(email, password) {
     }
   });
   if(!user) {
+<<<<<<< HEAD
     throw new ApiError('User not found'); 
   }
   const isPasswordEqual = await bcrypt.compare(password, user.password);
   if(!isPasswordEqual) {
     throw new ApiError('Password is not equal'); 
+=======
+    throw ApiError.BadRequest('User not found'); 
+  }
+  const isPasswordEqual = await bcrypt.compare(password, user.password);
+  if(!isPasswordEqual) {
+    throw ApiError.BadRequest('Password is not equal'); 
+>>>>>>> dev
   }
   const userDTO = new UserDTO(user);
   const tokens = generateToken({...userDTO});
