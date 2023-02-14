@@ -17,7 +17,7 @@ export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body.value;
     const user = await loginUser(email, password);
-    res.cookie('refreshToken', user.refreshToken, {maxAge: 30*24*60*60*1000, httpOnly: true, domain: ".vercel.app"});
+    res.cookie('refreshToken', user.refreshToken, {maxAge: 30*24*60*60*1000, httpOnly: true, domain: ".t-collections.vercel.app"});
     return res.json(user);
   }
   catch(err) {
