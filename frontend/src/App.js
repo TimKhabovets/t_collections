@@ -21,11 +21,11 @@ const messages = {
 };
 
 function App() {
-  useEffect(() => {
+  usEffectOnce(() => {
     if (localStorage.getItem('token')) {
       checkAuthAndSave();
     }
-  }, []);
+  });
 
   const [client, setClient] = useState({
     role: 'guest'
