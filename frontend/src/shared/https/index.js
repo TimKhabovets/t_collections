@@ -5,6 +5,7 @@ const API_URL = 'https://t-collections-api.vercel.app/api';
 const $api = axios.create({
   withCredentials: true,
   baseURL: API_URL,
+  credentials: 'include',
 });
 
 $api.interceptors.request.use((config) => {
