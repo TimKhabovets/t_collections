@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import * as React from "react";
 import { BrowserRouter } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import GlobalContext from "./shared/contexts/GlobalContext";
@@ -20,12 +20,22 @@ const messages = {
   [locales.PL]: plMessages,
 };
 
+const useEffectOnce = (callback, when) => {
+  const hasRunOnce = React.useRef(false);
+  React.useEffect(() => {
+    if (when && !hasRunOnce.current) {
+      callback();
+      hasRunOnce.current = true;
+    }
+  }, [when]);
+};
+
 function App() {
-  usEffectOnce(() => {
+  useEffectOnce(() => {
     if (localStorage.getItem('token')) {
       checkAuthAndSave();
     }
-  });
+  }, true);
 
   const [client, setClient] = useState({
     role: 'guest'

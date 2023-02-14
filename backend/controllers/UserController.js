@@ -41,7 +41,6 @@ export const logout = async (req, res, next) => {
 export const refreshTokens = async (req, res, next) => {
 
   try {
-    console.log('wwwwwwwwwwwww');
     const {refreshToken} = req.cookies;
     const user = await refresh(refreshToken);
     res.cookie('refreshToken', user.refreshToken, {maxAge: 30*24*60*60*1000,});
