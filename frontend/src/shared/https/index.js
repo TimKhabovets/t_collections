@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://t-collections-api.vercel.app/api';
 
 const $api = axios.create({
   withCredentials: true,
@@ -26,6 +26,7 @@ $api.interceptors.response.use((config) => {
   catch(error) {
     console.log('User not authenticated');
   }
+  throw error;
 }});
 
 export default $api;
