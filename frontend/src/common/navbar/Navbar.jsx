@@ -6,9 +6,9 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { styled, alpha } from '@mui/material/styles';
 import { useNavigate } from "react-router";
-import routes from '../../shared/constants/routes'
-import GlobalContext from "../../shared/contexts/GlobalContext"
-import { width } from '@mui/system';
+import routes from '../../shared/constants/routes';
+import GlobalContext from "../../shared/contexts/GlobalContext";
+import { logOut } from '../../shared/apis/userAPI';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -64,6 +64,7 @@ const theme = createTheme({
 export default function Navbar() {
   let navigate = useNavigate();
   const { client } = useContext(GlobalContext);
+  const { isLoading } = useContext(GlobalContext);
 
   const logIn = () => {
     navigate(routes.LOGIN)
@@ -76,6 +77,18 @@ export default function Navbar() {
   }
   const toUserPage = () => {
     navigate(routes.USERPAGE)
+  }
+
+  const logout = async () => {
+    const response = await logOut();
+    console.log(response);
+    if (response) {
+      navigate(routes.HOME);
+      client.name = '';
+      client.email = '';
+      client.role = 'guest';
+      client.id = '';
+    }
   }
 
   return (
@@ -101,7 +114,11 @@ export default function Navbar() {
                 sx={{ width: "101px", cursor: 'pointer' }}
               >t_collection</Typography>
             </Box>
-            {client.role === 'guest' ? (
+            {isLoading ? (
+              <Typography variant="h6" mx={1}>
+                loading...
+              </Typography>
+            ) : (client.role === 'guest' ? (
               <Grid sx={{ display: { xs: 'none', sm: 'flex' }, direction: "row" }}>
                 <Box >
                   <Button onClick={logIn} color="inherit">Login</Button>
@@ -113,16 +130,23 @@ export default function Navbar() {
                 </Box>
               </Grid>
             ) : (
-              <Box
-                mx={2}
-                onClick={toUserPage}
-                sx={{ cursor: "pointer", display: 'flex' }}>
-                  <AccountBoxIcon sx={{ top: '2px', position: 'relative'}} />
-                <Typography variant="h6" mx={1}>
-                  {client.name}
-                </Typography>
+              <Box sx={{ display: 'flex' }}>
+                <Box>
+                  <Button onClick={logout} color="inherit" variant="contained" >
+                    <Box sx={{ color: 'text.dark' }}>Logout</Box>
+                  </Button>
+                </Box>
+                <Box
+                  mx={2}
+                  onClick={toUserPage}
+                  sx={{ cursor: "pointer", display: 'flex' }}>
+                  <AccountBoxIcon sx={{ top: '2px', position: 'relative' }} />
+                  <Typography variant="h6" mx={1}>
+                    {client.name}
+                  </Typography>
+                </Box>
               </Box>
-            )}
+            ))}
             <Search>
               <SearchIconWrapper>
                 <SearchIcon />

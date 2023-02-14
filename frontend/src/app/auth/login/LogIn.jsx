@@ -1,13 +1,17 @@
 import { useForm } from 'react-hook-form';
-import React from 'react';
+import React, {useContext} from 'react';
 import { Box, TextField, Button, Grid, Typography } from '@mui/material'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Link } from 'react-router-dom'
 import routes from "../../../shared/constants/routes";
 import { toLogIn } from '../../../shared/apis/userAPI';
+import { useNavigate } from "react-router";
+import GlobalContext from "../../../shared/contexts/GlobalContext";
 
 function LogIn() {
   const { register, handleSubmit, formState: { errors } } = useForm();
+  let navigate = useNavigate();
+  const { client } = useContext(GlobalContext);
 
   const theme = createTheme({
     palette: {
@@ -25,8 +29,14 @@ function LogIn() {
   });
 
   const LogIn = async (value) => {
-    await toLogIn({ value });
-
+    const response = await toLogIn({ value });
+    if(response) {
+      navigate(routes.USERPAGE);
+      client.name = response.user.name;
+      client.email = response.user.email;
+      client.role = response.user.role;
+      client.id = response.user.id;
+    }
   }
 
   return (

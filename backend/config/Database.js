@@ -1,8 +1,8 @@
 import { Sequelize } from 'sequelize';
 import mysql2 from 'mysql2';
 
-const db = new Sequelize('sql8596215', 'sql8596215', 'NE7ZpDHl65', {
-  host: 'sql8.freesqldatabase.com',
+const db = new Sequelize('tcollections', 'timy02', 'i6P22vvMs9A*.Xd', {
+  host: 'db4free.net',
   dialect: 'mysql',
   dialectModule: mysql2,
   define: {
