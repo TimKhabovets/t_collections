@@ -21,7 +21,7 @@ export const getUsers = async () => {
 export const toLogIn = async (data) => {
   try {
     const response = await $api.post(urls.LOGIN, data);
-    localStorage.setItem('token', response.data.accessToken);
+    localStorage.setItem('token', response.data.accessToken, {withCredentials: true});
     return response.data;
   }
   catch (err) {
