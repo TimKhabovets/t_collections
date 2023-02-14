@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> dev
 {
     "version": 2,
     "builds": [
@@ -7,10 +10,25 @@
             "use": "@vercel/node"
         }
     ],
+<<<<<<< HEAD
     "routes": [
         {
             "src": "/(.*)",
             "dest": "/"
+=======
+    "rewrites": [
+        {
+            "source": "/(.*)",
+            "destination": "/"
+        }
+    ],
+    "headers": [
+        {
+          "source": "/(.*)",
+          "headers": [
+            { "key": "Access-Control-Allow-Origin", "value": "*" }
+          ]
+>>>>>>> dev
         }
     ]
 }
