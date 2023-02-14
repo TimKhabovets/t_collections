@@ -21,11 +21,11 @@ const messages = {
 };
 
 function App() {
-  useEffect(() => {
+  usEffectOnce(() => {
     if (localStorage.getItem('token')) {
       checkAuthAndSave();
     }
-  }, []);
+  });
 
   const [client, setClient] = useState({
     role: 'guest'
@@ -53,7 +53,8 @@ function App() {
     }
     catch (err) {
       console.log(err);
-    } finally {
+    } 
+    finally {
       setIsLoading(false);
     }
   }
