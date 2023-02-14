@@ -1,14 +1,16 @@
-import React       from 'react';
+import React, {useContext} from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, TextField, Button, Grid, Typography} from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import routes from "../../../shared/constants/routes";
 import { Link, useNavigate } from 'react-router-dom';
 import { toSignUp } from '../../../shared/apis/userAPI';
+import GlobalContext from "../../../shared/contexts/GlobalContext";
 
 function SignUp() {
   const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const { client } = useContext(GlobalContext);
 
   const theme = createTheme({
     palette: {
@@ -26,10 +28,15 @@ function SignUp() {
   });
 
   const SignUp = async (value) => {
-    await toSignUp({ value });
-    //console.log(response);
-    //if(response)
-    //navigate(routes.USERPAGE);
+    const response = await toSignUp({ value });
+    if(response) {
+      navigate(routes.USERPAGE);
+      client.name = response.user.name;
+      client.email = response.user.email;
+      client.role = response.user.role;
+      client.id = response.user.id;
+      navigate(routes.USERPAGE);
+    }
   }
   
   return (
