@@ -19,7 +19,8 @@ export const login = async (req, res, next) => {
     const user = await loginUser(email, password);
     res.cookie('refreshToken', user.refreshToken, {
       maxAge: 30*24*60*60*1000, 
-      httpOnly: true, 
+      httpOnly: true,
+      domain: '.t-collections.vercel.app', 
       sameSite: "none",
       secure: true,
     });
