@@ -44,7 +44,7 @@ export const refreshTokens = async (req, res, next) => {
     const {refreshToken} = req.cookies;
     console.log(refreshToken);
     const user = await refresh(refreshToken);
-    res.cookie('refreshToken', user.refreshToken, {maxAge: 30*24*60*60*1000,});
+    res.cookie('refreshToken', user.refreshToken, {maxAge: 30*24*60*60*1000, domain: '.t-collections.vercel.app'});
     return res.json(user);
   }
   catch(err) {
