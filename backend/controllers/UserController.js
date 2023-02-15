@@ -20,7 +20,7 @@ export const login = async (req, res, next) => {
     res.cookie('refreshToken', user.refreshToken, {
       maxAge: 30*24*60*60*1000, 
       httpOnly: false,
-      domain: 'https://t-collections.vercel.app', 
+      domain: 't-collections.vercel.app', 
       sameSite: "none",
       secure: true,
     });
@@ -72,7 +72,7 @@ export const createUser = async (req, res, next) => {
     res.cookie('refreshToken', user.refreshToken, { 
       maxAge: 30*24*60*60*1000, 
       httpOnly: true, 
-      domain: 't-collections.vercel.app', 
+      domain: '.vercel.app', 
       sameSite: "none",
       secure: true,
     });
