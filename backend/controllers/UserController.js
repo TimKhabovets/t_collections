@@ -17,7 +17,13 @@ export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body.value;
     const user = await loginUser(email, password);
-    res.cookie('refreshToken', user.refreshToken, {maxAge: 30*24*60*60*1000, httpOnly: true, domain: 't-collections.vercel.app', sameSite: "none"});
+    res.cookie('refreshToken', user.refreshToken, {
+      maxAge: 30*24*60*60*1000, 
+      httpOnly: true,
+      domain: 't-collections.vercel.app', 
+      sameSite: "none",
+      secure: true,
+    });
     return res.json(user);
   }
   catch(err) {
@@ -44,7 +50,13 @@ export const refreshTokens = async (req, res, next) => {
     const {refreshToken} = req.cookies;
     console.log(refreshToken);
     const user = await refresh(refreshToken);
-    res.cookie('refreshToken', user.refreshToken, {maxAge: 30*24*60*60*1000, httpOnly: true, domain: 't-collections.vercel.app', sameSite: "none"});
+    res.cookie('refreshToken', user.refreshToken, {
+      maxAge: 30*24*60*60*1000, 
+      httpOnly: true, 
+      domain: 't-collections.vercel.app', 
+      sameSite: "none",
+      secure: true,
+    });
     return res.json(user);
   }
   catch(err) {
@@ -57,7 +69,13 @@ export const createUser = async (req, res, next) => {
   try {
     const { name, email, password } = req.body.value;
     const user = await registerUser(name, email, password);
-    res.cookie('refreshToken', user.refreshToken, { maxAge: 30*24*60*60*1000, httpOnly: true, domain: 't-collections.vercel.app', sameSite: "none"});
+    res.cookie('refreshToken', user.refreshToken, { 
+      maxAge: 30*24*60*60*1000, 
+      httpOnly: true, 
+      domain: 't-collections.vercel.app', 
+      sameSite: "none",
+      secure: true,
+    });
     res.json(user);
   }
   catch(err) {
