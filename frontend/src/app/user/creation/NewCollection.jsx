@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, TextField, Button, Grid, Typography, Paper, Checkbox, ListItemIcon, ListItemText, ListItemButton, ListItem, List } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -9,6 +9,8 @@ import FormSelect from "../../../common/forms/FormSelect";
 import routes from "../../../shared/constants/routes";
 import MarkdownIt from 'markdown-it';
 import fields from '../../../shared/constants/optionsFields';
+import { addCollection } from '../../../shared/apis/collectionAPI';
+import GlobalContext from "../../../shared/contexts/GlobalContext";
 
 const theme = createTheme({
   palette: {
@@ -27,6 +29,7 @@ const theme = createTheme({
 function NewCollections() {
   const [checked, setChecked] = useState([]);
   const md = new MarkdownIt();
+  const { client } = useContext(GlobalContext);
   const { register, handleSubmit, control, formState: { errors } } = useForm();
 
   const handleToggle = (value) => () => {
@@ -42,14 +45,16 @@ function NewCollections() {
     setChecked(newChecked);
   };
 
-  const createNewCollection = (values) => {
+  const createNewCollection = async (values) => {
     const data = {
       ...values,
       markdown: md.render(values.markdown),
       topic: values.topic.value,
-      checked: JSON.stringify(checked)
+      checked: JSON.stringify(checked),
+      author: client.id
     };
-    return;
+    const response = await addCollection(data);
+    return response;
   }
 
   return (
