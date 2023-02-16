@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Box, TextField, Button, Grid, Typography } from '@mui/material';
+import { Box, TextField, Button, Grid, Typography, Paper, Checkbox, ListItemIcon, ListItemText, ListItemButton, ListItem, List } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import topics from '../../../shared/constants/topics';
 import { ErrorMessage } from '@hookform/error-message';
@@ -8,9 +8,24 @@ import { useNavigate } from "react-router";
 import FormSelect from "../../../common/forms/FormSelect";
 import routes from "../../../shared/constants/routes";
 import MarkdownIt from 'markdown-it';
+import fields from '../../../shared/constants/optionsFields';
+
+const theme = createTheme({
+  palette: {
+    dark: {
+      main: '#212121',
+    },
+  },
+  typography: {
+    login: {
+      fontSize: 40,
+      fontWeight: 800,
+    },
+  }
+});
 
 function NewCollections() {
-  const [checked, setChecked] = React.useState([0]);
+  const [checked, setChecked] = useState([]);
   const md = new MarkdownIt();
   const { register, handleSubmit, control, formState: { errors } } = useForm();
 
@@ -27,25 +42,12 @@ function NewCollections() {
     setChecked(newChecked);
   };
 
-  const theme = createTheme({
-    palette: {
-      dark: {
-        main: '#212121',
-      },
-    },
-    typography: {
-      login: {
-        fontSize: 40,
-        fontWeight: 800,
-      },
-    }
-  });
-
   const createNewCollection = (values) => {
     const data = {
       ...values,
       markdown: md.render(values.markdown),
       topic: values.topic.value,
+      checked: JSON.stringify(checked)
     };
     return;
   }
@@ -97,36 +99,36 @@ function NewCollections() {
                   render={({ message }) => <p className='error'>{message}</p>}
                 />
               </Box>
-              <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                {[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14].map((value) => {
-                  const labelId = `checkbox-list-label-${value}`;
+              <Box width="100%" my={2}>
+                <Typography >What fields add to items?</Typography>
+                <Paper sx={{ width: '100%', height: 230, overflow: 'auto' }}>
+                  <List role="list" sx={{ width: '100%', bgcolor: 'background.paper' }}>
+                    {fields.map((field) => {
+                      const labelId = `checkbox-list-label-${field.value}`;
 
-                  return (
-                    <ListItem
-                      key={value}
-                      secondaryAction={
-                        <IconButton edge="end" aria-label="comments">
-                          <CommentIcon />
-                        </IconButton>
-                      }
-                      disablePadding
-                    >
-                      <ListItemButton role={undefined} onClick={handleToggle(value)} dense>
-                        <ListItemIcon>
-                          <Checkbox
-                            edge="start"
-                            checked={checked.indexOf(value) !== -1}
-                            tabIndex={-1}
-                            disableRipple
-                            inputProps={{ 'aria-labelledby': labelId }}
-                          />
-                        </ListItemIcon>
-                        <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
-                      </ListItemButton>
-                    </ListItem>
-                  );
-                })}
-              </List>
+                      return (
+                        <ListItem
+                          key={field.value}
+                          disablePadding
+                        >
+                          <ListItemButton role={undefined} onClick={handleToggle(field.value)} dense>
+                            <ListItemIcon>
+                              <Checkbox
+                                edge="start"
+                                checked={checked.indexOf(field.value) !== -1}
+                                tabIndex={-1}
+                                disableRipple
+                                inputProps={{ 'aria-labelledby': labelId }}
+                              />
+                            </ListItemIcon>
+                            <ListItemText id={labelId} primary={`Add ${field.labelEn}`} />
+                          </ListItemButton>
+                        </ListItem>
+                      );
+                    })}
+                  </List>
+                </Paper>
+              </Box>
               <Box width="30%" my={2}>
                 <Button type="submit" variant="contained" sx={{
                   ':hover': {

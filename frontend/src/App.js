@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { BrowserRouter } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import GlobalContext from "./shared/contexts/GlobalContext";
@@ -55,7 +55,6 @@ function App() {
     setIsLoading(true);
     try {
       const response = await checkAuth();
-      console.log(response.data);
       client.name = response.data.user.name;
       client.email = response.data.user.email;
       client.role = response.data.user.role;
