@@ -5,9 +5,9 @@ const urls = {
   REFRESH: '/refresh',
   
   ADD: '/add',
-  REMOVE: '/remove',
-  UPDATE: '/update',
-  COLLECTION: '/get',
+  REMOVE: '/remove/',
+  UPDATE: '/update/',
+  COLLECTION: '/get/',
   ALL: '/getall',
 }
 

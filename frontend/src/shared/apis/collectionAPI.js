@@ -36,9 +36,8 @@ export const updateCollection = async (data) => {
   }
 }
 
-export const getCollection = async (data) => {
+export const getCollection = async (id) => {
   try {
-    const id = data.id;
     const response = await $api.get(curl+urls.COLLECTION+id);
     return response.data;
   }

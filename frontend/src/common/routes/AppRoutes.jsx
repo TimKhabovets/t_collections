@@ -13,7 +13,7 @@ export default function AppRoutes() {
       <Route path={routes.LOGIN} element={<LogIn />}/>
       <Route path={routes.SIGNUP} element={ <SignUp /> }/>
       <Route path={routes.USERPAGE} element={ <UserPage /> }/>
-      <Route path={routes.NEWCOL} element={ <NewCol /> }/>
+      <Route path={routes.CREATECOLLECTION} element={ <NewCol /> }/>
     </Routes> 
   ); 
 }

@@ -31,9 +31,8 @@ function App() {
   const [client, setClient] = useState({
     role: 'guest'
   });
-
+  const [ currentCollection, setCurrentCollection ] = useState('');
   const [isLoading, setIsLoading] = useState(false)
-
   const [currentLocale, setCurrentLocale] = useState(
     localStorage.getItem(localStorageKeys.LOCALE) || locales.EN);
 
@@ -61,6 +60,8 @@ function App() {
 
   return (
     <GlobalContext.Provider value={{
+      currentCollection,
+      setCurrentCollection,
       isLoading,
       client,
       currentLocale,

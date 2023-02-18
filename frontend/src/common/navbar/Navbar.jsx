@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
-import { Box, Grid, Toolbar, IconButton, Typography, InputBase, Button, AppBar } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
+import { Box, Grid, Toolbar, Typography, InputBase, Button, AppBar } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -9,7 +8,7 @@ import { useNavigate } from "react-router";
 import routes from '../../shared/constants/routes';
 import GlobalContext from "../../shared/contexts/GlobalContext";
 import { logOut } from '../../shared/apis/userAPI';
-import Sidebar from '../sidebar/Sidebar';
+import Sidebar from '../sidebar/Sidebar'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -82,7 +81,6 @@ export default function Navbar() {
 
   const logout = async () => {
     const response = await logOut();
-    console.log(response);
     if (response) {
       navigate(routes.HOME);
       client.name = '';
@@ -97,9 +95,7 @@ export default function Navbar() {
       <ThemeProvider theme={theme}>
         <AppBar position="static">
           <Toolbar >
-            <Box mx={2}>
-
-            </Box>
+            <Sidebar/>
             <Box
               sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
             >
@@ -125,7 +121,7 @@ export default function Navbar() {
                 </Box>
               </Grid>
             ) : (
-              <Box sx={{ display: 'flex' }}>
+              <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
                 <Box>
                   <Button onClick={logout} color="inherit" variant="contained" >
                     <Box sx={{ color: 'text.dark' }}>Logout</Box>

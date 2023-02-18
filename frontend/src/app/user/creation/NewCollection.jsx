@@ -9,8 +9,9 @@ import FormSelect from "../../../common/forms/FormSelect";
 import routes from "../../../shared/constants/routes";
 import MarkdownIt from 'markdown-it';
 import fields from '../../../shared/constants/optionsFields';
-import { addCollection } from '../../../shared/apis/collectionAPI';
+import { addCollection, getCollection } from '../../../shared/apis/collectionAPI';
 import GlobalContext from "../../../shared/contexts/GlobalContext";
+import { useEffectOnce } from '../../../common/functions/useEffectOnce';
 
 const theme = createTheme({
   palette: {
@@ -30,7 +31,21 @@ function NewCollections() {
   const [checked, setChecked] = useState([]);
   const md = new MarkdownIt();
   const { client } = useContext(GlobalContext);
+  const { currentCollection, setCurrentCollection } = useContext(GlobalContext);
   const { register, handleSubmit, control, formState: { errors } } = useForm();
+
+  useEffectOnce(() => {
+    console.log(currentCollection);
+    if (currentCollection) {
+      getMyCollection();
+    }
+  }, true);
+
+  const getMyCollection = async () => {
+    const response = await getCollection(currentCollection);
+    console.log(response);
+    setCurrentCollection('');
+  }
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -144,7 +159,7 @@ function NewCollections() {
                   backgroundColor: '#272727',
                   width: '100%'
                 }}>
-                  Add new collection
+                  Submit
                 </Button>
               </Box>
             </Grid>

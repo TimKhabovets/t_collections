@@ -1,7 +1,4 @@
-import GlobalContext from "../../shared/contexts/GlobalContext"
-
-export function isAdmin() {
-  const { client } = useContext(GlobalContext);
-  if(client.role === 'admin')
+export function IsAdmin(role) {
+  if(role === 'admin')
     return true;
 }
