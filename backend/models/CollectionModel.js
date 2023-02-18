@@ -7,7 +7,7 @@ const Collection = db.define('collections', {
   name: DataTypes.STRING,
   topic: DataTypes.STRING,
   comment: DataTypes.STRING,
-  options_fields: DataTypes.JSON,
+  option_fields: DataTypes.JSON,
   photo: DataTypes.TINYINT,
   author: DataTypes.INTEGER
 }, {

@@ -1,3 +1,4 @@
+import { request } from 'express';
 import { getOne, getAll, create, update, remove } from '../service/CollectionService.js';
 
 export const getCollection = async (req, res, next) => {
@@ -10,9 +11,9 @@ export const getCollection = async (req, res, next) => {
   }
 }
 
-export const getAllCollections = async (req, res, next) => {
+export const getAllUserCollections = async (req, res, next) => {
   try {
-    const collections = await getAll();
+    const collections = await getAll(req.body.author);
     return res.json(collections);
   }
   catch (err) {
@@ -22,8 +23,8 @@ export const getAllCollections = async (req, res, next) => {
 
 export const addCollection = async (req, res, next) => {
   try {
-    const {name, topic, comment, option_fields, photo, author} = req.body;
-    const collection = await create(name, topic, comment, option_fields, photo, author);
+    const {name, topic, markdown, option_fields, photo, author} = req.body;
+    const collection = await create(name, topic, markdown, option_fields, photo, author);
     return res.json(collection);
   }
   catch (err) {

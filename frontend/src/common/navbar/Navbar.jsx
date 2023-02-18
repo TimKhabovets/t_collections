@@ -9,6 +9,7 @@ import { useNavigate } from "react-router";
 import routes from '../../shared/constants/routes';
 import GlobalContext from "../../shared/contexts/GlobalContext";
 import { logOut } from '../../shared/apis/userAPI';
+import Sidebar from '../sidebar/Sidebar';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -96,15 +97,9 @@ export default function Navbar() {
       <ThemeProvider theme={theme}>
         <AppBar position="static">
           <Toolbar >
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
+            <Box mx={2}>
+
+            </Box>
             <Box
               sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
             >

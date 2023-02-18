@@ -47,9 +47,9 @@ export const getCollection = async (data) => {
   }
 }
 
-export const getAllCollections = async () => {
+export const getAllCollections = async (author) => {
   try {
-    const response = await $api.get(curl+urls.ALL);
+    const response = await $api.post(curl+urls.ALL, {author});
     return response.data;
   }
   catch (err) {

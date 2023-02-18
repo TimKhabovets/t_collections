@@ -50,9 +50,10 @@ function NewCollections() {
       ...values,
       markdown: md.render(values.markdown),
       topic: values.topic.value,
-      checked: JSON.stringify(checked),
+      option_fields: JSON.stringify(checked),
       author: client.id
     };
+    console.log(data.option_fields);
     const response = await addCollection(data);
     return response;
   }

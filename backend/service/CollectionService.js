@@ -5,13 +5,17 @@ export const getOne = async (id) => {
   return collectionData;
 }
 
-export const getAll = async () => {
-  const collectionsData = await Collection.findAll();
+export const getAll = async (author) => {
+  const collectionsData = await Collection.findAll({
+    where: {
+      author: author
+    }
+  });
   return collectionsData;
 }
 
-export const create = async (name, topic, comment, option_fields, photo, author) => {
-  const collectionData = await Collection.create({name, topic, comment, option_fields, photo, author});
+export const create = async (name, topic, markdown, option_fields, photo, author) => {
+  const collectionData = await Collection.create({name, topic, comment: markdown, option_fields, photo, author});
   return collectionData;
 }
 

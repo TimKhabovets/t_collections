@@ -12,22 +12,13 @@ import plMessages from "./shared/localizations/pl.json";
 import localStorageKeys from "./shared/constants/localStorageKeys";
 import locales from "./shared/constants/locales";
 import { checkAuth } from "./shared/apis/userAPI";
+import {useEffectOnce} from './common/functions/useEffectOnce'
 
 const messages = {
   [locales.EN]: enMessages,
   [locales.RU]: ruMessages,
   [locales.ES]: esMessages,
   [locales.PL]: plMessages,
-};
-
-const useEffectOnce = (callback, when) => {
-  const hasRunOnce = React.useRef(false);
-  React.useEffect(() => {
-    if (when && !hasRunOnce.current) {
-      callback();
-      hasRunOnce.current = true;
-    }
-  }, [when]);
 };
 
 function App() {
