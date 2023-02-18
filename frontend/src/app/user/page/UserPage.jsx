@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from "react-router";
 import routes from '../../../shared/constants/routes';
 import { useEffectOnce } from '../../../common/functions/useEffectOnce';
@@ -12,17 +12,17 @@ import TableCell from '@mui/material/TableCell';
 function UserPage() {
   let navigate = useNavigate();
   const { client } = useContext(GlobalContext);
-  let collections = [];
+  const [collections, setCollections] = useState([]);
 
   useEffectOnce(() => {
     if (client.id) {
-      getAllCollection()
+      getAllCollection();
     }
   }, true);
 
   const getAllCollection = async () => {
-    collections = await getAllCollections(client.id);
-    console.log(collections);
+    const response = await getAllCollections(client.id);
+    setCollections(response);
   }
 
   const toNewCollection = () => {
