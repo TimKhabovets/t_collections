@@ -6,8 +6,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import List from '@mui/material/List';
 import { Link } from 'react-router-dom';
 import routes from '../../shared/constants/routes';
-import { IsUser } from '../checks/UserCheck';
-import { IsAdmin } from '../checks/AdminCheck';
+import { IsUser } from '../../shared/functions/checks/UserCheck';
+import { IsAdmin } from '../../shared/functions/checks/AdminCheck';
 import GlobalContext from "../../shared/contexts/GlobalContext";
 
 const theme = createTheme({
@@ -46,8 +46,8 @@ export default function TemporaryDrawer() {
                 <Typography variant='link'>
                   My Collections
                 </Typography>
+                <hr className='hrColor'/>
               </Link>
-              <hr/>
             </Box>
           ) : (<></>)
           }

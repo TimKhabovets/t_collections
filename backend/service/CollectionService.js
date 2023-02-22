@@ -1,7 +1,11 @@
 import Collection from '../models/CollectionModel.js';
 
 export const getOne = async (id) => {
-  const collectionData = await Collection.findOne({id});
+  const collectionData = await Collection.findOne({
+    where: {
+      id: id,
+    }
+  });
   return collectionData;
 }
 
@@ -19,10 +23,10 @@ export const create = async (name, topic, markdown, option_fields, photo, author
   return collectionData;
 }
 
-export const update = async (collection) => {
+export const update = async (collection, id) => {
   const collectionData = await Collection.update(collection, {
     where: {
-      id: collection.id
+      id: id
     }
   });
   return collectionData;

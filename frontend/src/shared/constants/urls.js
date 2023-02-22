@@ -7,7 +7,7 @@ const urls = {
   ADD: '/add',
   REMOVE: '/remove/',
   UPDATE: '/update/',
-  COLLECTION: '/get/',
+  GET: '/get/',
   ALL: '/getall',
 }
 

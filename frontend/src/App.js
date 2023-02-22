@@ -12,7 +12,7 @@ import plMessages from "./shared/localizations/pl.json";
 import localStorageKeys from "./shared/constants/localStorageKeys";
 import locales from "./shared/constants/locales";
 import { checkAuth } from "./shared/apis/userAPI";
-import {useEffectOnce} from './common/functions/useEffectOnce'
+import {useEffectOnce} from './shared/functions/useEffectOnce'
 
 const messages = {
   [locales.EN]: enMessages,
@@ -32,6 +32,8 @@ function App() {
     role: 'guest'
   });
   const [ currentCollection, setCurrentCollection ] = useState('');
+  const [ currentItem, setCurrentItem ] = useState('');
+  const [ collection, setCollection] = useState({});
   const [isLoading, setIsLoading] = useState(false)
   const [currentLocale, setCurrentLocale] = useState(
     localStorage.getItem(localStorageKeys.LOCALE) || locales.EN);
@@ -60,6 +62,10 @@ function App() {
 
   return (
     <GlobalContext.Provider value={{
+      currentItem,
+      setCurrentItem,
+      collection,
+      setCollection,
       currentCollection,
       setCurrentCollection,
       isLoading,

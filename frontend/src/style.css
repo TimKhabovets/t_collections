@@ -38,3 +38,12 @@ a {
   letter-spacing: 0.03333em;
   text-align: left;
 }
+
+.hrColor{
+  color: white;
+}
+
+.optionCheckbox {
+  height: 25px;
+  width: 25px;
+}

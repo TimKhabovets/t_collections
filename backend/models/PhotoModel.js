@@ -4,7 +4,7 @@ import db from '../config/Database.js';
 const {DataTypes} = Sequelize;
 
 const Photo = db.define('photos', {
-  url: DataTypes.STRING,    
+  url: DataTypes.STRING,      
 }, {
   freezeTableName: true
 });

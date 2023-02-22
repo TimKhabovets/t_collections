@@ -9,9 +9,12 @@ import FormSelect from "../../../common/forms/FormSelect";
 import routes from "../../../shared/constants/routes";
 import MarkdownIt from 'markdown-it';
 import fields from '../../../shared/constants/optionsFields';
-import { addCollection, getCollection } from '../../../shared/apis/collectionAPI';
+import { addCollection, getCollection, updateCollection } from '../../../shared/apis/collectionAPI';
+import { addPhoto, getPhoto, updatePhoto } from '../../../shared/apis/photoAPI';
 import GlobalContext from "../../../shared/contexts/GlobalContext";
-import { useEffectOnce } from '../../../common/functions/useEffectOnce';
+import { useEffectOnce } from '../../../shared/functions/useEffectOnce';
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { storage } from '../../../shared/configs/firebaseConfig'
 
 const theme = createTheme({
   palette: {
@@ -28,14 +31,17 @@ const theme = createTheme({
 });
 
 function NewCollections() {
+  const navigate = useNavigate();
   const [checked, setChecked] = useState([]);
   const md = new MarkdownIt();
   const { client } = useContext(GlobalContext);
   const { currentCollection, setCurrentCollection } = useContext(GlobalContext);
-  const { register, handleSubmit, control, formState: { errors } } = useForm();
+  const { register, reset, handleSubmit, control, formState: { errors } } = useForm();
+  const [file, setFile] = useState("");
+  const [photoUrl, setPhotoUrl] = useState("");
+  const [photoSrc, setPhotoSrc] = useState("");
 
   useEffectOnce(() => {
-    console.log(currentCollection);
     if (currentCollection) {
       getMyCollection();
     }
@@ -43,8 +49,14 @@ function NewCollections() {
 
   const getMyCollection = async () => {
     const response = await getCollection(currentCollection);
-    console.log(response);
-    setCurrentCollection('');
+    if (response) {
+      setChecked(JSON.parse(response.option_fields));
+      reset({
+        name: response.name,
+        markdown: response.comment,
+        topic: { value: response.topic, label: `${response.topic[0].toUpperCase()}${response.topic.slice(1)}` }
+      });
+    }
   }
 
   const handleToggle = (value) => () => {
@@ -56,28 +68,77 @@ function NewCollections() {
     } else {
       newChecked.splice(currentIndex, 1);
     }
-
     setChecked(newChecked);
   };
 
+  function handleChange(event) {
+    setPhotoSrc(event.target.value);
+    setFile(event.target.files[0]);
+    handleUpload();
+  }
+
+  const handleUpload = () => {
+    const storageRef = ref(storage, `/t-collection/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const percent = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+      },
+      (err) => console.log(err),
+      async () => {
+        setPhotoUrl(await getDownloadURL(uploadTask.snapshot.ref)); 
+      }
+    );
+  };
+
+  const removePhoto = () => {
+    setPhotoSrc('');
+    setFile('');
+  }
+
   const createNewCollection = async (values) => {
-    const data = {
+    let photo = '';
+    if (file) {
+      if (currentCollection) {
+        photo = await updatePhoto(photoUrl);
+      }
+      else {
+        photo = await addPhoto(photoUrl);
+      }
+    }
+    let data = {
       ...values,
+      id: currentCollection,
       markdown: md.render(values.markdown),
       topic: values.topic.value,
       option_fields: JSON.stringify(checked),
+      photo: photo.id,
       author: client.id
     };
-    console.log(data.option_fields);
-    const response = await addCollection(data);
-    return response;
+    // try {
+    //   if (currentCollection) {
+    //     return await updateCollection(data);
+    //   }
+    //   else {
+    //     return await addCollection(data);
+    //   }
+    // }
+    // catch (err) {
+    //   console.log(err);
+    // }
+    // finally {
+    //   navigate(routes.USERPAGE)
+    // }
   }
 
   return (
     <ThemeProvider theme={theme}>
       <Grid mt={3} container direction="column" alignItems="flex-start">
         <Box mx={3}>
-          <Typography variant="login">New Collection</Typography>
+          <Typography variant="login">Collection</Typography>
         </Box>
         <Box width="90%">
           <form onSubmit={handleSubmit(createNewCollection)} >
@@ -120,8 +181,24 @@ function NewCollections() {
                   render={({ message }) => <p className='error'>{message}</p>}
                 />
               </Box>
+              <Box my={2}>
+                <input type="file" onChange={handleChange} value={photoSrc} accept="/image/*" />
+                <Button
+                  sx={{
+                    ':hover': {
+                      border: '1px solid #272727',
+                      color: 'black'
+                    },
+                    border: '1px solid #272727',
+                    color: 'white',
+                    backgroundColor: '#272727',
+                  }}
+                  variant="outlined"
+                  onClick={removePhoto}
+                >remove</Button>
+              </Box>
               <Box width="100%" my={2}>
-                <Typography >What fields add to items?</Typography>
+                <Typography >What fields add to items? </Typography>
                 <Paper sx={{ width: '100%', height: 230, overflow: 'auto' }}>
                   <List role="list" sx={{ width: '100%', bgcolor: 'background.paper' }}>
                     {fields.map((field) => {

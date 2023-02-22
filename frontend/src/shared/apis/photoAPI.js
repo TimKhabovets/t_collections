@@ -2,11 +2,11 @@ import axios from "axios";
 import $api from "../https";
 import urls from '../constants/urls'
 
-const curl = '/collection';
+const curl = '/photo';
 
-export const addCollection = async (data) => {
+export const addPhoto = async (url) => {
   try {
-    const response = await $api.post(curl+urls.ADD, data);
+    const response = await $api.post(curl+urls.ADD, {url});
     return response.data;
   }
   catch (err) {
@@ -14,7 +14,7 @@ export const addCollection = async (data) => {
   }
 }
 
-export const removeCollection = async (id) => {
+export const removePhoto = async (id) => {
   try {
     const response = await $api.delete(curl+urls.REMOVE+id);
     return response.data;
@@ -24,7 +24,7 @@ export const removeCollection = async (id) => {
   }
 }
 
-export const updateCollection = async (data) => {
+export const updatePhoto = async (data) => {
   try {
     const id = data.id;
     const response = await $api.patch(curl+urls.UPDATE+id, data);
@@ -35,19 +35,9 @@ export const updateCollection = async (data) => {
   }
 }
 
-export const getCollection = async (id) => {
+export const getPhoto = async (id) => {
   try {
     const response = await $api.get(curl+urls.GET+id);
-    return response.data;
-  }
-  catch (err) {
-    console.log(err.response?.data?.massage);
-  }
-}
-
-export const getAllCollections = async (author) => {
-  try {
-    const response = await $api.post(curl+urls.ALL, {author});
     return response.data;
   }
   catch (err) {

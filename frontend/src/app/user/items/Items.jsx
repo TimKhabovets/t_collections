@@ -1,16 +1,37 @@
 import React, { useContext, useState } from 'react';
+import parse from 'html-react-parser';
 import { useNavigate } from "react-router";
-import routes from '../../../shared/constants/routes';
-import { useEffectOnce } from '../../../shared/functions/useEffectOnce';
 import GlobalContext from "../../../shared/contexts/GlobalContext";
-import { getAllCollections, removeCollection } from '../../../shared/apis/collectionAPI';
+import routes from '../../../shared/constants/routes';
 
-import TableRow from '@mui/material/TableRow';
-import { Box, Button, Grid, Paper, TableContainer, Table, TableBody, ButtonGroup } from '@mui/material';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import { styled } from '@mui/material/styles';
+import { Box, Button, Grid, Paper, TableContainer, Typography, Table, TableBody, ButtonGroup } from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
 import CircularProgress from '@mui/material/CircularProgress';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
+import { styled } from '@mui/material/styles';
+
+const theme = createTheme({
+  palette: {
+    dark: {
+      main: '#212121',
+    },
+  },
+  typography: {
+    name: {
+      fontSize: 45,
+      fontWeight: 800,
+    },
+    topic: {
+      fontSize: 30,
+      fontWeight: 400,
+    },
+    comment: {
+      fontSize: 20,
+    },
+  }
+});
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -32,72 +53,49 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function UserPage() {
+function Items() {
   let navigate = useNavigate();
-  const { client } = useContext(GlobalContext);
-  const { collection, setCollection } = useContext(GlobalContext);
+  const { collection } = useContext(GlobalContext);
+  const { currentItem, setCurrentItem } = useContext(GlobalContext);
   const [isLoading, setIsLoading] = useState(false);
-  const { currentCollection, setCurrentCollection } = useContext(GlobalContext);
-  const [collections, setCollections] = useState([]);
+  const [items, setItems] = useState([]);
 
-  useEffectOnce(() => {
-    if (client.id) {
-      getAllCollection();
-    }
-  }, client.id);
+  const editItem = (id) => {
+    return
+  } 
 
-  const getAllCollection = async () => {
-    setIsLoading(true);
-    try {
-      let response = await getAllCollections(client.id);
-      setCollections(response);
-    }
-    catch (err) {
-      console.log(err);
-    }
-    finally {
-      setIsLoading(false);
-    }
+  const deleteItem = (id) => {
+    return
+  } 
+
+  const toNewItem= () => {
+    setCurrentItem('');
+    navigate(routes.CREATEITEM)
   }
-
-  const toNewCollection = () => {
-    setCurrentCollection('');
-    navigate(routes.CREATECOLLECTION)
-  }
-
-  const editCollection = (id) => {
-    setCurrentCollection(id);
-    navigate(routes.CREATECOLLECTION);
-  }
-
-  const deleteCollection = (id) => {
-    removeCollection(id);
-    getAllCollection();
-  }
-
-  const collectionPage = (collection) => {
-    setCollection(collection)
-    navigate(routes.ITEMS);
-  }
-
   return (
-    <Grid container justifyContent="center" direction="column" alignItems="center">
-      <Box my={2} width='80%'>
-        <Button onClick={toNewCollection} variant="outlined" sx={{
-          ':hover': {
-            backgroundColor: '#272727',
+    <ThemeProvider theme={theme}>
+      <Grid container justifyContent="center" direction="column" alignItems="center">
+        <Grid paddingLeft={4} marginTop={1} container direction="column">
+          <Typography variant="name">{collection.name}</Typography>
+          <Typography variant="topic">{collection.topic[0].toUpperCase()}{collection.topic.slice(1)}</Typography>
+          <Typography variant="comment">{parse(collection.comment)}</Typography>
+        </Grid>
+        <Box my={2} width='80%'>
+          <Button onClick={toNewItem} variant="outlined" sx={{
+            ':hover': {
+              backgroundColor: '#272727',
+              border: '1px solid #272727',
+              color: 'white',
+            },
             border: '1px solid #272727',
-            color: 'white',
-          },
-          border: '1px solid #272727',
-          color: '#272727',
-          backgroundColor: 'white',
-          width: '100%',
-        }}>
-          Add New Collection
-        </Button>
-      </Box>
-      {isLoading ? (
+            color: '#272727',
+            backgroundColor: 'white',
+            width: '100%',
+          }}>
+            Add New Item
+          </Button>
+        </Box>
+        {isLoading ? (
         <Box >
           <CircularProgress color="inherit" />
         </Box>
@@ -105,19 +103,19 @@ function UserPage() {
         <TableContainer sx={{ minWidth: 500, maxWidth: '95%' }} component={Paper}>
           <Table aria-label="customized table">
             <TableBody>
-              {collections.map((collection) => {
+              {items.map((item) => {
                 return (
-                  <StyledTableRow kay={collection.id} onClick={() => {collectionPage(collection)}}>
+                  <StyledTableRow kay={item.id}>
                     <StyledTableCell sx={{ width: 20 }} component="th" scope="row">
                       <AutoAwesomeMotionIcon />
                     </StyledTableCell>
                     <StyledTableCell align="left" >
-                      {collection.name}
+                      {item.name}
                     </StyledTableCell>
                     <StyledTableCell align="right">
                       <ButtonGroup variant="outlined" aria-label="outlined button group">
                         <Button
-                          onClick={() => { editCollection(collection.id) }}
+                          onClick={() => { editItem(item.id) }}
                           sx={{
                             ':hover': {
                               backgroundColor: '#272727',
@@ -129,7 +127,7 @@ function UserPage() {
                             backgroundColor: 'white',
                           }}>edit</Button>
                         <Button
-                          onClick={() => { deleteCollection(collection.id) }}
+                          onClick={() => { deleteItem(item.id) }}
                           sx={{
                             ':hover': {
                               backgroundColor: '#272727',
@@ -149,8 +147,9 @@ function UserPage() {
           </Table>
         </TableContainer>
       )}
-    </Grid>
-  );
+      </Grid>
+    </ThemeProvider>
+  )
 }
 
-export default UserPage;
+export default Items
