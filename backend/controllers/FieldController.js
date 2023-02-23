@@ -2,7 +2,7 @@ import { getAll, create, update, remove } from '../service/FieldService.js';
 
 export const getAllItemFields = async (req, res, next) => {
   try {
-    const fields = await getAll(req.body.author);
+    const fields = await getAll(req.body.item);
     return res.json(fields);
   }
   catch (err) {
@@ -12,8 +12,7 @@ export const getAllItemFields = async (req, res, next) => {
 
 export const addField = async (req, res, next) => {
   try {
-    //const { } = req.body;
-    const field = await create();
+    const field = await create(req.body);
     return res.json(field);
   }
   catch (err) {

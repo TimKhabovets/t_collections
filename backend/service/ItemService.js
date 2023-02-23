@@ -18,8 +18,8 @@ export const getAll = async (collection) => {
   return itemData;
 }
 
-export const create = async () => {
-  const itemData = await Item.create();
+export const create = async (item) => {
+  const itemData = await Item.create(item);
   return itemData;
 }
 

@@ -12,7 +12,7 @@ export const getItem = async (req, res, next) => {
 
 export const getAllCollectionItems = async (req, res, next) => {
   try {
-    const items = await getAll(req.body.author);
+    const items = await getAll(req.body.collection);
     return res.json(items);
   }
   catch (err) {
@@ -22,8 +22,7 @@ export const getAllCollectionItems = async (req, res, next) => {
 
 export const addItem = async (req, res, next) => {
   try {
-    //const { } = req.body;
-    const item = await create();
+    const item = await create(req.body);
     return res.json(item);
   }
   catch (err) {

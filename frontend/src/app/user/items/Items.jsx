@@ -12,6 +12,12 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import { styled } from '@mui/material/styles';
 
+import { useEffectOnce } from '../../../shared/functions/useEffectOnce';
+import { getAllItems, removeItem } from '../../../shared/apis/itemAPI';
+import { removeTag } from '../../../shared/apis/tagAPI';
+import { removeField } from '../../../shared/apis/fieldAPI';
+import { getPhoto } from '../../../shared/apis/photoAPI';
+
 const theme = createTheme({
   palette: {
     dark: {
@@ -59,16 +65,50 @@ function Items() {
   const { currentItem, setCurrentItem } = useContext(GlobalContext);
   const [isLoading, setIsLoading] = useState(false);
   const [items, setItems] = useState([]);
+  const [imgUrl, setImgUrl] = useState();
+
+  useEffectOnce(() => {
+    if (collection) {
+      getAllCollectionItems();
+      if (collection.photo) {
+        getCollectionPhoto();
+      }
+    }
+  }, true);
+
+  const getAllCollectionItems = async () => {
+    setIsLoading(true);
+    try {
+      let response = await getAllItems(collection.id);
+      setItems(response);
+    }
+    catch (err) {
+      console.log(err);
+    }
+    finally {
+      setIsLoading(false);
+    }
+  }
+
+  const getCollectionPhoto = async () => {
+    const photo = await getPhoto(collection.photo);
+    console.log(photo);
+    setImgUrl(photo.url);
+  }
 
   const editItem = (id) => {
-    return
-  } 
+    setCurrentItem(id);
+    navigate(routes.CREATEITEM)
+  }
 
-  const deleteItem = (id) => {
-    return
-  } 
+  const deleteItem = async (id) => {
+    await removeTag(id);
+    await removeField(id);
+    await removeItem(id);
+    getAllCollectionItems();
+  }
 
-  const toNewItem= () => {
+  const toNewItem = () => {
     setCurrentItem('');
     navigate(routes.CREATEITEM)
   }
@@ -77,6 +117,13 @@ function Items() {
       <Grid container justifyContent="center" direction="column" alignItems="center">
         <Grid paddingLeft={4} marginTop={1} container direction="column">
           <Typography variant="name">{collection.name}</Typography>
+          <Box my={1} >
+            {collection.photo ? (
+              <img className='collectionImg' src={imgUrl} alt="collection photo" />
+            ) : (
+              <></>
+            )}
+          </Box>
           <Typography variant="topic">{collection.topic[0].toUpperCase()}{collection.topic.slice(1)}</Typography>
           <Typography variant="comment">{parse(collection.comment)}</Typography>
         </Grid>
@@ -96,57 +143,57 @@ function Items() {
           </Button>
         </Box>
         {isLoading ? (
-        <Box >
-          <CircularProgress color="inherit" />
-        </Box>
-      ) : (
-        <TableContainer sx={{ minWidth: 500, maxWidth: '95%' }} component={Paper}>
-          <Table aria-label="customized table">
-            <TableBody>
-              {items.map((item) => {
-                return (
-                  <StyledTableRow kay={item.id}>
-                    <StyledTableCell sx={{ width: 20 }} component="th" scope="row">
-                      <AutoAwesomeMotionIcon />
-                    </StyledTableCell>
-                    <StyledTableCell align="left" >
-                      {item.name}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      <ButtonGroup variant="outlined" aria-label="outlined button group">
-                        <Button
-                          onClick={() => { editItem(item.id) }}
-                          sx={{
-                            ':hover': {
-                              backgroundColor: '#272727',
+          <Box >
+            <CircularProgress color="inherit" />
+          </Box>
+        ) : (
+          <TableContainer sx={{ minWidth: 500, maxWidth: '95%' }} component={Paper}>
+            <Table aria-label="customized table">
+              <TableBody>
+                {items.map((item) => {
+                  return (
+                    <StyledTableRow kay={item.id}>
+                      <StyledTableCell sx={{ width: 20 }} component="th" scope="row">
+                        <AutoAwesomeMotionIcon />
+                      </StyledTableCell>
+                      <StyledTableCell align="left" >
+                        {item.name}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        <ButtonGroup variant="outlined" aria-label="outlined button group">
+                          <Button
+                            onClick={() => { editItem(item.id) }}
+                            sx={{
+                              ':hover': {
+                                backgroundColor: '#272727',
+                                border: '1px solid #272727',
+                                color: 'white',
+                              },
                               border: '1px solid #272727',
-                              color: 'white',
-                            },
-                            border: '1px solid #272727',
-                            color: '#272727',
-                            backgroundColor: 'white',
-                          }}>edit</Button>
-                        <Button
-                          onClick={() => { deleteItem(item.id) }}
-                          sx={{
-                            ':hover': {
-                              backgroundColor: '#272727',
+                              color: '#272727',
+                              backgroundColor: 'white',
+                            }}>edit</Button>
+                          <Button
+                            onClick={() => { deleteItem(item.id) }}
+                            sx={{
+                              ':hover': {
+                                backgroundColor: '#272727',
+                                border: '1px solid #272727',
+                                color: 'white',
+                              },
                               border: '1px solid #272727',
-                              color: 'white',
-                            },
-                            border: '1px solid #272727',
-                            color: '#272727',
-                            backgroundColor: 'white',
-                          }}>delete</Button>
-                      </ButtonGroup>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                )
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
+                              color: '#272727',
+                              backgroundColor: 'white',
+                            }}>delete</Button>
+                        </ButtonGroup>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
       </Grid>
     </ThemeProvider>
   )

@@ -1,4 +1,3 @@
-import axios from "axios";
 import $api from "../https";
 import urls from '../constants/urls'
 

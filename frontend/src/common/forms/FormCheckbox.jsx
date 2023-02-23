@@ -10,7 +10,7 @@ export default function FormCheckbox({register, placeholder, name }) {
       <input
         className="optionCheckbox"
         type="checkbox"
-        {...register(name, { required: true})}
+        {...register(name)}
       />
       <label for={name}>{placeholder}</label>
     </Box>

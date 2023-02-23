@@ -6,6 +6,7 @@ const urls = {
   
   ADD: '/add',
   REMOVE: '/remove/',
+  REMOVEONE: '/removeone',
   UPDATE: '/update/',
   GET: '/get/',
   ALL: '/getall',

@@ -51,7 +51,7 @@ function NewCollections() {
   const md = new MarkdownIt();
   const { client } = useContext(GlobalContext);
   const { currentCollection, setCurrentCollection } = useContext(GlobalContext);
-  const { register, setValue, reset, handleSubmit, control, formState: { errors } } = useForm();
+  const { register, reset, handleSubmit, control, formState: { errors } } = useForm();
   const { fields, replace, append, remove } = useFieldArray({
     control,
     name: "optionFields"
