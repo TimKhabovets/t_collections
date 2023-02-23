@@ -14,8 +14,8 @@ export const create = async (url) => {
   return photoData;
 }
 
-export const update = async (photo, id) => {
-  const photoData = await Photo.update(photo, {
+export const update = async (url, id) => {
+  const photoData = await Photo.update({url}, {
     where: {
       id: id
     }

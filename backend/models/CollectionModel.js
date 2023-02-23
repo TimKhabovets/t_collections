@@ -8,7 +8,7 @@ const Collection = db.define('collections', {
   topic: DataTypes.STRING,
   comment: DataTypes.STRING,
   option_fields: DataTypes.JSON,
-  photo: DataTypes.TINYINT,
+  photo: DataTypes.INTEGER,
   author: DataTypes.INTEGER
 }, {
   freezeTableName: true

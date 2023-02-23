@@ -1,6 +1,5 @@
 import React from "react";
 import { Box } from "@mui/material";
-import { ErrorMessage } from '@hookform/error-message';
 
 export default function FormCheckbox({register, placeholder, name }) {
   return (

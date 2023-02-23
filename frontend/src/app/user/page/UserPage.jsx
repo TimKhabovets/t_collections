@@ -107,12 +107,10 @@ function UserPage() {
             <TableBody>
               {collections.map((collection) => {
                 return (
-                  <StyledTableRow kay={collection.id} onClick={() => {collectionPage(collection)}}>
-                    <StyledTableCell sx={{ width: 20 }} component="th" scope="row">
+                  <StyledTableRow kay={collection.id} >
+                    <StyledTableCell sx={{ width: '70%', cursor: 'pointer' }} component="th" scope="row" onClick={() => { collectionPage(collection) }}>
                       <AutoAwesomeMotionIcon />
-                    </StyledTableCell>
-                    <StyledTableCell align="left" >
-                      {collection.name}
+                        {collection.name}
                     </StyledTableCell>
                     <StyledTableCell align="right">
                       <ButtonGroup variant="outlined" aria-label="outlined button group">

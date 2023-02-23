@@ -1,0 +1,27 @@
+<Paper sx={{ width: '100%', height: 230, overflow: 'auto' }}>
+                  <List role="list" sx={{ width: '100%', bgcolor: 'background.paper' }}>
+                    {fields.map((field) => {
+                      const labelId = `checkbox-list-label-${field.value}`;
+
+                      return (
+                        <ListItem
+                          key={field.value}
+                          disablePadding
+                        >
+                          <ListItemButton role={undefined} onClick={handleToggle(field.value)} dense>
+                            <ListItemIcon>
+                              <Checkbox
+                                edge="start"
+                                checked={checked.indexOf(field.value) !== -1}
+                                tabIndex={-1}
+                                disableRipple
+                                inputProps={{ 'aria-labelledby': labelId }}
+                              />
+                            </ListItemIcon>
+                            <ListItemText id={labelId} primary={`Add ${field.labelEn}`} />
+                          </ListItemButton>
+                        </ListItem>
+                      );
+                    })}
+                  </List>
+                </Paper>

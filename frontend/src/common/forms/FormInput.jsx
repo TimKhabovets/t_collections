@@ -2,22 +2,23 @@ import React from "react";
 import { Box, TextField } from "@mui/material";
 import { ErrorMessage } from '@hookform/error-message';
 
-export default function FormDate({errors, register, placeholder, name}) {
+export default function FormInput({errors, register, placeholder, name, type}) {
   return (
     <Box width="100%" my={1}>
       <TextField
-        variant="filled"
         name={name}
+        color="dark"
+        variant="filled"
         label={placeholder}
-        type="date"
+        type={type}
         {...register(name, {required: true})}
-        sx={{ width: 220 }}
+        sx={{ width: '100%' }}
       />
       <ErrorMessage
         errors={errors}
         name={name}
-        message="chose the date"
-        render={({ message }) => <p className='error'>{message}</p>}
+        message="enter the "
+        render={({ message }) => <p className='error'>{message} {type}</p>}
       />
     </Box>
   );

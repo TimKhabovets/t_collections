@@ -4,6 +4,7 @@ import UserRoute from './routes/UserRoute.js';
 import CollectionRoute from './routes/CollectionRoute.js';
 import ItemRoute from './routes/ItemRoute.js';
 import PhotoRoute from './routes/PhotoRoute.js';
+import FieldRoute from './routes/FieldRoute.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import errorMiddleware from './middlewares/ErrorMiddleware.js';
@@ -22,6 +23,7 @@ app.use("/api", UserRoute);
 app.use("/api/collection", CollectionRoute);
 app.use("/api/item", ItemRoute);
 app.use("/api/photo", PhotoRoute);
+app.use("/api/field", FieldRoute);
 app.use(errorMiddleware);
 
 app.listen(PORT, () => console.log('server running on port ' + PORT));

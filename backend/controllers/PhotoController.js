@@ -23,8 +23,8 @@ export const addPhoto = async (req, res, next) => {
 
 export const updatePhoto = async (req, res, next) => {
   try {
-    const photo = req.body;
-    const photoDate = await update(item, req.params.id);
+    const {url} = req.body;
+    const photoDate = await update(url, req.params.id);
     return res.json(photoDate);
   }
   catch (err) {

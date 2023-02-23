@@ -2,11 +2,11 @@ import axios from "axios";
 import $api from "../https";
 import urls from '../constants/urls'
 
-const curl = '/photo';
+const curl = '/field';
 
-export const addPhoto = async (url) => {
+export const addField = async (data) => {
   try {
-    const response = await $api.post(curl+urls.ADD, {url});
+    const response = await $api.post(curl+urls.ADD, data);
     return response.data;
   }
   catch (err) {
@@ -14,7 +14,7 @@ export const addPhoto = async (url) => {
   }
 }
 
-export const removePhoto = async (id) => {
+export const removeField = async (id) => {
   try {
     const response = await $api.delete(curl+urls.REMOVE+id);
     return response.data;
@@ -24,9 +24,10 @@ export const removePhoto = async (id) => {
   }
 }
 
-export const updatePhoto = async (url, id) => {
+export const updateField = async (data) => {
   try {
-    const response = await $api.patch(curl+urls.UPDATE+id, {url});
+    const id = data.id;
+    const response = await $api.patch(curl+urls.UPDATE+id, data);
     return response.data;
   }
   catch (err) {
@@ -34,9 +35,9 @@ export const updatePhoto = async (url, id) => {
   }
 }
 
-export const getPhoto = async (id) => {
+export const getAllFields = async (item) => {
   try {
-    const response = await $api.get(curl+urls.GET+id);
+    const response = await $api.post(curl+urls.ALL, {item});
     return response.data;
   }
   catch (err) {

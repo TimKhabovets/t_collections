@@ -1,18 +1,15 @@
 import React, { useState, useContext } from 'react';
-import { useForm, useFieldArray, Controller } from "react-hook-form";
-import { Box, TextField, Button, Grid, Typography, Paper, Checkbox, ListItemIcon, ListItemText, ListItemButton, ListItem, List } from '@mui/material';
+import { useForm, useFieldArray} from "react-hook-form";
+import { Box, TextField, Button, Grid, Typography } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { ErrorMessage } from '@hookform/error-message';
 import { useNavigate } from "react-router";
-import FormDate from "../../../common/forms/FormDate";
-import FormString from "../../../common/forms/FormString";
+import FormInput from "../../../common/forms/FormInput";
 import FormCheckbox from "../../../common/forms/FormCheckbox";
-import FormNumber from "../../../common/forms/FormNumber";
 import FormText from "../../../common/forms/FormText";
 import routes from "../../../shared/constants/routes";
 import MarkdownIt from 'markdown-it';
-import fields from '../../../shared/constants/optionsFields';
-import { addCollection, getCollection, updateCollection } from '../../../shared/apis/collectionAPI';
+import { addField, updateField, removeField } from '../../../shared/apis/fieldAPI'
 import GlobalContext from "../../../shared/contexts/GlobalContext";
 import { useEffectOnce } from '../../../shared/functions/useEffectOnce';
 
@@ -32,7 +29,6 @@ const theme = createTheme({
 
 function NewItem() {
   const navigate = useNavigate();
-  const [checked, setChecked] = useState([]);
   const md = new MarkdownIt();
   const { currentItem, setCurrentItem } = useContext(GlobalContext);
   const { collection } = useContext(GlobalContext);
@@ -45,8 +41,10 @@ function NewItem() {
     control,
     name: "tags"
   });
+  const [optionFields, setOptionFields] = useState([])
 
   useEffectOnce(() => {
+    setOptionFields(JSON.parse(collection.option_fields));
     if (currentItem) {
       getCurrentItem();
     }
@@ -59,20 +57,19 @@ function NewItem() {
     // }
   }
 
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-    setChecked(newChecked);
-  };
-
   const createNewItem = async (values) => {
-
+    console.log(collection);
+    console.log(optionFields);
+    // if (currentItem) {
+    //   values.optionFields.forEach(async (field) => {
+    //     await updateField(field);
+    //   })
+    // }
+    // else {
+    //   values.optionFields.forEach(async (field) => {
+    //     await addField(field);
+    //   })
+    // }
   }
 
   return (
@@ -114,33 +111,43 @@ function NewItem() {
                   })}
                 />
               </Box>
+
               <Box marginTop={1}>
                 <Typography >Tags:</Typography>
               </Box>
               {fields.map((item, index) => (
-                <Box width="100%" marginBottom={2} key={item.id}
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <TextField
-                    sx={{ width: '82%' }}
-                    variant="filled"
-                    color="dark"
-                    error={errors.tags}
-                    {...register(`tags.${index}.tag`, {
-                      required: true,
-                      minLength: 2,
-                      maxLength: 100,
-                    })} />
-                  <Button sx={{
-                    ':hover': {
-                      backgroundColor: '#414141',
-                    },
-                    backgroundColor: '#272727',
-                    border: '1px solid #272727',
-                    color: 'white',
-                    width: '17%',
-                  }} type="button" onClick={() => (fields.length < 2) ? (null) : remove(index)}>Delete</Button>
+                <Box width="100%" marginBottom={2} key={item.id}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <TextField
+                      sx={{ width: '82%' }}
+                      variant="filled"
+                      color="dark"
+                      {...register(`tags.${index}.tag`, {
+                        required: true,
+                        minLength: 2,
+                        maxLength: 100,
+                      })} />
+                    <Button sx={{
+                      ':hover': {
+                        backgroundColor: '#414141',
+                      },
+                      backgroundColor: '#272727',
+                      border: '1px solid #272727',
+                      color: 'white',
+                      width: '17%',
+                    }} type="button" onClick={() => (fields.length < 2) ? (null) : remove(index)}
+                    >Delete
+                    </Button>
+                  </Box>
+                  <ErrorMessage
+                    errors={errors}
+                    name={`tags.${index}.tag`}
+                    message="add tag"
+                    render={({ message }) => <p className='error'>{message}</p>}
+                  />
                 </Box>
               ))}
+
               <Box width="20%" >
                 <Button
                   sx={{
@@ -157,12 +164,41 @@ function NewItem() {
                   append
                 </Button>
               </Box>
-              <FormDate errors={errors} register={register} name='d'/>
-              <FormString errors={errors} register={register} name='s'/>
-              <FormCheckbox register={register} name='c'/>
-              <FormNumber errors={errors} register={register} name='n'/>
-              <FormText errors={errors} register={register} name='t'/>
-              <Box width="30%" my={2}>
+
+              {optionFields.map((option) => {
+                if (option.type.value === 'd' || option.type.value === 's' || option.type.value === 'n') {
+                  return (
+                    <FormInput
+                      register={register}
+                      type={option.type.label}
+                      errors={errors}
+                      placeholder={option.name}
+                      name={option.name}
+                    />
+                  )
+                }
+                else if (option.type.value === 'c') {
+                  return (
+                    <FormCheckbox
+                      register={register}
+                      placeholder={option.name}
+                      name={option.name}
+                    />
+                  )
+                }
+                else if (option.type.value === 't') {
+                  return (
+                    <FormText
+                      errors={errors}
+                      register={register}
+                      placeholder={option.name}
+                      name={option.name}
+                    />
+                  )
+                }
+              })}
+
+              <Box width="30%" marginTop={2} marginBottom={7}>
                 <Button type="submit" variant="contained" sx={{
                   ':hover': {
                     backgroundColor: '#414141',
