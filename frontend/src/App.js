@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { BrowserRouter } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import GlobalContext from "./shared/contexts/GlobalContext";
@@ -12,22 +12,13 @@ import plMessages from "./shared/localizations/pl.json";
 import localStorageKeys from "./shared/constants/localStorageKeys";
 import locales from "./shared/constants/locales";
 import { checkAuth } from "./shared/apis/userAPI";
+import {useEffectOnce} from './shared/functions/useEffectOnce'
 
 const messages = {
   [locales.EN]: enMessages,
   [locales.RU]: ruMessages,
   [locales.ES]: esMessages,
   [locales.PL]: plMessages,
-};
-
-const useEffectOnce = (callback, when) => {
-  const hasRunOnce = React.useRef(false);
-  React.useEffect(() => {
-    if (when && !hasRunOnce.current) {
-      callback();
-      hasRunOnce.current = true;
-    }
-  }, [when]);
 };
 
 function App() {
@@ -40,9 +31,10 @@ function App() {
   const [client, setClient] = useState({
     role: 'guest'
   });
-
+  const [ currentCollection, setCurrentCollection ] = useState('');
+  const [ currentItem, setCurrentItem ] = useState('');
+  const [ collection, setCollection] = useState({});
   const [isLoading, setIsLoading] = useState(false)
-
   const [currentLocale, setCurrentLocale] = useState(
     localStorage.getItem(localStorageKeys.LOCALE) || locales.EN);
 
@@ -55,7 +47,6 @@ function App() {
     setIsLoading(true);
     try {
       const response = await checkAuth();
-      console.log(response.data);
       client.name = response.data.user.name;
       client.email = response.data.user.email;
       client.role = response.data.user.role;
@@ -71,6 +62,12 @@ function App() {
 
   return (
     <GlobalContext.Provider value={{
+      currentItem,
+      setCurrentItem,
+      collection,
+      setCollection,
+      currentCollection,
+      setCurrentCollection,
       isLoading,
       client,
       currentLocale,

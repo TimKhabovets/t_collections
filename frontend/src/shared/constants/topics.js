@@ -9,7 +9,7 @@ const topics = [{
   label: "Books"
 }, {
   value: "ducks",
-  label: "Rubber ducks"
+  label: "Ducks"
 }, {
   value: "pebbles",
   label: "Pebbles"

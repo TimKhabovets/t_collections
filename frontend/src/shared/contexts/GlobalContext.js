@@ -8,6 +8,9 @@ const GlobalContext = createContext({
         email: '',
         role: '',
     },
+    collection: {},
+    currentCollection: '',
+    currentItem: '',
     currentLocale: locales.EN,
     isLoading: Boolean,
 });

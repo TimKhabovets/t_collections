@@ -3,7 +3,9 @@ const routes = {
     LOGIN: "/login",
     SIGNUP: "/signup",
     USERPAGE: "/userpage",
-    NEWCOL: "/userpage/newcollection",
+    CREATECOLLECTION: "/userpage/creation",
+    ITEMS: "/userpage/items",
+    CREATEITEM: "/userpage/items/creation",
 };
 
 export default routes;

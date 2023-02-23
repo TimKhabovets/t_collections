@@ -5,6 +5,7 @@ const {DataTypes} = Sequelize;
 
 const Tag = db.define('tags', {
   name: DataTypes.STRING,
+  item: DataTypes.INTEGER
 }, {
   freezeTableName: true
 });

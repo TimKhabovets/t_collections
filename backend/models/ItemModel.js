@@ -4,6 +4,7 @@ import db from '../config/Database.js';
 const {DataTypes} = Sequelize;
 
 const Item = db.define('items', {
+  item_id: DataTypes.INTEGER,
   name: DataTypes.STRING,
   collection: DataTypes.INTEGER,
     

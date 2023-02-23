@@ -5,6 +5,15 @@ const db = new Sequelize('tcollections', 'timy02', 'i6P22vvMs9A*.Xd', {
   host: 'db4free.net',
   dialect: 'mysql',
   dialectModule: mysql2,
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+  },
+  dialectOptions: {
+    connectTimeout: 60000
+  },
   define: {
     timestamps: false
   }
