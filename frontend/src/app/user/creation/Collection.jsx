@@ -130,7 +130,6 @@ function NewCollections() {
   }
 
   const createNewCollection = async (values) => {
-    console.log(values);
     const photo = await addOrUpdatePhoto(values.photo);
     let data = {
       ...values,
