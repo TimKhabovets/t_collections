@@ -102,9 +102,9 @@ function Items() {
   }
 
   const deleteItem = async (id) => {
-    await removeTag(id);
-    await removeField(id);
-    await removeItem(id);
+    const tagData = await removeTag(id);
+    const fieldData = await removeField(id);
+    const itemData = await removeItem(id);
     getAllCollectionItems();
   }
 
