@@ -12,7 +12,10 @@ const db = new Sequelize('tcollections', 'timy02', 'i6P22vvMs9A*.Xd', {
     idle: 10000
   },
   dialectOptions: {
-    connectTimeout: 60000
+    connectTimeout: 60000,
+    options: {
+      requestTimeout: 3000
+    }
   },
   define: {
     timestamps: false
