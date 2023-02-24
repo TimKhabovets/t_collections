@@ -70,9 +70,9 @@ function UserPage() {
     navigate(routes.CREATECOLLECTION);
   }
 
-  const deleteCollection = (id) => {
-    removeCollection(id);
-    getAllCollection();
+  const deleteCollection = async (id) => {
+    const collectionData = await removeCollection(id);
+    const collectionsData = await getAllCollection();
   }
 
   const collectionPage = (collection) => {
