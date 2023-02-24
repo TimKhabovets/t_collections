@@ -14,7 +14,7 @@ const db = new Sequelize('tcollections', 'timy02', 'i6P22vvMs9A*.Xd', {
   dialectOptions: {
     connectTimeout: 60000,
     options: {
-      requestTimeout: 3000
+      requestTimeout: 8000
     }
   },
   define: {
