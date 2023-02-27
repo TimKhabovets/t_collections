@@ -1,4 +1,4 @@
-import { getOne, getAll, create, update, remove } from '../service/ItemService.js';
+import { getOne, getAll, create, update, remove, removeAll } from '../service/ItemService.js';
 
 export const getItem = async (req, res, next) => {
   try {
@@ -35,6 +35,16 @@ export const updateItem = async (req, res, next) => {
     const item = req.body;
     const itemDate = await update(item, req.params.id);
     return res.json(itemDate);
+  }
+  catch (err) {
+    next(err);
+  }
+}
+
+export const removeAllItem = async (req, res, next) => {
+  try {
+    const items = await removeAll(req.body.collection);
+    return res.json(items);
   }
   catch (err) {
     next(err);

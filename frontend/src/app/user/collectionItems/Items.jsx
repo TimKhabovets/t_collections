@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import parse from 'html-react-parser';
+import styles from './style.module.scss';
 import { useNavigate } from "react-router";
 import GlobalContext from "../../../shared/contexts/GlobalContext";
 import routes from '../../../shared/constants/routes';
@@ -14,9 +15,10 @@ import { styled } from '@mui/material/styles';
 
 import { useEffectOnce } from '../../../shared/functions/useEffectOnce';
 import { getAllItems, removeItem } from '../../../shared/apis/itemAPI';
-import { removeTag } from '../../../shared/apis/tagAPI';
-import { removeField } from '../../../shared/apis/fieldAPI';
+import { removeTag, getAllTags } from '../../../shared/apis/tagAPI';
+import { removeField, getAllFields } from '../../../shared/apis/fieldAPI';
 import { getPhoto } from '../../../shared/apis/photoAPI';
+import Item from '../item/Item';
 
 const theme = createTheme({
   palette: {
@@ -66,6 +68,10 @@ function Items() {
   const [isLoading, setIsLoading] = useState(false);
   const [items, setItems] = useState([]);
   const [imgUrl, setImgUrl] = useState();
+  const [open, setOpen] = React.useState(false);
+  const [item, setItem] = useState({});
+  const [itemOptionFields, setItemOptionFields] = useState([]);
+  const [itemTags, setItemTags] = useState([]);
 
   useEffectOnce(() => {
     if (collection) {
@@ -101,10 +107,8 @@ function Items() {
     navigate(routes.CREATEITEM)
   }
 
-  const deleteItem = async (id) => {
-    const tagData = await removeTag(id);
-    const fieldData = await removeField(id);
-    const itemData = await removeItem(id);
+  const deleteItem = (id) => {
+    removeItem(id);
     getAllCollectionItems();
   }
 
@@ -112,10 +116,24 @@ function Items() {
     setCurrentItem('');
     navigate(routes.CREATEITEM)
   }
+
+  const openItem = async (item) => {
+    setItem(item);
+    setItemOptionFields(await getAllFields(item.id));
+    setItemTags(await getAllTags(item.id));
+    setOpen(true);
+  }
   return (
     <ThemeProvider theme={theme}>
       <Grid container justifyContent="center" direction="column" alignItems="center">
         <Grid paddingLeft={4} marginTop={1} container direction="column">
+          <Item
+            open={open}
+            setOpen={setOpen}
+            item={item}
+            optionFields={itemOptionFields}
+            tags={itemTags}
+          />
           <Typography variant="name">{collection.name}</Typography>
           <Box my={1} >
             {collection.photo ? (
@@ -128,63 +146,36 @@ function Items() {
           <Typography variant="comment">{parse(collection.comment)}</Typography>
         </Grid>
         <Box my={2} width='80%'>
-          <Button onClick={toNewItem} variant="outlined" sx={{
-            ':hover': {
-              backgroundColor: '#272727',
-              border: '1px solid #272727',
-              color: 'white',
-            },
-            border: '1px solid #272727',
-            color: '#272727',
-            backgroundColor: 'white',
-            width: '100%',
-          }}>
+          <Button onClick={toNewItem} variant="outlined" id={styles.button}>
             Add New Item
           </Button>
         </Box>
+
         {isLoading ? (
           <Box >
             <CircularProgress color="inherit" />
           </Box>
         ) : (
-          <TableContainer sx={{ minWidth: 500, maxWidth: '95%' }} component={Paper}>
+          <TableContainer className={styles.table} component={Paper}>
             <Table aria-label="customized table">
               <TableBody>
                 {items.map((item) => {
                   return (
                     <StyledTableRow kay={item.id}>
-                      <StyledTableCell sx={{ width: 20 }} component="th" scope="row">
+                      <StyledTableCell className={styles.tableRow} component="th" scope="row" onClick={() => { openItem(item) }}>
                         <AutoAwesomeMotionIcon />
-                      </StyledTableCell>
-                      <StyledTableCell align="left" >
                         {item.name}
                       </StyledTableCell>
                       <StyledTableCell align="right">
                         <ButtonGroup variant="outlined" aria-label="outlined button group">
                           <Button
                             onClick={() => { editItem(item.id) }}
-                            sx={{
-                              ':hover': {
-                                backgroundColor: '#272727',
-                                border: '1px solid #272727',
-                                color: 'white',
-                              },
-                              border: '1px solid #272727',
-                              color: '#272727',
-                              backgroundColor: 'white',
-                            }}>edit</Button>
+                            id={styles.tableButton}
+                          >edit</Button>
                           <Button
                             onClick={() => { deleteItem(item.id) }}
-                            sx={{
-                              ':hover': {
-                                backgroundColor: '#272727',
-                                border: '1px solid #272727',
-                                color: 'white',
-                              },
-                              border: '1px solid #272727',
-                              color: '#272727',
-                              backgroundColor: 'white',
-                            }}>delete</Button>
+                            id={styles.tableButton}
+                          >delete</Button>
                         </ButtonGroup>
                       </StyledTableCell>
                     </StyledTableRow>

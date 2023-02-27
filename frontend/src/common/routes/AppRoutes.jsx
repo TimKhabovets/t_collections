@@ -3,10 +3,10 @@ import routes from "../../shared/constants/routes";
 import Home from "../../app/home/Home";
 import LogIn from "../../app/auth/login/LogIn"
 import SignUp from "../../app/auth/signup/SignUp";
-import UserPage from "../../app/user/page/UserPage";
+import UserPage from "../../app/user/userCollections/Collections";
 import NewCol from "../../app/user/creation/Collection";
 import NewItem from "../../app/user/creation/Item";
-import Items from "../../app/user/items/Items";
+import Items from "../../app/user/collectionItems/Items";
 import PrivateUserRoute from "../../shared/functions/privateUserRoute";
 import PrivateAdminRoute from "../../shared/functions/privateAdminRoute";
 

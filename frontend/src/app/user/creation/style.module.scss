@@ -1,0 +1,60 @@
+.field {
+  width: 100%;
+}
+
+.boxOptionField {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.optionField {
+  width: 82%;
+}
+
+.createOptionField {
+  width: 40%;
+}
+
+#deleteButton {
+  background-color: #272727;
+  border: 1px solid #272727;
+  color: white;
+  width: 17%;
+
+  &:hover {
+    background-color: #414141;
+  }
+}
+
+#imgButton {
+  background-color: #272727;
+  border: 1px solid #272727;
+  color: white;
+  margin-right: 4px;
+
+  &:hover {
+    background-color: white;
+    color: black;
+  }
+}
+
+#appendButton {
+  border: 1px solid #272727;
+  color: black;
+  background-color: white;
+
+  &:hover {
+    border: 1px solid #272727;
+  }
+}
+
+#submitButton {
+  color: white;
+  background-color: #272727;
+  width: 100%;
+
+  &:hover {
+    background-color: #414141;
+  }
+}

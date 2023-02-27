@@ -32,6 +32,15 @@ export const update = async (item, id) => {
   return itemData;
 }
 
+export const removeAll = async (id) => {
+  const itemData = await Item.destroy({
+    where: {
+      collection: id
+    }
+  });
+  return itemData;
+}
+
 export const remove = async (id) => {
   const itemData = await Item.destroy({
     where: {

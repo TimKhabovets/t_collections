@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllCollectionItems, getItem, removeItem, addItem, updateItem} from '../controllers/ItemController.js'
+import { getAllCollectionItems, getItem, removeItem, removeAllItem, addItem, updateItem} from '../controllers/ItemController.js'
 
 const route = express.Router();
 
@@ -8,5 +8,6 @@ route.post('/getall', getAllCollectionItems);
 route.post('/add', addItem);
 route.patch('/update/:id', updateItem);
 route.delete('/remove/:id', removeItem);
+route.post('/removeall', removeAllItem);
 
 export default route;

@@ -8,7 +8,8 @@ import { useNavigate } from "react-router";
 import routes from '../../shared/constants/routes';
 import GlobalContext from "../../shared/contexts/GlobalContext";
 import { logOut } from '../../shared/apis/userAPI';
-import Sidebar from '../sidebar/Sidebar'
+import Sidebar from '../sidebar/Sidebar';
+import styles from './style.module.scss';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -102,7 +103,7 @@ export default function Navbar() {
               <Typography
                 onClick={toHome}
                 variant="h6"
-                sx={{ width: "101px", cursor: 'pointer' }}
+                className={styles.title}
               >t_collection</Typography>
             </Box>
             {isLoading ? (
@@ -131,7 +132,7 @@ export default function Navbar() {
                   mx={2}
                   onClick={toUserPage}
                   sx={{ cursor: "pointer", display: 'flex' }}>
-                  <AccountBoxIcon sx={{ top: '2px', position: 'relative' }} />
+                  <AccountBoxIcon className={styles.accountIcon} />
                   <Typography variant="h6" mx={1}>
                     {client.name}
                   </Typography>

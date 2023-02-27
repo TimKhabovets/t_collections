@@ -34,7 +34,7 @@ export default function TemporaryDrawer() {
   const list = () => (
     <ThemeProvider theme={theme}>
       <Box
-        sx={{ width: 250,}}
+        width="250px"
         role="presentation"
         onClick={toggleDrawer(false)}
         onKeyDown={toggleDrawer(false)}
