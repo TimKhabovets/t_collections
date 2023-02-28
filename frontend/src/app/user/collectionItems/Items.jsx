@@ -11,6 +11,7 @@ import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
 import CircularProgress from '@mui/material/CircularProgress';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
+import { DataGrid } from '@mui/x-data-grid';
 import { styled } from '@mui/material/styles';
 
 import { useEffectOnce } from '../../../shared/functions/useEffectOnce';
@@ -102,13 +103,15 @@ function Items() {
     setImgUrl(photo.url);
   }
 
-  const editItem = (id) => {
+  const editItem = (event, id) => {
+    event.stopPropagation();
     setCurrentItem(id);
     navigate(routes.CREATEITEM)
   }
 
-  const deleteItem = (id) => {
-    removeItem(id);
+  const deleteItem = async (event, id) => {
+    event.stopPropagation();
+    const itemData = await removeItem(id);
     getAllCollectionItems();
   }
 
@@ -118,11 +121,38 @@ function Items() {
   }
 
   const openItem = async (item) => {
-    setItem(item);
     setItemOptionFields(await getAllFields(item.id));
     setItemTags(await getAllTags(item.id));
+    setItem(item.row)
     setOpen(true);
   }
+
+  const columns = [
+    { field: 'item_id', headerName: 'id' },
+    { field: 'name' },
+    {
+      field: "updateOrDelete",
+      headerName: "",
+      filterable: false,
+      sortable: false,
+      disableColumnMenu: true,
+      align: 'right',
+      flex: 1,
+      renderCell: (params) => (
+        <ButtonGroup size="small" ButtonGroup variant="outlined" aria-label="outlined button group" >
+          <Button
+            onClick={(event) => { editItem(event, params.id) }}
+            id={styles.tableButton}
+          >edit</Button>
+          <Button
+            onClick={(event) => { deleteItem(event, params.id) }}
+            id={styles.tableButton}
+          >delete</Button>
+        </ButtonGroup >
+      )
+    }
+  ];
+
   return (
     <ThemeProvider theme={theme}>
       <Grid container justifyContent="center" direction="column" alignItems="center">
@@ -156,38 +186,18 @@ function Items() {
             <CircularProgress color="inherit" />
           </Box>
         ) : (
-          <TableContainer className={styles.table} component={Paper}>
-            <Table aria-label="customized table">
-              <TableBody>
-                {items.map((item) => {
-                  return (
-                    <StyledTableRow kay={item.id}>
-                      <StyledTableCell className={styles.tableRow} component="th" scope="row" onClick={() => { openItem(item) }}>
-                        <AutoAwesomeMotionIcon />
-                        {item.name}
-                      </StyledTableCell>
-                      <StyledTableCell align="right">
-                        <ButtonGroup variant="outlined" aria-label="outlined button group">
-                          <Button
-                            onClick={() => { editItem(item.id) }}
-                            id={styles.tableButton}
-                          >edit</Button>
-                          <Button
-                            onClick={() => { deleteItem(item.id) }}
-                            id={styles.tableButton}
-                          >delete</Button>
-                        </ButtonGroup>
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  )
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <Box className={styles.table}>
+            <DataGrid
+              onRowClick={openItem}
+              rows={items}
+              columns={columns}
+              disableColumnSelector
+            />
+          </Box>
         )}
       </Grid>
     </ThemeProvider>
   )
 }
 
-export default Items
+export default Items;

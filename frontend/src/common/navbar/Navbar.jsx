@@ -10,6 +10,12 @@ import GlobalContext from "../../shared/contexts/GlobalContext";
 import { logOut } from '../../shared/apis/userAPI';
 import Sidebar from '../sidebar/Sidebar';
 import styles from './style.module.scss';
+import algoliasearch from 'algoliasearch';
+import {
+  InstantSearch,
+  Hits,
+  SearchBox,
+} from 'react-instantsearch-hooks-web';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -24,16 +30,6 @@ const Search = styled('div')(({ theme }) => ({
     marginLeft: theme.spacing(1),
     width: 'auto',
   },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -66,6 +62,8 @@ export default function Navbar() {
   let navigate = useNavigate();
   const { client } = useContext(GlobalContext);
   const { isLoading } = useContext(GlobalContext);
+  const clientAlgolia = algoliasearch('Y1KE1G5UA1', '8e314f921daaa5b1f404015350369c44');
+  const index = clientAlgolia.initIndex('t-collection')
 
   const logIn = () => {
     navigate(routes.LOGIN)
@@ -91,12 +89,26 @@ export default function Navbar() {
     }
   }
 
+  // function Hit(props) {
+  //   return (
+  //     <div>
+  //       <img src={props.hit.image} align="left" alt={props.hit.name} />
+  //       <div className="hit-name">
+  //         <Highlight attribute="name" hit={props.hit} />
+  //       </div>
+  //       <div className="hit-description">
+  //         <Highlight attribute="description" hit={props.hit} />
+  //       </div>
+  //     </div>
+  //   );
+  // }
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <ThemeProvider theme={theme}>
         <AppBar position="static">
           <Toolbar >
-            <Sidebar/>
+            <Sidebar />
             <Box
               sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
             >
@@ -140,13 +152,12 @@ export default function Navbar() {
               </Box>
             ))}
             <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ 'aria-label': 'search' }}
-              />
+              <InstantSearch
+                searchClient={clientAlgolia}
+                indexName="t-collection"
+              >
+                <SearchBox />
+              </InstantSearch>
             </Search>
           </Toolbar>
         </AppBar>

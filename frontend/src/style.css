@@ -61,3 +61,20 @@ a {
 .item {
   width: 80%;
 }
+
+textarea {
+  width: 100%;
+  height: 100%;
+  padding: 10px 14px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 14px;
+  resize: none;
+}
+
+.ais-SearchBox { margin: 1em 0; }
+.ais-Pagination { margin-top: 1em }
+.left-panel { float: left; width: 250px; }
+.right-panel { margin-left: 260px; }

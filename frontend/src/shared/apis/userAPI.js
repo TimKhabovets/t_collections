@@ -18,6 +18,12 @@ export const getUsers = async () => {
   return response.data;
 }
 
+export const getUserName = async (id) => {
+  const response = await $api.get(urls.USERNAME +'/'+ id);
+  return response.data;
+}
+
+
 export const toLogIn = async (data) => {
   try {
     const response = await $api.post(urls.LOGIN, data);

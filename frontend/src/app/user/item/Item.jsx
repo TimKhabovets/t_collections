@@ -1,12 +1,23 @@
-import * as React from 'react';
-import { Button, Box, Typography, Grid } from '@mui/material';
+import React, { useState, useContext } from 'react';
+import { Button, Box, Typography, Grid, IconButton, } from '@mui/material';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import styles from './style.module.scss';
+
+import { addLike, getLike, removeLike } from '../../../shared/apis/likeAPI';
+import { getAllComments, addComment } from '../../../shared/apis/commentAPI';
+import { getUserName } from '../../../shared/apis/userAPI';
+import GlobalContext from "../../../shared/contexts/GlobalContext";
 
 export default function Item({ open, setOpen, item, optionFields, tags }) {
+  const [isLiked, setIsLiked] = useState(false);
+  const { client } = useContext(GlobalContext);
+  const [comment, setComment] = useState();
+  const [comments, setComments] = useState([]);
 
   const handleClose = () => {
     setOpen(false);
@@ -19,8 +30,45 @@ export default function Item({ open, setOpen, item, optionFields, tags }) {
       if (descriptionElement !== null) {
         descriptionElement.focus();
       }
+      getItemLike();
+      //getAllItemComments();
     }
   }, [open]);
+
+  const getItemLike = async () => {
+    const like = await getLike({ user: client.id, item: item.id });
+    if (like) {
+      setIsLiked(true);
+    }
+    else {
+      setIsLiked(false);
+    }
+  }
+
+  const setLike = async () => {
+    setIsLiked(!isLiked);
+    if (!isLiked) {
+      await addLike({ user: client.id, item: item.id });
+    }
+    else {
+      await removeLike({ user: client.id, item: item.id });
+    }
+  }
+
+  const getAllItemComments = async () => {
+    // finish back for getUserName
+    const comments = await getAllComments(item.id);
+    comments.forEach(async (comment, index) =>{
+      const userName = await getUserName(comment.user);
+      comments[index].user = userName;
+    })
+    setComments(comments);
+  }
+
+  const sentComment = async () => {
+    setComment('');
+    const commentData = await addComment({user: client.id, item: item.id, text: comment })
+  }
 
   return (
     <Box>
@@ -55,7 +103,25 @@ export default function Item({ open, setOpen, item, optionFields, tags }) {
               </Box>
             </DialogContentText>
           </DialogContent>
-          <DialogActions>
+          <Box className={styles.comments}>
+            Comments:
+            {comments.map( (comment) => {
+              return (
+                <Box>
+                  <p>{comment.text}</p>
+                </Box>
+              )
+            })
+            }
+            <Box className={styles.textarea}>
+              <textarea value={comment} onChange={(event)=>{setComment(event.target.value)}}/>
+            </Box>
+            <Button onClick={sentComment} size='small' id={styles.tableButton}>Sent</Button>
+          </Box>
+          <DialogActions id={styles.dialogActions} >
+            <IconButton onClick={setLike} id={isLiked ? (styles.likeTrue) : (styles.likeFalse)} aria-label="add to favorites">
+              <FavoriteIcon />
+            </IconButton>
             <Button onClick={handleClose}>Close</Button>
           </DialogActions>
         </Grid>

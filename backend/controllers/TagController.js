@@ -12,7 +12,6 @@ export const getAllItemTags = async (req, res, next) => {
 
 export const addTag = async (req, res, next) => {
   try {
-    console.log(req.body);
     const tag = await create(req.body);
     return res.json(tag);
   }
@@ -44,7 +43,6 @@ export const removeTag = async (req, res, next) => {
 
 export const removeOneTag = async (req, res, next) => {
   try {
-    console.log(req.body);
     const tag = await removeOne(req.body);
     return res.json(tag);
   }
