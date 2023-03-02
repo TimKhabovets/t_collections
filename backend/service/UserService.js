@@ -69,3 +69,21 @@ export const getAllUsers = async () => {
   const users = UserModel.findAll();
   return users;
 }
+
+export const remove = async (id) => {
+  const user = await UserModel.destroy({
+    where: {
+      id: id
+    }
+  });
+  return user;
+}
+
+export const update = async (data, id) => {
+  const user = await UserModel.update(data,{
+    where: {
+      id: id
+    }
+  });
+  return user;
+}

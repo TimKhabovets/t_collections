@@ -13,6 +13,7 @@ const GlobalContext = createContext({
     currentItem: '',
     currentLocale: locales.EN,
     isLoading: Boolean,
+    adminUserId: '',
 });
 
 export default GlobalContext;

@@ -1,17 +1,17 @@
 const fields = [{
-    value: "s",
+    value: "string",
     label: "string",
   }, {
-    value: "n",
+    value: "number",
     label: "number",
   }, {
-    value: "t",
+    value: "text",
     label: "text",
   }, {
-    value: "d",
+    value: "date",
     label: "date",
   }, {
-    value: "b",
+    value: "checkbox",
     label: "checkbox",
   }];
   

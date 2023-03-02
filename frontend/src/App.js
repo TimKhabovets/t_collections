@@ -34,7 +34,8 @@ function App() {
   const [ currentCollection, setCurrentCollection ] = useState('');
   const [ currentItem, setCurrentItem ] = useState('');
   const [ collection, setCollection] = useState({});
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const [adminUserId, setAdminUserId] = useState('');
   const [currentLocale, setCurrentLocale] = useState(
     localStorage.getItem(localStorageKeys.LOCALE) || locales.EN);
 
@@ -68,6 +69,8 @@ function App() {
       setCollection,
       currentCollection,
       setCurrentCollection,
+      adminUserId,
+      setAdminUserId,
       isLoading,
       client,
       currentLocale,

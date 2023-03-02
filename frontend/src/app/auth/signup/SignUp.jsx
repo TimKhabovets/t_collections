@@ -30,10 +30,9 @@ function SignUp() {
   const SignUp = async (value) => {
     const response = await toSignUp({ value });
     if(response) {
-      navigate(routes.USERPAGE);
       client.name = response.user.name;
       client.email = response.user.email;
-      client.role = response.user.role;
+      client.role = 'user';
       client.id = response.user.id;
       navigate(routes.USERPAGE);
     }

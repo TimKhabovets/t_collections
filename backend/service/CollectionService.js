@@ -18,6 +18,14 @@ export const getAll = async (author) => {
   return collectionsData;
 }
 
+export const getFour = async () => {
+  const collectionData = await Collection.findAll({
+    limit: 4,
+    order: [ ['item_count']],
+  });
+  return collectionData;
+}
+
 export const create = async (name, topic, markdown, option_fields, photo, author) => {
   const collectionData = await Collection.create({name, topic, comment: markdown, option_fields, photo, author});
   return collectionData;

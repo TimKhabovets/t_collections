@@ -54,3 +54,13 @@ export const getAllTags = async (item) => {
     console.log(err.response?.data?.massage);
   }
 }
+
+export const getTwentyTags = async () => {
+  try {
+    const response = await $api.get(curl+urls.GETTWENTY);
+    return response.data;
+  }
+  catch (err) {
+    console.log(err.response?.data?.massage);
+  }
+}

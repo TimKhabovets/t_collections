@@ -1,5 +1,5 @@
 import User from '../models/UserModel.js';
-import { registerUser, loginUser, logOut, refresh, getAllUsers } from '../service/UserService.js';
+import { registerUser, loginUser, logOut, refresh, getAllUsers, remove, update } from '../service/UserService.js';
 
 export const getUsers = async (req, res, next) => {
   
@@ -85,14 +85,10 @@ export const createUser = async (req, res, next) => {
 }
 
 export const updateUser = async (req, res, next) => {
-
   try {
-    await User.update(req.body, {
-      where: {
-        id: req.params.id
-      }
-    });
-    res.status(200).json({msg: 'User updated'});
+    console.log(req.body);
+    const user = await update(req.body, req.params.id);
+    res.json(user);
   }
   catch(err) {
     next(err);
@@ -100,14 +96,9 @@ export const updateUser = async (req, res, next) => {
 }
 
 export const deleteUser = async (req, res, next) => {
-
   try {
-    await User.destroy({
-      where: {
-        id: req.params.id
-      }
-    });
-    res.status(200).json({msg: 'User deleted'});
+    const user = await remove(req.params.id);
+    res.json(user);
   }
   catch(err) {
     next(err);

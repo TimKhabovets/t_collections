@@ -14,6 +14,7 @@ import { addItem, updateItem, getItem } from '../../../shared/apis/itemAPI';
 import { addTag, updateTag, removeOneTag, getAllTags} from '../../../shared/apis/tagAPI';
 import GlobalContext from "../../../shared/contexts/GlobalContext";
 import { useEffectOnce } from '../../../shared/functions/useEffectOnce';
+import styles from './style.module.scss';
 
 const theme = createTheme({
   palette: {
@@ -58,7 +59,6 @@ function NewItem() {
     const tags = await getAllTags(currentItem);
     const fields = await getAllFields(currentItem);
     console.log(fields);
-    console.log(optionFields);
     if (response) {
       let newValue = {
         name: response.name,
@@ -83,7 +83,7 @@ function NewItem() {
     else {
       optionFields.forEach(async (field) => {
         let value = fields[`${field.name}`];
-        if (field.type.value === 't') {
+        if (field.type.value === 'text') {
           value = md.render(fields[`${field.name}`]);
         }
         await addField({name: field.name, value: value, item: id});
@@ -154,7 +154,7 @@ function NewItem() {
             <Grid container direction="column" alignItems="flex-start" px={3}>
               <Box width="100%" my={2}>
                 <TextField
-                  sx={{ width: '100%' }}
+                  className={styles.field}
                   variant="filled"
                   color="dark"
                   error={errors.item_id}
@@ -169,7 +169,7 @@ function NewItem() {
               </Box>
               <Box width="100%" my={2}>
                 <TextField
-                  sx={{ width: '100%' }}
+                  className={styles.field}
                   variant="filled"
                   color="dark"
                   error={errors.name}
@@ -188,9 +188,9 @@ function NewItem() {
               </Box>
               {fields.map((item, index) => (
                 <Box width="100%" marginBottom={1} key={item.id}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Box className={styles.boxOptionField}>
                     <TextField
-                      sx={{ width: '82%' }}
+                      className={styles.optionField}
                       variant="filled"
                       color="dark"
                       {...register(`tags.${index}.name`, {
@@ -198,15 +198,10 @@ function NewItem() {
                         minLength: 2,
                         maxLength: 100,
                       })} />
-                    <Button sx={{
-                      ':hover': {
-                        backgroundColor: '#414141',
-                      },
-                      backgroundColor: '#272727',
-                      border: '1px solid #272727',
-                      color: 'white',
-                      width: '17%',
-                    }} type="button" onClick={() => (fields.length < 2) ? (null) : deleteTag(item, index)}
+                    <Button 
+                    id={styles.deleteButton} 
+                    type="button" 
+                    onClick={() => (fields.length < 2) ? (null) : deleteTag(item, index)}
                     >Delete
                     </Button>
                   </Box>
@@ -218,26 +213,17 @@ function NewItem() {
                   />
                 </Box>
               ))}
-
               <Box width="20%" marginBottom={2}>
                 <Button
-                  sx={{
-                    ':hover': {
-                      border: '1px solid #272727',
-                    },
-                    border: '1px solid #272727',
-                    color: 'black',
-                    backgroundColor: 'white',
-                  }}
+                  id={styles.appendButton}
                   variant="outlined"
                   onClick={() => append({ tag: "" })}
                 >
                   append
                 </Button>
               </Box>
-
               {optionFields.map((option) => {
-                if (option.type.value === 'd' || option.type.value === 's' || option.type.value === 'n') {
+                if (option.type.value === 'date' || option.type.value === 'string' || option.type.value === 'number') {
                   return (
                     <FormInput
                       register={register}
@@ -248,7 +234,7 @@ function NewItem() {
                     />
                   )
                 }
-                else if (option.type.value === 'b') {
+                else if (option.type.value === 'checkbox') {
                   return (
                     <FormCheckbox
                       register={register}
@@ -257,7 +243,7 @@ function NewItem() {
                     />
                   )
                 }
-                else if (option.type.value === 't') {
+                else if (option.type.value === 'text') {
                   return (
                     <FormText
                       errors={errors}
@@ -270,14 +256,7 @@ function NewItem() {
               })}
 
               <Box width="30%" marginTop={2} marginBottom={7}>
-                <Button type="submit" variant="contained" sx={{
-                  ':hover': {
-                    backgroundColor: '#414141',
-                  },
-                  color: 'white',
-                  backgroundColor: '#272727',
-                  width: '100%'
-                }}>
+                <Button type="submit" variant="contained" id={styles.submitButton}>
                   Submit
                 </Button>
               </Box>

@@ -3,12 +3,16 @@ const urls = {
   LOGIN: '/login',
   LOGOUT: '/logout',
   REFRESH: '/refresh',
+  USERS: '/users',
+  USERNAME: 'username',
   
   ADD: '/add',
   REMOVE: '/remove/',
   REMOVEONE: '/removeone',
   UPDATE: '/update/',
   GET: '/get/',
+  GETFOUR: '/getfour',
+  GETTWENTY: '/gettwenty',
   ALL: '/getall',
 }
 

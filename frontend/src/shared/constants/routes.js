@@ -6,6 +6,9 @@ const routes = {
     CREATECOLLECTION: "/userpage/creation",
     ITEMS: "/userpage/items",
     CREATEITEM: "/userpage/items/creation",
+    ADMIN: "/admin",
+    ADMINUSERPAGE: "/admin/userpage",
+    ADMINITEMS: "/admin/userpage/items",
 };
 
 export default routes;

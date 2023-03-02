@@ -9,6 +9,7 @@ import routes from '../../shared/constants/routes';
 import { IsUser } from '../../shared/functions/checks/UserCheck';
 import { IsAdmin } from '../../shared/functions/checks/AdminCheck';
 import GlobalContext from "../../shared/contexts/GlobalContext";
+import { useNavigate } from "react-router";
 
 const theme = createTheme({
   typography: {
@@ -21,6 +22,8 @@ const theme = createTheme({
 
 
 export default function TemporaryDrawer() {
+  let navigate = useNavigate();
+  const { adminUserId, setAdminUserId } = useContext(GlobalContext);
   const [burger, setBurger] = useState(false);
   const { client } = useContext(GlobalContext);
 
@@ -31,47 +34,64 @@ export default function TemporaryDrawer() {
     setBurger(open);
   };
 
+  const toUserPage = () => {
+    setAdminUserId('');
+    navigate(routes.ADMINUSERPAGE);
+  }
+
   const list = () => (
     <ThemeProvider theme={theme}>
       <Box
-        sx={{ width: 250,}}
+        width="250px"
         role="presentation"
         onClick={toggleDrawer(false)}
         onKeyDown={toggleDrawer(false)}
       >
         <List>
           {IsUser(client.role) ? (
-            <Box mx={3} my={2} sx={{ cursor: 'pointer'}}>
-              <Link to={routes.USERPAGE}>
+            <Box mx={3} my={2} sx={{ cursor: 'pointer' }}>
+              <Box onClick={toUserPage}>
                 <Typography variant='link'>
                   My Collections
                 </Typography>
-                <hr className='hrColor'/>
-              </Link>
+                <hr className='hrColor' />
+              </Box>
             </Box>
-          ) : (<></>)
+          ) : (null)
+          }
+          {
+            IsAdmin(client.role) ? (
+              <Box mx={3} my={2} sx={{ cursor: 'pointer' }}>
+                <Link to={routes.ADMIN}>
+                  <Typography variant='link'>
+                    Admin page
+                  </Typography>
+                  <hr className='hrColor' />
+                </Link>
+              </Box>
+            ) : (null)
           }
           {(client.role === 'guest') ? (
-            <Box mx={3} my={2} sx={{ cursor: 'pointer'}}>
+            <Box mx={3} my={2} sx={{ cursor: 'pointer' }}>
               <Link to={routes.LOGIN}>
                 <Typography variant='link'>
                   Log In
                 </Typography>
               </Link>
-              <hr/>
+              <hr />
             </Box>
-          ) : (<></>)
+          ) : (null)
           }
           {(client.role === 'guest') ? (
-            <Box mx={3} my={2} sx={{ cursor: 'pointer'}}>
+            <Box mx={3} my={2} sx={{ cursor: 'pointer' }}>
               <Link to={routes.SIGNUP}>
                 <Typography variant='link'>
                   Sing Up
                 </Typography>
               </Link>
-              <hr/>
+              <hr />
             </Box>
-          ) : (<></>)
+          ) : (null)
           }
 
         </List>

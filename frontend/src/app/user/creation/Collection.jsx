@@ -1,6 +1,6 @@
-import React, { useState, useContext, useMemo } from 'react';
+import React, { useState, useContext,  } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
-import { Box, TextField, Button, Grid, Typography, Paper, Checkbox, ListItemIcon, ListItemText, ListItemButton, ListItem, List } from '@mui/material';
+import { Box, TextField, Button, Grid, Typography} from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import LinearProgress from '@mui/material/LinearProgress';
 import topics from '../../../shared/constants/topics';
@@ -11,11 +11,12 @@ import routes from "../../../shared/constants/routes";
 import MarkdownIt from 'markdown-it';
 import optionField from '../../../shared/constants/optionsFields';
 import { addCollection, getCollection, updateCollection } from '../../../shared/apis/collectionAPI';
-import { addPhoto, getPhoto, updatePhoto } from '../../../shared/apis/photoAPI';
+import { addPhoto, updatePhoto } from '../../../shared/apis/photoAPI';
 import GlobalContext from "../../../shared/contexts/GlobalContext";
 import { useEffectOnce } from '../../../shared/functions/useEffectOnce';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from '../../../shared/configs/firebaseConfig'
+import styles from './style.module.scss';
 
 const theme = createTheme({
   palette: {
@@ -167,7 +168,7 @@ function NewCollections() {
             <Grid container direction="column" alignItems="flex-start" px={3}>
               <Box width="100%" my={2}>
                 <TextField
-                  sx={{ width: '100%' }}
+                  className={styles.field}
                   variant="filled"
                   color="dark"
                   error={errors.name}
@@ -206,35 +207,18 @@ function NewCollections() {
               </Box>
               <Box my={2}>
                 <input type="file" onChange={handleChange} value={photoSrc} accept="/image/*" />
-                <Box sx={{ width: '100%' }}>
+                <Box>
                   <LinearProgressWithLabel color="inherit" value={progress} />
                 </Box>
                 <Box >
                   <Button
-                    sx={{
-                      ':hover': {
-                        border: '1px solid #272727',
-                        color: 'black'
-                      },
-                      border: '1px solid #272727',
-                      color: 'white',
-                      backgroundColor: '#272727',
-                      marginRight: '4px',
-                    }}
+                    id={styles.imgButton}
                     variant="outlined"
                     onClick={handleUpload}
                   >download image
                   </Button>
                   <Button
-                    sx={{
-                      ':hover': {
-                        border: '1px solid #272727',
-                        color: 'black'
-                      },
-                      border: '1px solid #272727',
-                      color: 'white',
-                      backgroundColor: '#272727',
-                    }}
+                    id={styles.imgButton}
                     variant="outlined"
                     onClick={removePhoto}
                   >remove
@@ -244,8 +228,7 @@ function NewCollections() {
               <Box width="100%" my={2}>
                 <Typography >What fields add to items? </Typography>
                 {fields.map((item, index) => (
-                  <Box width="100%" marginBottom={2} key={item.id}
-                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Box width="100%" marginBottom={2} key={item.id} className={styles.boxOptionField}>
                     <FormSelect
                       className="optionSelect"
                       control={control}
@@ -254,7 +237,7 @@ function NewCollections() {
                       rules={{ required: true }}
                     />
                     <TextField
-                      sx={{ width: '40%' }}
+                      className={styles.createOptionField}
                       label="field name"
                       variant="filled"
                       color="dark"
@@ -263,44 +246,21 @@ function NewCollections() {
                         minLength: 2,
                         maxLength: 100,
                       })} />
-                    <Button sx={{
-                      ':hover': {
-                        backgroundColor: '#414141',
-                      },
-                      backgroundColor: '#272727',
-                      border: '1px solid #272727',
-                      color: 'white',
-                      width: '17%',
-                    }} type="button" onClick={() => remove(index)}>Delete</Button>
+                    <Button id={styles.deleteButton} type="button" onClick={() => remove(index)}>Delete</Button>
                   </Box>
                 ))}
-                <Box width="13%" >
+                <Box >
                   <Button
-                    sx={{
-                      ':hover': {
-                        border: '1px solid #272727',
-                      },
-                      border: '1px solid #272727',
-                      color: 'black',
-                      backgroundColor: 'white',
-                      width: '100%'
-                    }}
+                    id={styles.appendButton}
                     variant="outlined"
                     onClick={() => append({ tag: "" })}
                   >
-                    add
+                    append
                   </Button>
                 </Box>
               </Box>
               <Box width="30%" marginTop={2} marginBottom={7}>
-                <Button type="submit" variant="contained" sx={{
-                  ':hover': {
-                    backgroundColor: '#414141',
-                  },
-                  color: 'white',
-                  backgroundColor: '#272727',
-                  width: '100%'
-                }}>
+                <Button type="submit" variant="contained" id={styles.submitButton}>
                   Submit
                 </Button>
               </Box>

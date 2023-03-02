@@ -1,4 +1,4 @@
-import { getAll, create, update, remove, removeOne } from '../service/TagService.js';
+import { getAll, create, update, remove, removeOne, getTwenty } from '../service/TagService.js';
 
 export const getAllItemTags = async (req, res, next) => {
   try {
@@ -10,9 +10,18 @@ export const getAllItemTags = async (req, res, next) => {
   }
 }
 
+export const getTwentyTags = async (req, res, next) => {
+  try {
+    const tags = await getTwenty();
+    return res.json(tags);
+  }
+  catch (err) {
+    next(err);
+  }
+}
+
 export const addTag = async (req, res, next) => {
   try {
-    console.log(req.body);
     const tag = await create(req.body);
     return res.json(tag);
   }
@@ -44,7 +53,6 @@ export const removeTag = async (req, res, next) => {
 
 export const removeOneTag = async (req, res, next) => {
   try {
-    console.log(req.body);
     const tag = await removeOne(req.body);
     return res.json(tag);
   }
