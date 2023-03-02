@@ -10,6 +10,7 @@ import { IsUser } from '../../shared/functions/checks/UserCheck';
 import { IsAdmin } from '../../shared/functions/checks/AdminCheck';
 import GlobalContext from "../../shared/contexts/GlobalContext";
 import { useNavigate } from "react-router";
+import { logOut } from '../../shared/apis/userAPI';
 
 const theme = createTheme({
   typography: {
@@ -37,6 +38,17 @@ export default function TemporaryDrawer() {
   const toUserPage = () => {
     setAdminUserId('');
     navigate(routes.USERPAGE);
+  }
+
+  const logout = async () => {
+    const response = await logOut();
+    if (response) {
+      navigate(routes.HOME);
+      client.name = '';
+      client.email = '';
+      client.role = 'guest';
+      client.id = '';
+    }
   }
 
   const list = () => (
@@ -101,7 +113,17 @@ export default function TemporaryDrawer() {
             </Box>
           ) : (null)
           }
-
+          {IsUser(client.role) ? (
+            <Box mx={3} my={2} sx={{ cursor: 'pointer' }}>
+              <Box onClick={logout}>
+                <Typography variant='link'>
+                  Log out
+                </Typography>
+                <hr className='hrColor' />
+              </Box>
+            </Box>
+          ) : (null)
+          }
         </List>
       </Box>
     </ThemeProvider>
