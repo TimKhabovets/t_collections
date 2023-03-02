@@ -21,7 +21,7 @@ export const login = async (req, res, next) => {
       maxAge: 30*24*60*60*1000, 
       httpOnly: true,
       path: '/',
-      domain: 't-collections-api.vercel.app', 
+      domain: 't-collections.vercel.app', 
       sameSite: "none",
       secure: true,
     });
