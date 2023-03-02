@@ -36,7 +36,7 @@ export default function TemporaryDrawer() {
 
   const toUserPage = () => {
     setAdminUserId('');
-    navigate(routes.ADMINUSERPAGE);
+    navigate(routes.USERPAGE);
   }
 
   const list = () => (
