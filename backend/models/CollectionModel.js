@@ -9,7 +9,8 @@ const Collection = db.define('collections', {
   comment: DataTypes.STRING,
   option_fields: DataTypes.JSON,
   photo: DataTypes.INTEGER,
-  author: DataTypes.INTEGER
+  author: DataTypes.INTEGER,
+  item_count: DataTypes.SMALLINT,
 }, {
   freezeTableName: true
 });

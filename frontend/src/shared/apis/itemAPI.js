@@ -52,3 +52,13 @@ export const getAllItems = async (collection) => {
     console.log(err.response?.data?.massage);
   }
 }
+
+export const getFourItems = async () => {
+  try {
+    const response = await $api.get(curl+urls.GETFOUR);
+    return response.data;
+  }
+  catch (err) {
+    console.log(err.response?.data?.massage);
+  }
+}

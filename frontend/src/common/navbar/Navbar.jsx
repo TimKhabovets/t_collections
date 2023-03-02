@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { Box, Grid, Toolbar, Typography, InputBase, Button, AppBar } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { styled, alpha } from '@mui/material/styles';
@@ -17,38 +16,6 @@ import {
   SearchBox,
 } from 'react-instantsearch-hooks-web';
 
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1),
-    width: 'auto',
-  },
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: '12ch',
-      '&:focus': {
-        width: '20ch',
-      },
-    },
-  },
-}));
-
 const theme = createTheme({
   palette: {
     mode: 'dark',
@@ -60,10 +27,31 @@ const theme = createTheme({
 
 export default function Navbar() {
   let navigate = useNavigate();
+  const {adminUserId, setAdminUserId} = useContext(GlobalContext);
   const { client } = useContext(GlobalContext);
   const { isLoading } = useContext(GlobalContext);
   const clientAlgolia = algoliasearch('Y1KE1G5UA1', '8e314f921daaa5b1f404015350369c44');
-  const index = clientAlgolia.initIndex('t-collection')
+  const searchClient = {
+    ...clientAlgolia,
+    search(requests) {
+      if (requests.every(({ params }) => !params.query)) {
+        return Promise.resolve({
+          results: requests.map(() => ({
+            hits: [],
+            nbHits: 0,
+            nbPages: 0,
+            page: 0,
+            processingTimeMS: 0,
+            hitsPerPage: 0,
+            exhaustiveNbHits: false,
+            query: '',
+            params: '',
+          })),
+        });
+      }
+      return clientAlgolia.search(requests);
+    },
+  };
 
   const logIn = () => {
     navigate(routes.LOGIN)
@@ -75,6 +63,7 @@ export default function Navbar() {
     navigate(routes.HOME)
   }
   const toUserPage = () => {
+    setAdminUserId('');
     navigate(routes.USERPAGE)
   }
 
@@ -89,22 +78,17 @@ export default function Navbar() {
     }
   }
 
-  // function Hit(props) {
-  //   return (
-  //     <div>
-  //       <img src={props.hit.image} align="left" alt={props.hit.name} />
-  //       <div className="hit-name">
-  //         <Highlight attribute="name" hit={props.hit} />
-  //       </div>
-  //       <div className="hit-description">
-  //         <Highlight attribute="description" hit={props.hit} />
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  const Hit = ({ hit }) => {
+    return (
+      <article>
+        <h1>{hit.name}</h1>
+        <p>{hit.topic}</p>
+      </article>
+    );
+  }
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1 }} width="100%">
       <ThemeProvider theme={theme}>
         <AppBar position="static">
           <Toolbar >
@@ -151,14 +135,16 @@ export default function Navbar() {
                 </Box>
               </Box>
             ))}
-            <Search>
-              <InstantSearch
-                searchClient={clientAlgolia}
-                indexName="t-collection"
-              >
-                <SearchBox />
-              </InstantSearch>
-            </Search>
+            <InstantSearch
+              searchClient={searchClient}
+              indexName="t-collection"
+            >
+              <SearchBox
+                searchAsYouType={false}
+                placeholder="Search…"
+              />
+              <Hits hitComponent={Hit} />
+            </InstantSearch>
           </Toolbar>
         </AppBar>
       </ThemeProvider>

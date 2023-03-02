@@ -11,6 +11,8 @@ const urls = {
   REMOVEONE: '/removeone',
   UPDATE: '/update/',
   GET: '/get/',
+  GETFOUR: '/getfour',
+  GETTWENTY: '/gettwenty',
   ALL: '/getall',
 }
 

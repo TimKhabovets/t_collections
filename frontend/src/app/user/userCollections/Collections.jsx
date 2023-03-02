@@ -37,22 +37,27 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 function UserPage() {
   let navigate = useNavigate();
   const { client } = useContext(GlobalContext);
+  const { adminUserId } = useContext(GlobalContext);
   const { collection, setCollection } = useContext(GlobalContext);
   const [isLoading, setIsLoading] = useState(false);
   const { currentCollection, setCurrentCollection } = useContext(GlobalContext);
   const [collections, setCollections] = useState([]);
 
   useEffectOnce(() => {
-    if (client.id) {
-      getAllCollection();
-    }
+    getAllCollection();
   }, client.id);
 
   const getAllCollection = async () => {
     setIsLoading(true);
     try {
-      let response = await getAllCollections(client.id);
-      setCollections(response);
+      if (adminUserId) {
+        let response = await getAllCollections(adminUserId);
+        setCollections(response);
+      }
+      else {
+        let response = await getAllCollections(client.id);
+        setCollections(response);
+      }
     }
     catch (err) {
       console.log(err);
@@ -79,16 +84,23 @@ function UserPage() {
 
   const collectionPage = (collection) => {
     setCollection(collection)
-    navigate(routes.ITEMS);
+    if (adminUserId) {
+      navigate(routes.ADMINITEMS);
+    }
+    else {
+      navigate(routes.ITEMS);
+    }
   }
 
   return (
     <Grid container justifyContent="center" direction="column" alignItems="center">
-      <Box my={2} width='80%'>
-        <Button id={styles.button} onClick={toNewCollection} variant="outlined" >
-          Add New Collection
-        </Button>
-      </Box>
+      {adminUserId ? (null) : (
+        <Box my={2} width='80%'>
+          <Button id={styles.button} onClick={toNewCollection} variant="outlined" >
+            Add New Collection
+          </Button>
+        </Box>
+      )}
       {isLoading ? (
         <Box >
           <CircularProgress color="inherit" />
@@ -102,18 +114,18 @@ function UserPage() {
                   <StyledTableRow kay={collection.id} >
                     <StyledTableCell className={styles.tableRow} component="th" scope="row" onClick={() => { collectionPage(collection) }}>
                       <AutoAwesomeMotionIcon />
-                        {collection.name}
+                      {collection.name}
                     </StyledTableCell>
                     <StyledTableCell align="right">
                       <ButtonGroup variant="outlined" aria-label="outlined button group">
                         <Button
                           onClick={() => { editCollection(collection.id) }}
                           id={styles.tableButton}
-                          >edit</Button>
+                        >edit</Button>
                         <Button
                           onClick={() => { deleteCollection(collection.id) }}
                           id={styles.tableButton}
-                          >delete</Button>
+                        >delete</Button>
                       </ButtonGroup>
                     </StyledTableCell>
                   </StyledTableRow>

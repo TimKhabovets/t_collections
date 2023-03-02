@@ -1,6 +1,6 @@
-import React, { useState, useContext, useMemo } from 'react';
+import React, { useState, useContext,  } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
-import { Box, TextField, Button, Grid, Typography, Paper, Checkbox, ListItemIcon, ListItemText, ListItemButton, ListItem, List } from '@mui/material';
+import { Box, TextField, Button, Grid, Typography} from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import LinearProgress from '@mui/material/LinearProgress';
 import topics from '../../../shared/constants/topics';
@@ -11,7 +11,7 @@ import routes from "../../../shared/constants/routes";
 import MarkdownIt from 'markdown-it';
 import optionField from '../../../shared/constants/optionsFields';
 import { addCollection, getCollection, updateCollection } from '../../../shared/apis/collectionAPI';
-import { addPhoto, getPhoto, updatePhoto } from '../../../shared/apis/photoAPI';
+import { addPhoto, updatePhoto } from '../../../shared/apis/photoAPI';
 import GlobalContext from "../../../shared/contexts/GlobalContext";
 import { useEffectOnce } from '../../../shared/functions/useEffectOnce';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";

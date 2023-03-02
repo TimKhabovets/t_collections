@@ -22,10 +22,43 @@ export const getAll = async (collection) => {
   return itemData;
 }
 
+export const getFour = async () => {
+  const itemData = await Item.findAll({
+    limit: 4,
+    order: [ ['id', 'DESC' ]],
+  });
+  for (let index = 0; index < itemData.length; index++) {
+    const fields = await Field.findAll({
+      where: {
+        item: itemData[index].dataValues.id
+      }
+    })
+    itemData[index].dataValues.optionFields = fields.map(field =>{
+      return {name: field.name, value: field.value}
+    })
+  }
+  return itemData;
+}
+
 export const create = async (item) => {
   const itemData = await Item.create(item);
+  await changeCollectionItemCount(itemData.collection);
   setTimeout(() => createAlgoliaObject(itemData), 1000*30);
   return itemData;
+}
+
+const changeCollectionItemCount = async (id) => {
+  const itemCount = await Item.count( {
+    where: {
+      collection: id
+    }
+  });
+  const collection = await Collection.update({item_count: itemCount}, {
+    where: {
+      id: id
+    }
+  });
+  return collection;
 }
 
 const createAlgoliaObject = async (itemData) => {

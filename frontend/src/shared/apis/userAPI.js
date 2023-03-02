@@ -56,3 +56,23 @@ export const checkAuth = async () => {
     console.log(err.response?.data?.massage);
   }
 } 
+
+export const removeUser = async (id) => {
+  try {
+    const response = await $api.delete(urls.USERS + '/' + id);;
+    return response;
+  }
+  catch (err) {
+    console.log(err.response?.data?.massage);
+  }
+}
+
+export const updateUser = async (data, id) => {
+  try {
+    const response = await $api.patch(urls.USERS + '/' + id, data);;
+    return response;
+  }
+  catch (err) {
+    console.log(err.response?.data?.massage);
+  }
+}

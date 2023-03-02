@@ -17,6 +17,19 @@
   margin-top: 0;
 }
 
+.comment {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+.comment p {
+  margin-left: 3px;
+}
+
+h5, p {
+  margin: 0;
+}
+
 .comments {
   padding: 5px 24px;
 }

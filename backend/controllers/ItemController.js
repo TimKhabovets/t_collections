@@ -1,4 +1,4 @@
-import { getOne, getAll, create, update, remove, removeAll } from '../service/ItemService.js';
+import { getOne, getAll, create, update, remove, removeAll, getFour } from '../service/ItemService.js';
 
 export const getItem = async (req, res, next) => {
   try {
@@ -13,6 +13,16 @@ export const getItem = async (req, res, next) => {
 export const getAllCollectionItems = async (req, res, next) => {
   try {
     const items = await getAll(req.body.collection);
+    return res.json(items);
+  }
+  catch (err) {
+    next(err);
+  }
+}
+
+export const getFourLastItems = async (req, res, next) => {
+  try {
+    const items = await getFour();
     return res.json(items);
   }
   catch (err) {

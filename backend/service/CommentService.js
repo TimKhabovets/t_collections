@@ -1,5 +1,7 @@
 import Comment from '../models/CommentModel.js';
+import User from '../models/UserModel.js';
 import algolia from '../algolia/Aligolia.js';
+import { log } from 'console';
 
 export const getAll = async (item) => {
   const commentData = await Comment.findAll({
@@ -7,6 +9,15 @@ export const getAll = async (item) => {
       item
     }
   });
+  for (let index = 0; index < commentData.length; index++) {
+    const user = await User.findOne({
+      where: {
+        id: commentData[index].dataValues.user
+      }
+    })
+    commentData[index].dataValues.user = user.dataValues.name;
+    commentData[index]._previousDataValues.user = user.dataValues.name;
+  }
   return commentData;
 }
 

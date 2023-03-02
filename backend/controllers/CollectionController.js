@@ -1,4 +1,4 @@
-import { getOne, getAll, create, update, remove } from '../service/CollectionService.js';
+import { getOne, getAll, create, update, remove, getFour } from '../service/CollectionService.js';
 
 export const getCollection = async (req, res, next) => {
   try {
@@ -14,6 +14,16 @@ export const getAllUserCollections = async (req, res, next) => {
   try {
     const collections = await getAll(req.body.author);
     return res.json(collections);
+  }
+  catch (err) {
+    next(err);
+  }
+}
+
+export const getFourCollection = async (req, res, next) => {
+  try {
+    const items = await getFour();
+    return res.json(items);
   }
   catch (err) {
     next(err);

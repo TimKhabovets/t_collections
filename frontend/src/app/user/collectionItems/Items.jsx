@@ -5,19 +5,14 @@ import { useNavigate } from "react-router";
 import GlobalContext from "../../../shared/contexts/GlobalContext";
 import routes from '../../../shared/constants/routes';
 
-import { Box, Button, Grid, Paper, TableContainer, Typography, Table, TableBody, ButtonGroup } from '@mui/material';
+import { Box, Button, Grid, Typography, ButtonGroup } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
-import CircularProgress from '@mui/material/CircularProgress';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableRow from '@mui/material/TableRow';
 import { DataGrid } from '@mui/x-data-grid';
-import { styled } from '@mui/material/styles';
 
 import { useEffectOnce } from '../../../shared/functions/useEffectOnce';
 import { getAllItems, removeItem } from '../../../shared/apis/itemAPI';
-import { removeTag, getAllTags } from '../../../shared/apis/tagAPI';
-import { removeField, getAllFields } from '../../../shared/apis/fieldAPI';
+import { getAllTags } from '../../../shared/apis/tagAPI';
+import { getAllFields } from '../../../shared/apis/fieldAPI';
 import { getPhoto } from '../../../shared/apis/photoAPI';
 import Item from '../item/Item';
 
@@ -42,31 +37,11 @@ const theme = createTheme({
   }
 });
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  '&:last-child td, &:last-child th': {
-    border: 0,
-  },
-}));
-
 function Items() {
   let navigate = useNavigate();
   const { collection } = useContext(GlobalContext);
+  const { adminUserId } = useContext(GlobalContext);
   const { currentItem, setCurrentItem } = useContext(GlobalContext);
-  const [isLoading, setIsLoading] = useState(false);
   const [items, setItems] = useState([]);
   const [imgUrl, setImgUrl] = useState();
   const [open, setOpen] = React.useState(false);
@@ -84,22 +59,12 @@ function Items() {
   }, true);
 
   const getAllCollectionItems = async () => {
-    setIsLoading(true);
-    try {
-      let response = await getAllItems(collection.id);
-      setItems(response);
-    }
-    catch (err) {
-      console.log(err);
-    }
-    finally {
-      setIsLoading(false);
-    }
+    let response = await getAllItems(collection.id);
+    setItems(response);
   }
 
   const getCollectionPhoto = async () => {
     const photo = await getPhoto(collection.photo);
-    console.log(photo);
     setImgUrl(photo.url);
   }
 
@@ -175,26 +140,21 @@ function Items() {
           <Typography variant="topic">{collection.topic[0].toUpperCase()}{collection.topic.slice(1)}</Typography>
           <Typography variant="comment">{parse(collection.comment)}</Typography>
         </Grid>
-        <Box my={2} width='80%'>
-          <Button onClick={toNewItem} variant="outlined" id={styles.button}>
-            Add New Item
-          </Button>
-        </Box>
-
-        {isLoading ? (
-          <Box >
-            <CircularProgress color="inherit" />
-          </Box>
-        ) : (
-          <Box className={styles.table}>
-            <DataGrid
-              onRowClick={openItem}
-              rows={items}
-              columns={columns}
-              disableColumnSelector
-            />
+        {adminUserId ? (null) : (
+          <Box my={2} width='80%'>
+            <Button onClick={toNewItem} variant="outlined" id={styles.button}>
+              Add New Item
+            </Button>
           </Box>
         )}
+        <Box className={styles.table}>
+          <DataGrid
+            onRowClick={openItem}
+            rows={items}
+            columns={columns}
+            disableColumnSelector
+          />
+        </Box>
       </Grid>
     </ThemeProvider>
   )

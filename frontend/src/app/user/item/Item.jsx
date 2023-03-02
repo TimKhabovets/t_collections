@@ -12,6 +12,7 @@ import { addLike, getLike, removeLike } from '../../../shared/apis/likeAPI';
 import { getAllComments, addComment } from '../../../shared/apis/commentAPI';
 import { getUserName } from '../../../shared/apis/userAPI';
 import GlobalContext from "../../../shared/contexts/GlobalContext";
+import parse from 'html-react-parser';
 
 export default function Item({ open, setOpen, item, optionFields, tags }) {
   const [isLiked, setIsLiked] = useState(false);
@@ -26,12 +27,13 @@ export default function Item({ open, setOpen, item, optionFields, tags }) {
   const descriptionElementRef = React.useRef(null);
   React.useEffect(() => {
     if (open) {
+      setComments([]);
       const { current: descriptionElement } = descriptionElementRef;
       if (descriptionElement !== null) {
         descriptionElement.focus();
       }
       getItemLike();
-      //getAllItemComments();
+      getAllItemComments();
     }
   }, [open]);
 
@@ -46,28 +48,26 @@ export default function Item({ open, setOpen, item, optionFields, tags }) {
   }
 
   const setLike = async () => {
-    setIsLiked(!isLiked);
-    if (!isLiked) {
-      await addLike({ user: client.id, item: item.id });
-    }
-    else {
-      await removeLike({ user: client.id, item: item.id });
+    if (client.role !== 'guest') {
+      setIsLiked(!isLiked);
+      if (!isLiked) {
+        await addLike({ user: client.id, item: item.id });
+      }
+      else {
+        await removeLike({ user: client.id, item: item.id });
+      }
     }
   }
 
   const getAllItemComments = async () => {
-    // finish back for getUserName
     const comments = await getAllComments(item.id);
-    comments.forEach(async (comment, index) =>{
-      const userName = await getUserName(comment.user);
-      comments[index].user = userName;
-    })
     setComments(comments);
   }
 
   const sentComment = async () => {
     setComment('');
-    const commentData = await addComment({user: client.id, item: item.id, text: comment })
+    const commentData = await addComment({ user: client.id, item: item.id, text: comment });
+    getAllItemComments();
   }
 
   return (
@@ -93,7 +93,7 @@ export default function Item({ open, setOpen, item, optionFields, tags }) {
                 <Typography >{item.item_id}</Typography>
 
                 {optionFields.map((field) => (
-                  <Typography >{field.name} : {field.value}</Typography>
+                  <Typography >{field.name}: {parse(field.value)}</Typography>
                 ))}
                 <Typography marginTop={1} >Tags:</Typography>
                 {tags.map((tag) => (
@@ -105,18 +105,28 @@ export default function Item({ open, setOpen, item, optionFields, tags }) {
           </DialogContent>
           <Box className={styles.comments}>
             Comments:
-            {comments.map( (comment) => {
+            {comments.map((comment) => {
               return (
-                <Box>
-                  <p>{comment.text}</p>
+                <Box >
+                  <Box className={styles.comment}>
+                    <h5>{comment.user}:</h5>
+                    <p >{comment.text}</p>
+                  </Box>
+                  <hr />
                 </Box>
               )
             })
             }
-            <Box className={styles.textarea}>
-              <textarea value={comment} onChange={(event)=>{setComment(event.target.value)}}/>
-            </Box>
-            <Button onClick={sentComment} size='small' id={styles.tableButton}>Sent</Button>
+            {(client.role !== 'guest') ? (
+              <Box>
+                <Box className={styles.textarea}>
+                  <textarea value={comment} onChange={(event) => { setComment(event.target.value) }} />
+                </Box>
+                <Button onClick={sentComment} size='small' id={styles.tableButton}>Sent</Button>
+              </Box>
+            ) : (
+              null
+            )}
           </Box>
           <DialogActions id={styles.dialogActions} >
             <IconButton onClick={setLike} id={isLiked ? (styles.likeTrue) : (styles.likeFalse)} aria-label="add to favorites">
