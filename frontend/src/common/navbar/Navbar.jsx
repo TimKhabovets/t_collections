@@ -143,7 +143,7 @@ export default function Navbar() {
                 searchAsYouType={false}
                 placeholder="Search…"
               />
-              <Hits hitComponent={Hit} />
+              <Hits className={styles.hits} hitComponent={Hit} />
             </InstantSearch>
           </Toolbar>
         </AppBar>
