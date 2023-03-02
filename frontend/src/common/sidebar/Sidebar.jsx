@@ -48,6 +48,14 @@ export default function TemporaryDrawer() {
         onKeyDown={toggleDrawer(false)}
       >
         <List>
+          <Box mx={3} my={2} sx={{ cursor: 'pointer' }}>
+            <Link to={routes.HOME}>
+              <Typography variant='link'>
+                Home
+              </Typography>
+            </Link>
+            <hr />
+          </Box>
           {IsUser(client.role) ? (
             <Box mx={3} my={2} sx={{ cursor: 'pointer' }}>
               <Box onClick={toUserPage}>
