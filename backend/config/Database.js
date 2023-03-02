@@ -1,8 +1,10 @@
 import { Sequelize } from 'sequelize';
+import mysql2 from 'mysql2';
 
 const db = new Sequelize('railway', 'root', 'fMeBkwTjWTyZyKdYkr7Y', {
   host: 'containers-us-west-83.railway.app',
   dialect: 'mysql',
+  dialectModule: mysql2,
   port: 5591,
   pool: {
     max: 5,
