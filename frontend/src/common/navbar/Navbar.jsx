@@ -18,6 +18,7 @@ import {
 import { getAllTags, getTwentyTags } from '../../shared/apis/tagAPI';
 import { getAllFields } from '../../shared/apis/fieldAPI';
 import Item from '../../app/user/item/Item';
+import { GetTranslateText } from '../../shared/functions/IntlHelpers';
 
 const theme = createTheme({
   palette: {
@@ -167,7 +168,7 @@ export default function Navbar() {
               indexName="t-collection"
             >
               <SearchBox 
-                placeholder="Search…"
+                placeholder={GetTranslateText("app.navbar.search")}
               />
               <Hits className={styles.hits} hitComponent={Hit} />
             </InstantSearch>

@@ -15,6 +15,7 @@ import { addTag, updateTag, removeOneTag, getAllTags} from '../../../shared/apis
 import GlobalContext from "../../../shared/contexts/GlobalContext";
 import { useEffectOnce } from '../../../shared/functions/useEffectOnce';
 import styles from './style.module.scss';
+import { FormattedMessage } from "react-intl";
 
 const theme = createTheme({
   palette: {
@@ -59,7 +60,6 @@ function NewItem() {
     const response = await getItem(currentItem);
     const tags = await getAllTags(currentItem);
     const fields = await getAllFields(currentItem);
-    console.log(fields);
     if (response) {
       let newValue = {
         name: response.name,
@@ -115,11 +115,7 @@ function NewItem() {
     remove(index);
   }
 
-  const createNewItem = async (values) => {
-    //console.log(values.tags);
-    // console.log(values);
-    // console.log(collection);
-    
+  const createNewItem = async (values) => {    
     let data = {
       item_id: values.item_id,
       name: values.name,
@@ -153,7 +149,7 @@ function NewItem() {
     <ThemeProvider theme={theme}>
       <Grid mt={3} container direction="column" alignItems="flex-start">
         <Box mx={3}>
-          <Typography variant="login">Item</Typography>
+          <Typography variant="login"><FormattedMessage id="creation.item.header" /></Typography>
         </Box>
         <Box width="90%">
           <form onSubmit={handleSubmit(createNewItem)} >
@@ -165,7 +161,7 @@ function NewItem() {
                   color="dark"
                   error={errors.item_id}
                   label="id"
-                  helperText={errors.id && "id is too short"}
+                  helperText={errors.id &&  <FormattedMessage id="error.id" />}
                   {...register("item_id", {
                     required: true,
                     minLength: 1,
@@ -179,8 +175,8 @@ function NewItem() {
                   variant="filled"
                   color="dark"
                   error={errors.name}
-                  label="name"
-                  helperText={errors.name && "name is too short"}
+                  label={<FormattedMessage id="creation.item.name" />}
+                  helperText={errors.name && <FormattedMessage id="error.name" />}
                   {...register("name", {
                     required: true,
                     minLength: 3,
@@ -190,7 +186,7 @@ function NewItem() {
               </Box>
 
               <Box marginTop={1}>
-                <Typography >Tags:</Typography>
+                <Typography ><FormattedMessage id="creation.item.tags" /></Typography>
               </Box>
               {fields.map((item, index) => (
                 <Box width="100%" marginBottom={1} key={item.id}>
@@ -208,7 +204,7 @@ function NewItem() {
                     id={styles.deleteButton} 
                     type="button" 
                     onClick={() => (fields.length < 2) ? (null) : deleteTag(item, index)}
-                    >Delete
+                    ><FormattedMessage id="creation.item.button.delete" />
                     </Button>
                   </Box>
                   <ErrorMessage
@@ -225,7 +221,7 @@ function NewItem() {
                   variant="outlined"
                   onClick={() => append({ tag: "" })}
                 >
-                  append
+                  <FormattedMessage id="creation.item.button.append" />
                 </Button>
               </Box>
               {optionFields.map((option) => {
@@ -263,7 +259,7 @@ function NewItem() {
 
               <Box width="30%" marginTop={2} marginBottom={7}>
                 <Button type="submit" variant="contained" id={styles.submitButton}>
-                  Submit
+                <FormattedMessage id="creation.item.button.submit" />
                 </Button>
               </Box>
             </Grid>

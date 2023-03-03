@@ -59,8 +59,8 @@ function SignUp() {
                   variant="filled"
                   color="dark"
                   error={errors.name}
-                  label="username"
-                  helperText={errors.name && "username is too short"}
+                  label={<FormattedMessage id="placeholder.name"/>}
+                  helperText={errors.name && <FormattedMessage id="error.name"/>}
                   {...register("name", {
                     required: true,
                     minLength: 3,
@@ -75,8 +75,8 @@ function SignUp() {
                   variant="filled"
                   color="dark"
                   error={errors.email}
-                  label="email"
-                  helperText={errors.email && "email is not correct"}
+                  label={<FormattedMessage id="placeholder.email"/>}
+                  helperText={errors.email && <FormattedMessage id="error.email"/>}
                   {...register("email", {
                     required: true,
                     minLength: 5,
@@ -93,8 +93,8 @@ function SignUp() {
                   variant="filled"
                   color="dark"
                   error={errors.password}
-                  label="password"
-                  helperText={errors.password && "password is too short"}
+                  label={<FormattedMessage id="placeholder.password"/>}
+                  helperText={errors.password && <FormattedMessage id="error.password"/>}
                   {...register("password", {
                     required: true,
                     minLength: 6,
