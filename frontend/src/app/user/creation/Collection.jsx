@@ -1,6 +1,6 @@
-import React, { useState, useContext,  } from 'react';
+import React, { useState, useContext, } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
-import { Box, TextField, Button, Grid, Typography} from '@mui/material';
+import { Box, TextField, Button, Grid, Typography } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import LinearProgress from '@mui/material/LinearProgress';
 import topics from '../../../shared/constants/topics';
@@ -51,6 +51,7 @@ function NewCollections() {
   const navigate = useNavigate();
   const md = new MarkdownIt();
   const { client } = useContext(GlobalContext);
+  const { adminUserId } = useContext(GlobalContext);
   const { currentCollection, setCurrentCollection } = useContext(GlobalContext);
   const { register, reset, handleSubmit, control, formState: { errors } } = useForm();
   const { fields, replace, append, remove } = useFieldArray({
@@ -153,7 +154,12 @@ function NewCollections() {
       console.log(err);
     }
     finally {
-      navigate(routes.USERPAGE)
+      if (adminUserId) {
+        navigate(routes.ADMINUSERPAGE);
+      }
+      else {
+        navigate(routes.USERPAGE);
+      }
     }
   }
 

@@ -5,6 +5,7 @@ import { useEffectOnce } from '../../../shared/functions/useEffectOnce';
 import GlobalContext from "../../../shared/contexts/GlobalContext";
 import { getAllCollections, removeCollection } from '../../../shared/apis/collectionAPI';
 import styles from './style.module.scss';
+import { FormattedMessage } from "react-intl";
 
 import TableRow from '@mui/material/TableRow';
 import { Box, Button, Grid, Paper, TableContainer, Table, TableBody, ButtonGroup } from '@mui/material';
@@ -12,7 +13,6 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { styled } from '@mui/material/styles';
 import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
 import CircularProgress from '@mui/material/CircularProgress';
-import { removeItem } from '../../../shared/apis/itemAPI';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -94,13 +94,11 @@ function UserPage() {
 
   return (
     <Grid container justifyContent="center" direction="column" alignItems="center">
-      {adminUserId ? (null) : (
-        <Box my={2} width='80%'>
-          <Button id={styles.button} onClick={toNewCollection} variant="outlined" >
-            Add New Collection
-          </Button>
-        </Box>
-      )}
+      <Box my={2} width='80%'>
+        <Button id={styles.button} onClick={toNewCollection} variant="outlined" >
+        <FormattedMessage id="app.userpage.add"/>
+        </Button>
+      </Box>
       {isLoading ? (
         <Box >
           <CircularProgress color="inherit" />
@@ -121,11 +119,11 @@ function UserPage() {
                         <Button
                           onClick={() => { editCollection(collection.id) }}
                           id={styles.tableButton}
-                        >edit</Button>
+                        ><FormattedMessage id="app.userpage.button.edit"/></Button>
                         <Button
                           onClick={() => { deleteCollection(collection.id) }}
                           id={styles.tableButton}
-                        >delete</Button>
+                        ><FormattedMessage id="app.userpage.button.delete"/></Button>
                       </ButtonGroup>
                     </StyledTableCell>
                   </StyledTableRow>

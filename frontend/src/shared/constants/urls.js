@@ -12,6 +12,7 @@ const urls = {
   UPDATE: '/update/',
   GET: '/get/',
   GETFOUR: '/getfour',
+  GETBYTAG: '/getbytag',
   GETTWENTY: '/gettwenty',
   ALL: '/getall',
 }

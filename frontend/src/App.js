@@ -7,8 +7,6 @@ import AppRoutes from "./common/routes/AppRoutes";
 import Navbar from "./common/navbar/Navbar";
 import ruMessages from "./shared/localizations/ru.json";
 import enMessages from "./shared/localizations/en.json";
-import esMessages from "./shared/localizations/es.json";
-import plMessages from "./shared/localizations/pl.json";
 import localStorageKeys from "./shared/constants/localStorageKeys";
 import locales from "./shared/constants/locales";
 import { checkAuth } from "./shared/apis/userAPI";
@@ -17,8 +15,6 @@ import {useEffectOnce} from './shared/functions/useEffectOnce'
 const messages = {
   [locales.EN]: enMessages,
   [locales.RU]: ruMessages,
-  [locales.ES]: esMessages,
-  [locales.PL]: plMessages,
 };
 
 function App() {

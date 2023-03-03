@@ -6,6 +6,7 @@ import styles from './style.module.scss';
 import GlobalContext from '../../shared/contexts/GlobalContext';
 import { useNavigate } from "react-router";
 import routes from '../../shared/constants/routes';
+import { FormattedMessage } from "react-intl";
 
 import { Box, Grid, ButtonGroup, Button } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
@@ -66,7 +67,7 @@ function UserList() {
     { field: 'role' },
     {
       field: "do",
-      width: 350,
+      width: 500,
       headerName: "",
       filterable: false,
       sortable: false,
@@ -77,15 +78,15 @@ function UserList() {
           <Button
             onClick={(event) => { makeAdmin(event, params) }}
             id={styles.tableButton}
-          >make admin</Button>
+          ><FormattedMessage id="app.admin.button.make"/></Button>
           <Button
             onClick={(event) => { blockOrUnblockUser(event, params) }}
             id={styles.tableButton}
-          >block/unblock</Button>
+          ><FormattedMessage id="app.admin.button.block"/></Button>
           <Button
             onClick={(event) => { deleteUser(event, params.id) }}
             id={styles.tableButton}
-          >delete</Button>
+          ><FormattedMessage id="app.admin.button.delete"/></Button>
         </ButtonGroup >
       )
     }

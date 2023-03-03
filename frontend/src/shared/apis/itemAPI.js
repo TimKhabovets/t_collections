@@ -62,3 +62,13 @@ export const getFourItems = async () => {
     console.log(err.response?.data?.massage);
   }
 }
+
+export const getTagItems = async (tag) => {
+  try {
+    const response = await $api.get(curl+urls.GETBYTAG + '/'+tag);
+    return response.data;
+  }
+  catch (err) {
+    console.log(err.response?.data?.massage);
+  }
+}

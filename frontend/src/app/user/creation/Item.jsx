@@ -34,6 +34,7 @@ function NewItem() {
   const navigate = useNavigate();
   const md = new MarkdownIt();
   const { currentItem, setCurrentItem } = useContext(GlobalContext);
+  const { adminUserId } = useContext(GlobalContext);
   const { collection } = useContext(GlobalContext);
   const { register, reset, handleSubmit, control, formState: { errors } } = useForm({
     defaultValues: {
@@ -139,7 +140,12 @@ function NewItem() {
       console.log(err);
     }
     finally {
-      navigate(routes.ITEMS)
+      if (adminUserId) {
+        navigate(routes.ADMINITEMS);
+      }
+      else {
+        navigate(routes.ITEMS);
+      }
     }
   }
 

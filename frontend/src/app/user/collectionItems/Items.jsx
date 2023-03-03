@@ -4,6 +4,7 @@ import styles from './style.module.scss';
 import { useNavigate } from "react-router";
 import GlobalContext from "../../../shared/contexts/GlobalContext";
 import routes from '../../../shared/constants/routes';
+import { FormattedMessage } from "react-intl";
 
 import { Box, Button, Grid, Typography, ButtonGroup } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -108,11 +109,11 @@ function Items() {
           <Button
             onClick={(event) => { editItem(event, params.id) }}
             id={styles.tableButton}
-          >edit</Button>
+          ><FormattedMessage id="app.collectionpage.button.edit"/></Button>
           <Button
             onClick={(event) => { deleteItem(event, params.id) }}
             id={styles.tableButton}
-          >delete</Button>
+          ><FormattedMessage id="app.collectionpage.button.delete"/></Button>
         </ButtonGroup >
       )
     }
@@ -140,13 +141,11 @@ function Items() {
           <Typography variant="topic">{collection.topic[0].toUpperCase()}{collection.topic.slice(1)}</Typography>
           <Typography variant="comment">{parse(collection.comment)}</Typography>
         </Grid>
-        {adminUserId ? (null) : (
-          <Box my={2} width='80%'>
-            <Button onClick={toNewItem} variant="outlined" id={styles.button}>
-              Add New Item
-            </Button>
-          </Box>
-        )}
+        <Box my={2} width='80%'>
+          <Button onClick={toNewItem} variant="outlined" id={styles.button}>
+          <FormattedMessage id="app.collectionpage.add"/>
+          </Button>
+        </Box>
         <Box className={styles.table}>
           <DataGrid
             onRowClick={openItem}

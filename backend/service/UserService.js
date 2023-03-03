@@ -11,7 +11,7 @@ export const registerUser = async (name, email, password) => {
     }
   });
   if (data) {
-    throw new ApiError.BadRequest(`User with email ${email} already registered`);
+    throw ApiError.BadRequest(`User with email ${email} already registered`);
   }
   const hashPassword = await bcrypt.hash(password, 11)
   const user = await UserModel.create({ name, email, password: hashPassword}); 
@@ -33,6 +33,9 @@ export const loginUser = async (email, password) => {
   const isPasswordEqual = await bcrypt.compare(password, user.password);
   if(!isPasswordEqual) {
     throw ApiError.BadRequest('Password is not equal'); 
+  }
+  if(user.status === 1) {
+    throw ApiError.BadRequest('User blocked'); 
   }
   const userDTO = new UserDTO(user);
   const tokens = generateToken({...userDTO});

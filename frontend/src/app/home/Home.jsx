@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useEffectOnce } from '../../shared/functions/useEffectOnce';
-import { getFourItems } from '../../shared/apis/itemAPI';
+import { getFourItems, getTagItems } from '../../shared/apis/itemAPI';
 import { getAllTags, getTwentyTags } from '../../shared/apis/tagAPI';
 import { getAllFields } from '../../shared/apis/fieldAPI';
 import { getFourCollections } from '../../shared/apis/collectionAPI';
@@ -8,6 +8,7 @@ import { getPhoto } from '../../shared/apis/photoAPI';
 import styles from './style.module.scss';
 import Item from '../user/item/Item';
 import parse from 'html-react-parser';
+import { FormattedMessage } from "react-intl";
 
 import { Box, Grid } from '@mui/material';
 import Card from '@mui/material/Card';
@@ -64,6 +65,11 @@ function Home() {
     setOpenItem(true);
   }
 
+  const getItemsByTag = async (tag) => {
+    const items = await getTagItems(tag);
+    console.log(items);
+  }
+
   return (
     <Grid width="100%" container justifyContent="center">
       <Item
@@ -74,7 +80,7 @@ function Home() {
         tags={itemTags}
       />
       <Box ml={4} mt={5}>
-        <Typography >last four added items:</Typography>
+        <Typography ><FormattedMessage id="app.home-page.items.header"/></Typography>
       </Box>
       <Grid py={5} container justifyContent="space-evenly" spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
         {
@@ -84,7 +90,7 @@ function Home() {
                 <Card className={styles.card} onClick={() => { toOpenItem(item) }}>
                   <CardHeader
                     avatar={
-                      <Avatar aria-label="recipe">
+                      <Avatar id={styles.avatar} aria-label="recipe">
                         o
                       </Avatar>
                     }
@@ -108,7 +114,7 @@ function Home() {
       </Grid>
       <Grid className={styles.background} container justifyContent="center">
         <Box ml={4} mt={5}>
-          <Typography >four collections with the most items:</Typography>
+          <Typography ><FormattedMessage id="app.home-page.collections.header"/></Typography>
         </Box>
         <Grid py={5} container justifyContent="space-evenly" spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
           {
@@ -118,7 +124,7 @@ function Home() {
                   <Card className={styles.collectionCard} onClick={() => { }}>
                     <CardHeader
                       avatar={
-                        <Avatar aria-label="recipe">
+                        <Avatar id={styles.avatar} aria-label="recipe">
                           o
                         </Avatar>
                       }
@@ -150,8 +156,8 @@ function Home() {
           {
             tags.map(tag => {
               return (
-                <li><div className={styles.tag} data-weight={(Math.floor(Math.random() * 8) + 1)}>{tag.name}</div></li>
-            )
+                <li onClick={() => { getItemsByTag(tag.name) }}><div className={styles.tag} data-weight={(Math.floor(Math.random() * 8) + 1)}>{tag.name}</div></li>
+              )
             })
           }
         </ul>
