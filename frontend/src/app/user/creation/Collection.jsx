@@ -17,6 +17,8 @@ import { useEffectOnce } from '../../../shared/functions/useEffectOnce';
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from '../../../shared/configs/firebaseConfig'
 import styles from './style.module.scss';
+import { FormattedMessage } from "react-intl";
+import { GetTranslateText } from '../../../shared/functions/IntlHelpers';
 
 const theme = createTheme({
   palette: {
@@ -167,7 +169,7 @@ function NewCollections() {
     <ThemeProvider theme={theme}>
       <Grid mt={3} container direction="column" alignItems="flex-start">
         <Box mx={3}>
-          <Typography variant="login">Collection</Typography>
+          <Typography variant="login"><FormattedMessage id="creation.collection.header" /></Typography>
         </Box>
         <Box width="90%">
           <form onSubmit={handleSubmit(createNewCollection)} >
@@ -178,8 +180,8 @@ function NewCollections() {
                   variant="filled"
                   color="dark"
                   error={errors.name}
-                  label="name"
-                  helperText={errors.name && "name is too short"}
+                  label={<FormattedMessage id="creation.collection.name" />}
+                  helperText={errors.name && <FormattedMessage id="error.name" />}
                   {...register("name", {
                     required: true,
                     minLength: 3,
@@ -188,16 +190,16 @@ function NewCollections() {
                 />
               </Box>
               <Box width="100%" my={2}>
-                <textarea className='comment' placeholder="something about this collection" {...register("markdown", { required: true, minLength: 7 })} />
+                <textarea className='comment' placeholder={GetTranslateText("creation.collection.description")} {...register("markdown", { required: true, minLength: 7 })} />
                 <ErrorMessage
                   errors={errors}
                   name="markdown"
-                  message="comment is too short"
+                  message={<FormattedMessage id="error.description" />}
                   render={({ message }) => <p className='error'>{message}</p>}
                 />
               </Box>
               <Box width="100%" marginBottom={1}>
-                Choose topic:
+                <FormattedMessage id="creation.collection.topic" />
                 <FormSelect
                   control={control}
                   name="topic"
@@ -207,7 +209,7 @@ function NewCollections() {
                 <ErrorMessage
                   errors={errors}
                   name="topic"
-                  message="choose a topic"
+                  message={<FormattedMessage id="error.topic" />}
                   render={({ message }) => <p className='error'>{message}</p>}
                 />
               </Box>
@@ -221,18 +223,18 @@ function NewCollections() {
                     id={styles.imgButton}
                     variant="outlined"
                     onClick={handleUpload}
-                  >download image
+                  ><FormattedMessage id="creation.collection.button.download" />
                   </Button>
                   <Button
                     id={styles.imgButton}
                     variant="outlined"
                     onClick={removePhoto}
-                  >remove
+                  ><FormattedMessage id="creation.collection.button.remove" />
                   </Button>
                 </Box>
               </Box>
               <Box width="100%" my={2}>
-                <Typography >What fields add to items? </Typography>
+                <Typography ><FormattedMessage id="creation.collection.fields" /></Typography>
                 {fields.map((item, index) => (
                   <Box width="100%" marginBottom={2} key={item.id} className={styles.boxOptionField}>
                     <FormSelect
@@ -244,7 +246,7 @@ function NewCollections() {
                     />
                     <TextField
                       className={styles.createOptionField}
-                      label="field name"
+                      label={<FormattedMessage id="creation.collection.button.fieldname" />}
                       variant="filled"
                       color="dark"
                       {...register(`optionFields.${index}.name`, {
@@ -261,13 +263,13 @@ function NewCollections() {
                     variant="outlined"
                     onClick={() => append({ tag: "" })}
                   >
-                    append
+                    <FormattedMessage id="creation.collection.button.append" />
                   </Button>
                 </Box>
               </Box>
               <Box width="30%" marginTop={2} marginBottom={7}>
                 <Button type="submit" variant="contained" id={styles.submitButton}>
-                  Submit
+                  <FormattedMessage id="creation.collection.button.submit" />
                 </Button>
               </Box>
             </Grid>
