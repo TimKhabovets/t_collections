@@ -1,3 +1,4 @@
+import { Sequelize } from 'sequelize';
 import Item from '../models/ItemModel.js';
 import Collection from '../models/CollectionModel.js';
 import algolia from '../algolia/Aligolia.js';
@@ -20,6 +21,27 @@ export const getAll = async (collection) => {
     }
   });
   return itemData;
+}
+
+export const getTagItems = async (tag) => {
+  const tagsData = await Tag.findAll({
+    attributes: [
+      [Sequelize.fn('DISTINCT', Sequelize.col('item')), 'item'],
+    ],
+    where: {
+      name: tag
+    },
+  });
+  let itemsId = [];
+  for(let tag of tagsData) {
+    itemsId.push(tag.dataValues.item)
+  }
+  const itemsData = await Item.findAll({
+    where: {
+      id: itemsId
+    }
+  })
+  return itemsData;
 }
 
 export const getFour = async () => {

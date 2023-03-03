@@ -4,6 +4,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import List from '@mui/material/List';
+import LocalePicker from "./LocalePicker";
+import { FormattedMessage } from "react-intl";
 import { Link } from 'react-router-dom';
 import routes from '../../shared/constants/routes';
 import { IsUser } from '../../shared/functions/checks/UserCheck';
@@ -63,7 +65,7 @@ export default function TemporaryDrawer() {
           <Box mx={3} my={2} sx={{ cursor: 'pointer' }}>
             <Link to={routes.HOME}>
               <Typography variant='link'>
-                Home
+              <FormattedMessage id="app.sidebar.home"/>
               </Typography>
             </Link>
             <hr />
@@ -72,7 +74,7 @@ export default function TemporaryDrawer() {
             <Box mx={3} my={2} sx={{ cursor: 'pointer' }}>
               <Box onClick={toUserPage}>
                 <Typography variant='link'>
-                  My Collections
+                <FormattedMessage id="app.sidebar.userpage"/>
                 </Typography>
                 <hr className='hrColor' />
               </Box>
@@ -84,7 +86,7 @@ export default function TemporaryDrawer() {
               <Box mx={3} my={2} sx={{ cursor: 'pointer' }}>
                 <Link to={routes.ADMIN}>
                   <Typography variant='link'>
-                    Admin page
+                  <FormattedMessage id="app.sidebar.admin"/>
                   </Typography>
                   <hr className='hrColor' />
                 </Link>
@@ -95,7 +97,7 @@ export default function TemporaryDrawer() {
             <Box mx={3} my={2} sx={{ cursor: 'pointer' }}>
               <Link to={routes.LOGIN}>
                 <Typography variant='link'>
-                  Log In
+                <FormattedMessage id="app.sidebar.login"/>
                 </Typography>
               </Link>
               <hr />
@@ -106,7 +108,7 @@ export default function TemporaryDrawer() {
             <Box mx={3} my={2} sx={{ cursor: 'pointer' }}>
               <Link to={routes.SIGNUP}>
                 <Typography variant='link'>
-                  Sing Up
+                  <FormattedMessage id="app.sidebar.signup"/>
                 </Typography>
               </Link>
               <hr />
@@ -117,13 +119,14 @@ export default function TemporaryDrawer() {
             <Box mx={3} my={2} sx={{ cursor: 'pointer' }}>
               <Box onClick={logout}>
                 <Typography variant='link'>
-                  Log out
+                <FormattedMessage id="app.sidebar.logout"/>
                 </Typography>
                 <hr className='hrColor' />
               </Box>
             </Box>
           ) : (null)
           }
+          
         </List>
       </Box>
     </ThemeProvider>
@@ -147,6 +150,7 @@ export default function TemporaryDrawer() {
           onClose={toggleDrawer(false)}
         >
           {list()}
+          <LocalePicker />
         </Drawer>
       </React.Fragment>
     </div>

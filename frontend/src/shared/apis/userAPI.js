@@ -6,7 +6,7 @@ export const toSignUp = async (data) => {
   try {
     const response = await $api.post(urls.SIGNUP, data);
     localStorage.setItem('token', response.data.accessToken);
-    return response.data;
+    return response;
   }
   catch (err) {
     console.log(err.response?.data?.massage);
@@ -28,7 +28,7 @@ export const toLogIn = async (data) => {
   try {
     const response = await $api.post(urls.LOGIN, data);
     localStorage.setItem('token', response.data.accessToken, {withCredentials: true});
-    return response.data;
+    return response;
   }
   catch (err) {
     console.log(err.response?.data?.massage);

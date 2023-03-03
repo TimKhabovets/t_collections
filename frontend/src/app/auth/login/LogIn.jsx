@@ -1,17 +1,20 @@
 import { useForm } from 'react-hook-form';
-import React, {useContext} from 'react';
+import React, { useContext, useState } from 'react';
 import { Box, TextField, Button, Grid, Typography } from '@mui/material'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import Alert from '@mui/material/Alert';
 import { Link } from 'react-router-dom'
 import routes from "../../../shared/constants/routes";
 import { toLogIn } from '../../../shared/apis/userAPI';
 import { useNavigate } from "react-router";
 import GlobalContext from "../../../shared/contexts/GlobalContext";
+import { FormattedMessage } from "react-intl";
 
 function LogIn() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   let navigate = useNavigate();
   const { client } = useContext(GlobalContext);
+  const [error, setError] = useState('');
 
   const theme = createTheme({
     palette: {
@@ -30,12 +33,15 @@ function LogIn() {
 
   const LogIn = async (value) => {
     const response = await toLogIn({ value });
-    if(response) {
+    if (response.status === 400) {
+      setError(response.data.massage);
+    }
+    else if (response) {
       navigate(routes.USERPAGE);
-      client.name = response.user.name;
-      client.email = response.user.email;
-      client.role = response.user.role;
-      client.id = response.user.id;
+      client.name = response.data.user.name;
+      client.email = response.data.user.email;
+      client.role = response.data.user.role;
+      client.id = response.data.user.id;
     }
   }
 
@@ -43,7 +49,7 @@ function LogIn() {
     <ThemeProvider theme={theme}>
       <Grid mt={10} container direction="column" justifyContent="center" alignItems="center">
         <Box>
-          <Typography variant="login">Log In</Typography>
+          <Typography variant="login"><FormattedMessage id="app.auth.login.header"/></Typography>
         </Box>
         <Box>
           <form onSubmit={handleSubmit(LogIn)}>
@@ -81,6 +87,9 @@ function LogIn() {
                   })}
                 />
               </Box>
+              {error ? (
+                <Alert sx={{ width: '270px' }} severity="error">{error}</Alert>
+              ) : (null)}
               <Box my={2}>
                 <Button type="submit" variant="contained" sx={{
                   ':hover': {
@@ -90,11 +99,11 @@ function LogIn() {
                   backgroundColor: '#272727',
                   width: '300px'
                 }}>
-                  Log In
+                  <FormattedMessage id="app.auth.login.button"/>
                 </Button>
               </Box>
               <Box>
-                <Typography >Not registered? <Link to={routes.SIGNUP}>Create on account</Link></Typography>
+                <Typography ><FormattedMessage id="app.auth.login.not"/> <Link to={routes.SIGNUP}><FormattedMessage id="app.auth.login.link"/></Link></Typography>
               </Box>
             </Grid>
           </form>

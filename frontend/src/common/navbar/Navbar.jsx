@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Box, Grid, Toolbar, Typography, InputBase, Button, AppBar } from '@mui/material';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { styled, alpha } from '@mui/material/styles';
 import { useNavigate } from "react-router";
 import routes from '../../shared/constants/routes';
 import GlobalContext from "../../shared/contexts/GlobalContext";
+import { FormattedMessage } from "react-intl";
 import { logOut } from '../../shared/apis/userAPI';
 import Sidebar from '../sidebar/Sidebar';
 import styles from './style.module.scss';
@@ -15,6 +15,9 @@ import {
   Hits,
   SearchBox,
 } from 'react-instantsearch-hooks-web';
+import { getAllTags, getTwentyTags } from '../../shared/apis/tagAPI';
+import { getAllFields } from '../../shared/apis/fieldAPI';
+import Item from '../../app/user/item/Item';
 
 const theme = createTheme({
   palette: {
@@ -30,6 +33,10 @@ export default function Navbar() {
   const {adminUserId, setAdminUserId} = useContext(GlobalContext);
   const { client } = useContext(GlobalContext);
   const { isLoading } = useContext(GlobalContext);
+  const [item, setItem] = useState({});
+  const [openItem, setOpenItem] = useState(false);
+  const [itemOptionFields, setItemOptionFields] = useState([]);
+  const [itemTags, setItemTags] = useState([]);
   const clientAlgolia = algoliasearch('Y1KE1G5UA1', '8e314f921daaa5b1f404015350369c44');
   const searchClient = {
     ...clientAlgolia,
@@ -52,6 +59,7 @@ export default function Navbar() {
       return clientAlgolia.search(requests);
     },
   };
+  const index = clientAlgolia.initIndex('t-collection');
 
   const logIn = () => {
     navigate(routes.LOGIN)
@@ -78,17 +86,36 @@ export default function Navbar() {
     }
   }
 
-  const Hit = ({ hit }) => {
+  const toOpenItem = async (item) => {
+    const itemSearch = {
+      ...item,
+      id: item.objectID
+    }
+    setItemOptionFields(await getAllFields(itemSearch.id));
+    setItemTags(await getAllTags(itemSearch.id));
+    setItem(itemSearch);
+    setOpenItem(true);
+  }
+
+  const Hit = ( {hit}) => {
     return (
-      <article>
+      <article onClick={() => toOpenItem(hit)}>
         <h1>{hit.name}</h1>
         <p>{hit.topic}</p>
+        <hr/>
       </article>
     );
   }
 
   return (
     <Box sx={{ flexGrow: 1 }} width="100%">
+      <Item
+        open={openItem}
+        setOpen={setOpenItem}
+        item={item}
+        optionFields={itemOptionFields}
+        tags={itemTags}
+      />
       <ThemeProvider theme={theme}>
         <AppBar position="static">
           <Toolbar >
@@ -109,11 +136,11 @@ export default function Navbar() {
             ) : (client.role === 'guest' ? (
               <Grid sx={{ display: { xs: 'none', sm: 'flex' }, direction: "row" }}>
                 <Box >
-                  <Button onClick={logIn} color="inherit">Login</Button>
+                  <Button onClick={logIn} color="inherit"><FormattedMessage id="app.navbar.login"/></Button>
                 </Box>
                 <Box mx={1} >
                   <Button onClick={signUp} color="inherit" variant="contained" >
-                    <Box sx={{ color: 'text.dark' }}>Signup</Box>
+                    <Box sx={{ color: 'text.dark' }}><FormattedMessage id="app.navbar.signup"/></Box>
                   </Button>
                 </Box>
               </Grid>
@@ -121,7 +148,7 @@ export default function Navbar() {
               <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
                 <Box>
                   <Button onClick={logout} color="inherit" variant="contained" >
-                    <Box sx={{ color: 'text.dark' }}>Logout</Box>
+                    <Box sx={{ color: 'text.dark' }}><FormattedMessage id="app.navbar.logout"/></Box>
                   </Button>
                 </Box>
                 <Box
@@ -139,8 +166,7 @@ export default function Navbar() {
               searchClient={searchClient}
               indexName="t-collection"
             >
-              <SearchBox
-                searchAsYouType={false}
+              <SearchBox 
                 placeholder="Search…"
               />
               <Hits className={styles.hits} hitComponent={Hit} />
