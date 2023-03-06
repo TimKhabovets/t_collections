@@ -6,6 +6,7 @@ import styles from './style.module.scss';
 import { useNavigate } from "react-router";
 import routes from "../../../shared/constants/routes";
 import MarkdownIt from 'markdown-it';
+import { FormattedMessage } from "react-intl";
 
 import FormInput from "../../../common/forms/FormInput";
 import FormCheckbox from "../../../common/forms/FormCheckbox";
