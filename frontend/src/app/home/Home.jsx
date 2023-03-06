@@ -28,6 +28,8 @@ function Home() {
   const [collections, setCollections] = useState([]);
   const [imgUrl, setImgUrl] = useState([]);
   const [tags, setTags] = useState([]);
+  const [tagItems, setTagItems] = useState([]);
+  const [openSearch, setOpenSearch] = useState(false);
 
   useEffectOnce(() => {
     getItems();
@@ -67,11 +69,17 @@ function Home() {
 
   const getItemsByTag = async (tag) => {
     const items = await getTagItems(tag);
-    console.log(items);
+    setTagItems(items);
+    setOpenSearch(true);
+  }
+
+  const clear = () => {
+    setTagItems([]);
+    setOpenSearch(false);
   }
 
   return (
-    <Grid width="100%" container justifyContent="center">
+    <Grid className={styles.home} width="100%" container justifyContent="center">
       <Item
         open={openItem}
         setOpen={setOpenItem}
@@ -79,8 +87,22 @@ function Home() {
         optionFields={itemOptionFields}
         tags={itemTags}
       />
+      <Box className={styles.searchItems}>
+        {openSearch ? (
+          <Box my={1} sx={{cursor: 'pointer'}} onClick={() => clear()}>
+            clear...
+          </Box>) : (null)}
+        {
+          tagItems.map(item => (
+            <article onClick={() => { toOpenItem(item) }}>
+              <h1>{item.name}</h1>
+              <hr />
+            </article>
+          ))
+        }
+      </Box>
       <Box ml={4} mt={5}>
-        <Typography ><FormattedMessage id="app.home-page.items.header"/></Typography>
+        <Typography ><FormattedMessage id="app.home-page.items.header" /></Typography>
       </Box>
       <Grid py={5} container justifyContent="space-evenly" spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
         {
@@ -114,7 +136,7 @@ function Home() {
       </Grid>
       <Grid className={styles.background} container justifyContent="center">
         <Box ml={4} mt={5}>
-          <Typography ><FormattedMessage id="app.home-page.collections.header"/></Typography>
+          <Typography ><FormattedMessage id="app.home-page.collections.header" /></Typography>
         </Box>
         <Grid py={5} container justifyContent="space-evenly" spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
           {
