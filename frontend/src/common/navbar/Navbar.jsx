@@ -10,8 +10,6 @@ import {
   Hits,
   SearchBox,
 } from 'react-instantsearch-hooks-web';
-import { getAllTags, getTwentyTags } from '../../shared/apis/tagAPI';
-import { getAllFields } from '../../shared/apis/fieldAPI';
 import { GetTranslateText } from '../../shared/functions/IntlHelpers';
 
 import { Box, Grid, Toolbar, Typography, InputBase, Button, AppBar } from '@mui/material';
