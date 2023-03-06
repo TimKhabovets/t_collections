@@ -4,6 +4,7 @@ import mysql2 from 'mysql2';
 const db = new Sequelize('railway', 'root', 'WiTiYaW7hphPTjhm5AfC', {
   host: 'containers-us-west-179.railway.app',
   dialect: 'mysql',
+  dialectModule: mysql2,
   port: 6573,
   pool: {
     max: 7,
