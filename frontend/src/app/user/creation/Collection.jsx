@@ -9,7 +9,7 @@ import { useNavigate } from "react-router";
 import FormSelect from "../../../common/forms/FormSelect";
 import routes from "../../../shared/constants/routes";
 import MarkdownIt from 'markdown-it';
-import optionField from '../../../shared/constants/optionsFields';
+import optionFields from '../../../shared/constants/optionsFields';
 import { addCollection, getCollection, updateCollection } from '../../../shared/apis/collectionAPI';
 import { addPhoto, updatePhoto } from '../../../shared/apis/photoAPI';
 import GlobalContext from "../../../shared/contexts/GlobalContext";
@@ -144,6 +144,12 @@ function NewCollections() {
       photo: photo.id,
       author: client.id
     };
+    if (adminUserId) {
+      data = {
+        ...data,
+        author: adminUserId
+      }
+    }
     try {
       if (currentCollection) {
         return await updateCollection(data);
@@ -241,7 +247,7 @@ function NewCollections() {
                       className="optionSelect"
                       control={control}
                       name={`optionFields.${index}.type`}
-                      options={optionField}
+                      options={optionFields}
                       rules={{ required: true }}
                     />
                     <TextField
