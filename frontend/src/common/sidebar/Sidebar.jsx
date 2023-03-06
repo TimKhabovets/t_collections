@@ -1,9 +1,4 @@
 import React, { useContext, useState } from 'react';
-import { Box, IconButton, Typography } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Drawer from '@mui/material/Drawer';
-import MenuIcon from '@mui/icons-material/Menu';
-import List from '@mui/material/List';
 import LocalePicker from "./LocalePicker";
 import { FormattedMessage } from "react-intl";
 import { Link } from 'react-router-dom';
@@ -12,19 +7,35 @@ import { IsUser } from '../../shared/functions/checks/UserCheck';
 import { IsAdmin } from '../../shared/functions/checks/AdminCheck';
 import GlobalContext from "../../shared/contexts/GlobalContext";
 import { useNavigate } from "react-router";
+import styles from './styles.module.scss';
+
+import { Box, IconButton, Typography } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Drawer from '@mui/material/Drawer';
+import MenuIcon from '@mui/icons-material/Menu';
+import List from '@mui/material/List';
+
 import { logOut } from '../../shared/apis/userAPI';
 
-const theme = createTheme({
+const light = {
+  typography: {
+    link: {
+      fontSize: 20,
+      color: 'black',
+    },
+  },
+};
+
+const dark = {
   typography: {
     link: {
       fontSize: 20,
       color: 'white',
     },
   },
-});
+};
 
-
-export default function TemporaryDrawer() {
+export default function TemporaryDrawer({theme, setTheme}) {
   let navigate = useNavigate();
   const { adminUserId, setAdminUserId } = useContext(GlobalContext);
   const [burger, setBurger] = useState(false);
@@ -54,15 +65,16 @@ export default function TemporaryDrawer() {
   }
 
   const list = () => (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme ? createTheme(dark) : createTheme(light)}>
       <Box
+  
         width="250px"
         role="presentation"
         onClick={toggleDrawer(false)}
         onKeyDown={toggleDrawer(false)}
       >
         <List>
-          <Box mx={3} my={2} sx={{ cursor: 'pointer' }}>
+          <Box mx={3} my={2} className={styles.link}>
             <Link to={routes.HOME}>
               <Typography variant='link'>
               <FormattedMessage id="app.sidebar.home"/>
@@ -71,7 +83,7 @@ export default function TemporaryDrawer() {
             <hr />
           </Box>
           {IsUser(client.role) ? (
-            <Box mx={3} my={2} sx={{ cursor: 'pointer' }}>
+            <Box mx={3} my={2} className={styles.link}>
               <Box onClick={toUserPage}>
                 <Typography variant='link'>
                 <FormattedMessage id="app.sidebar.userpage"/>
@@ -83,7 +95,7 @@ export default function TemporaryDrawer() {
           }
           {
             IsAdmin(client.role) ? (
-              <Box mx={3} my={2} sx={{ cursor: 'pointer' }}>
+              <Box mx={3} my={2} className={styles.link}>
                 <Link to={routes.ADMIN}>
                   <Typography variant='link'>
                   <FormattedMessage id="app.sidebar.admin"/>
@@ -94,7 +106,7 @@ export default function TemporaryDrawer() {
             ) : (null)
           }
           {(client.role === 'guest') ? (
-            <Box mx={3} my={2} sx={{ cursor: 'pointer' }}>
+            <Box mx={3} my={2} className={styles.link}>
               <Link to={routes.LOGIN}>
                 <Typography variant='link'>
                 <FormattedMessage id="app.sidebar.login"/>
@@ -105,7 +117,7 @@ export default function TemporaryDrawer() {
           ) : (null)
           }
           {(client.role === 'guest') ? (
-            <Box mx={3} my={2} sx={{ cursor: 'pointer' }}>
+            <Box mx={3} my={2} className={styles.link}>
               <Link to={routes.SIGNUP}>
                 <Typography variant='link'>
                   <FormattedMessage id="app.sidebar.signup"/>
@@ -116,7 +128,7 @@ export default function TemporaryDrawer() {
           ) : (null)
           }
           {IsUser(client.role) ? (
-            <Box mx={3} my={2} sx={{ cursor: 'pointer' }}>
+            <Box mx={3} my={2} className={styles.link}>
               <Box onClick={logout}>
                 <Typography variant='link'>
                 <FormattedMessage id="app.sidebar.logout"/>
@@ -133,8 +145,8 @@ export default function TemporaryDrawer() {
   );
 
   return (
-    <div>
-      <React.Fragment>
+    <Box >
+      <React.Fragment >
         <IconButton
           onClick={toggleDrawer(true)}
           size="large"
@@ -151,8 +163,14 @@ export default function TemporaryDrawer() {
         >
           {list()}
           <LocalePicker />
+          <Box className={styles.theme}>
+            Change theme: 
+            <input type="checkbox" value={theme} onChange={() => {
+              console.log(theme);
+              setTheme(!theme)}} />
+          </Box>
         </Drawer>
       </React.Fragment>
-    </div>
+    </Box>
   );
 }

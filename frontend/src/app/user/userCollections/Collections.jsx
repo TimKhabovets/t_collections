@@ -3,7 +3,6 @@ import { useNavigate } from "react-router";
 import routes from '../../../shared/constants/routes';
 import { useEffectOnce } from '../../../shared/functions/useEffectOnce';
 import GlobalContext from "../../../shared/contexts/GlobalContext";
-import { getAllCollections, removeCollection } from '../../../shared/apis/collectionAPI';
 import styles from './style.module.scss';
 import { FormattedMessage } from "react-intl";
 
@@ -13,6 +12,8 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { styled } from '@mui/material/styles';
 import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
 import CircularProgress from '@mui/material/CircularProgress';
+
+import { getAllCollections, removeCollection } from '../../../shared/apis/collectionAPI';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {

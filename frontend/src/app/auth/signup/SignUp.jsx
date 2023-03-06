@@ -5,7 +5,9 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Alert from '@mui/material/Alert';
 import routes from "../../../shared/constants/routes";
 import { Link, useNavigate } from 'react-router-dom';
+
 import { toSignUp } from '../../../shared/apis/userAPI';
+
 import GlobalContext from "../../../shared/contexts/GlobalContext";
 import { FormattedMessage } from "react-intl";
 
