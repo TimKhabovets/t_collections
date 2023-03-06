@@ -43,7 +43,7 @@ const light = {
 
 export default function Navbar() {
   let navigate = useNavigate();
-  const [isDarkTheme, setIsDarkTheme] = useState(localStorage.getItem('theme') || true);
+  const {isDarkTheme, setIsDarkTheme} = useContext(GlobalContext);
   const {adminUserId, setAdminUserId} = useContext(GlobalContext);
   const { client } = useContext(GlobalContext);
   const { isLoading } = useContext(GlobalContext);
@@ -130,7 +130,7 @@ export default function Navbar() {
         optionFields={itemOptionFields}
         tags={itemTags}
       />
-      <ThemeProvider theme={isDarkTheme ? createTheme(dark) : createTheme(light)}>
+      <ThemeProvider theme={isDarkTheme === 'dark' ? createTheme(dark) : createTheme(light)}>
         <AppBar position="static">
           <Toolbar >
             <Sidebar 
