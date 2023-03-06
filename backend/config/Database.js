@@ -6,10 +6,11 @@ const db = new Sequelize('railway', 'root', 'WiTiYaW7hphPTjhm5AfC', {
   dialect: 'mysql',
   port: 6573,
   pool: {
-    max: 5,
+    max: 6,
     min: 0,
-    acquire: 30000,
-    idle: 10000
+    acquire: 50000,
+    idle: 10000,
+    evict: CURRENT_LAMBDA_FUNCTION_TIMEOUT
   },
   dialectOptions: {
     connectTimeout: 60000,
