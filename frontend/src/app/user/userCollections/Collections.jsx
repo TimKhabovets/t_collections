@@ -93,7 +93,7 @@ function UserPage() {
   }
 
   return (
-    <Grid container justifyContent="center" direction="column" alignItems="center">
+    <Grid className={styles.collections} container justifyContent="center" direction="column" alignItems="center">
       <Box my={2} width='80%'>
         <Button id={styles.button} onClick={toNewCollection} variant="outlined" >
         <FormattedMessage id="app.userpage.add"/>
