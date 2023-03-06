@@ -173,7 +173,7 @@ function NewCollections() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid mt={3} container direction="column" alignItems="flex-start">
+      <Grid className={styles.creation} mt={3} container direction="column" alignItems="flex-start">
         <Box mx={3}>
           <Typography variant="login"><FormattedMessage id="creation.collection.header" /></Typography>
         </Box>

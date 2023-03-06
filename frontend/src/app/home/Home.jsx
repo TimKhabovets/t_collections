@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useEffectOnce } from '../../shared/functions/useEffectOnce';
-import { getFourItems, getTagItems } from '../../shared/apis/itemAPI';
+import { getFourItems, getTagItems, getAllItems } from '../../shared/apis/itemAPI';
 import { getAllTags, getTwentyTags } from '../../shared/apis/tagAPI';
 import { getAllFields } from '../../shared/apis/fieldAPI';
 import { getFourCollections } from '../../shared/apis/collectionAPI';
@@ -69,6 +69,12 @@ function Home() {
 
   const getItemsByTag = async (tag) => {
     const items = await getTagItems(tag);
+    setTagItems(items);
+    setOpenSearch(true);
+  }
+
+  const getCollectionItems = async (id) => {
+    const items = await getAllItems(id);
     setTagItems(items);
     setOpenSearch(true);
   }
@@ -143,7 +149,7 @@ function Home() {
             collections.map((collection, index) => {
               return (
                 <Grid item xs={3} justifyContent="center" key={collection.id}>
-                  <Card className={styles.collectionCard} onClick={() => { }}>
+                  <Card className={styles.collectionCard} onClick={() => {getCollectionItems(collection.id) }}>
                     <CardHeader
                       avatar={
                         <Avatar id={styles.avatar} aria-label="recipe">

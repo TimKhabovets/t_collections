@@ -121,7 +121,7 @@ function Items() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container justifyContent="center" direction="column" alignItems="center">
+      <Grid className={styles.items} container justifyContent="center" direction="column" alignItems="center">
         <Grid paddingLeft={4} marginTop={1} container direction="column">
           <Item
             open={open}
