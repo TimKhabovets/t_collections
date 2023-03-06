@@ -10,7 +10,7 @@ import FormText from "../../../common/forms/FormText";
 import routes from "../../../shared/constants/routes";
 import MarkdownIt from 'markdown-it';
 import { addField, updateField, getAllFields } from '../../../shared/apis/fieldAPI';
-import { addItem, updateItem, getItem } from '../../../shared/apis/itemAPI';
+import { addItem, updateItem, getItem, addItemToAlgolia } from '../../../shared/apis/itemAPI';
 import { addTag, updateTag, removeOneTag, getAllTags} from '../../../shared/apis/tagAPI';
 import GlobalContext from "../../../shared/contexts/GlobalContext";
 import { useEffectOnce } from '../../../shared/functions/useEffectOnce';
@@ -138,8 +138,9 @@ function NewItem() {
       else {
         item = await await addItem(data);
       }
-      const fieldsData = createOrUpdateOptionFields(values, item.id);
       const tagsData = createOrUpdateOptionTags(values.tags, item.id);
+      const fieldsData = createOrUpdateOptionFields(values, item.id);
+      await addItemToAlgolia(item);
     }
     catch (err) {
       console.log(err);
