@@ -37,7 +37,7 @@ function Home() {
 
   const getItems = async () => {
     const items = await getFourItems();
-    setItems(items);
+    setItems(items || []);
   }
 
   const getCollections = async () => {
@@ -50,7 +50,7 @@ function Home() {
 
   const getTags = async () => {
     const tagsData = await getTwentyTags();
-    setTags(tagsData);
+    setTags(tagsData || []);
   }
 
   const getCollectionPhoto = async (id) => {
