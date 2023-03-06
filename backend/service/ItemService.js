@@ -65,7 +65,6 @@ export const getFour = async () => {
 export const create = async (item) => {
   const itemData = await Item.create(item);
   await changeCollectionItemCount(itemData.collection);
-  setTimeout(() => createAlgoliaObject(itemData).bind(this), 20000);
   return itemData;
 }
 
@@ -83,7 +82,8 @@ const changeCollectionItemCount = async (id) => {
   return collection;
 }
 
-const createAlgoliaObject = async (itemData) => {
+export const createAlgoliaObject = async (itemData) => {
+  console.log("why you don't working??????????");
   const collection = await Collection.findOne({
     where: {
       id: itemData.collection,

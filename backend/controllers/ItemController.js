@@ -1,4 +1,4 @@
-import { getOne, getAll, create, update, remove, removeAll, getFour, getTagItems } from '../service/ItemService.js';
+import { getOne, getAll, create, update, remove, removeAll, getFour, getTagItems, createAlgoliaObject } from '../service/ItemService.js';
 
 export const getItem = async (req, res, next) => {
   try {
@@ -43,6 +43,16 @@ export const getFourLastItems = async (req, res, next) => {
 export const addItem = async (req, res, next) => {
   try {
     const item = await create(req.body);
+    return res.json(item);
+  }
+  catch (err) {
+    next(err);
+  }
+}
+
+export const addItemToAlgolia = async (req, res, next) => {
+  try {
+    const item = await createAlgoliaObject(req.body);
     return res.json(item);
   }
   catch (err) {

@@ -7,6 +7,7 @@ const urls = {
   USERNAME: 'username',
   
   ADD: '/add',
+  ADDALGOLIA: '/addalgolia',
   REMOVE: '/remove/',
   REMOVEONE: '/removeone',
   UPDATE: '/update/',

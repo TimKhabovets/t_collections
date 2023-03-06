@@ -13,6 +13,16 @@ export const addItem = async (data) => {
   }
 }
 
+export const addItemToAlgolia = async (data) => {
+  try {
+    const response = await $api.post(curl+urls.ADDALGOLIA, data);
+    return response.data;
+  }
+  catch (err) {
+    console.log(err.response?.data?.massage);
+  }
+}
+
 export const removeItem = async (id) => {
   try {
     const response = await $api.delete(curl+urls.REMOVE+id);
