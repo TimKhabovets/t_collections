@@ -14,6 +14,7 @@ const GlobalContext = createContext({
     currentLocale: locales.EN,
     isLoading: Boolean,
     adminUserId: '',
+    isDarkTheme: Boolean,
 });
 
 export default GlobalContext;

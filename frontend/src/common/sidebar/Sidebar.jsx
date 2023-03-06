@@ -64,8 +64,13 @@ export default function TemporaryDrawer({theme, setTheme}) {
     }
   }
 
+  const changeTheme = () => {
+    localStorage.setItem('theme', theme === 'dark' ? 'light' : 'dark');
+    setTheme(theme === 'dark' ? 'light' : 'dark')
+  }
+
   const list = () => (
-    <ThemeProvider theme={theme ? createTheme(dark) : createTheme(light)}>
+    <ThemeProvider theme={theme === 'dark' ? createTheme(dark) : createTheme(light)}>
       <Box
   
         width="250px"
@@ -165,9 +170,7 @@ export default function TemporaryDrawer({theme, setTheme}) {
           <LocalePicker />
           <Box className={styles.theme}>
             Change theme: 
-            <input type="checkbox" value={theme} onChange={() => {
-              console.log(theme);
-              setTheme(!theme)}} />
+            <input type="checkbox" checked={theme} onChange={changeTheme} />
           </Box>
         </Drawer>
       </React.Fragment>

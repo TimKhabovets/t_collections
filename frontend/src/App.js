@@ -34,6 +34,7 @@ function App() {
   const [adminUserId, setAdminUserId] = useState('');
   const [currentLocale, setCurrentLocale] = useState(
     localStorage.getItem(localStorageKeys.LOCALE) || locales.EN);
+    const [isDarkTheme, setIsDarkTheme] = useState(localStorage.getItem('theme') || 'dark');
 
   const setLocale = (value) => {
     setCurrentLocale(value);
@@ -71,6 +72,8 @@ function App() {
       client,
       currentLocale,
       setCurrentLocale: setLocale,
+      isDarkTheme,
+      setIsDarkTheme
     }}>
       <IntlProvider locale={currentLocale} messages={messages[currentLocale]}>
         <BrowserRouter>
