@@ -75,11 +75,14 @@ function NewItem() {
   }
 
   const createOrUpdateOptionFields = async (fields, id) => {
-
     if (currentItem) {
-      currentOptionFields.forEach(async (field) => {
-        await updateField({name: field.name, value: fields[`${field.name}`], id: field.id});
-      })
+      for (let index = 0; index < currentOptionFields.length; index++) {
+        let value = fields[`${currentOptionFields[index].name}`];
+        if (optionFields[index].type.value === 'text') {
+          value = md.render(fields[`${currentOptionFields[index].name}`]);
+        }
+        await updateField({name: currentOptionFields[index].name, value: value, id: currentOptionFields[index].id});
+      }
     }
     else {
       optionFields.forEach(async (field) => {
@@ -120,6 +123,12 @@ function NewItem() {
       item_id: values.item_id,
       name: values.name,
       collection: collection.id
+    }
+    if (adminUserId) {
+      data = {
+        ...data,
+        author: adminUserId
+      }
     }
     try {
       let item;

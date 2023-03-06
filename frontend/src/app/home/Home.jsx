@@ -45,7 +45,7 @@ function Home() {
     for (let collection of collections) {
       await getCollectionPhoto(collection.photo);
     };
-    setCollections(collections);
+    setCollections(collections || []);
   }
 
   const getTags = async () => {

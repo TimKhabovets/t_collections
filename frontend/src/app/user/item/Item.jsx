@@ -90,7 +90,7 @@ export default function Item({ open, setOpen, item, optionFields, tags }) {
               tabIndex={-1}
             >
               <Box>
-                <Typography >{item.item_id}</Typography>
+                <Typography >id: {item.item_id}</Typography>
 
                 {optionFields.map((field) => (
                   <Typography >{field.name}: {parse(field.value)}</Typography>

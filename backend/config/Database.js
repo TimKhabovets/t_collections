@@ -13,8 +13,10 @@ const db = new Sequelize('railway', 'root', 'WiTiYaW7hphPTjhm5AfC', {
   },
   dialectOptions: {
     connectTimeout: 60000,
+    requestTimeout: 20000,
     options: {
-      requestTimeout: 20000
+      requestTimeout: 20000,
+      connectTimeout: 20000,
     }
   },
   define: {
