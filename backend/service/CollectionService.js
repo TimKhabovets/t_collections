@@ -21,7 +21,7 @@ export const getAll = async (author) => {
 export const getFour = async () => {
   const collectionData = await Collection.findAll({
     limit: 4,
-    order: [ ['item_count']],
+    order: [ ['item_count', 'DESC']],
   });
   return collectionData;
 }
