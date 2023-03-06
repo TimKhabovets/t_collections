@@ -1,15 +1,16 @@
 import React, { useState, useContext } from 'react';
 import { useEffectOnce } from '../../shared/functions/useEffectOnce';
-import { getUsers, removeUser, updateUser} from '../../shared/apis/userAPI';
-import { getCollection } from '../../shared/apis/collectionAPI';
-import styles from './style.module.scss';
-import GlobalContext from '../../shared/contexts/GlobalContext';
-import { useNavigate } from "react-router";
-import routes from '../../shared/constants/routes';
-import { FormattedMessage } from "react-intl";
-
 import { Box, Grid, ButtonGroup, Button } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
+import { useNavigate } from "react-router";
+import routes from '../../shared/constants/routes';
+
+import { getUsers, removeUser, updateUser} from '../../shared/apis/userAPI';
+import { getCollection } from '../../shared/apis/collectionAPI';
+
+import GlobalContext from '../../shared/contexts/GlobalContext';
+import { FormattedMessage } from "react-intl";
+import styles from './style.module.scss';
 
 function UserList() {
   let navigate = useNavigate();

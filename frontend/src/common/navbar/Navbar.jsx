@@ -1,35 +1,44 @@
 import React, { useContext, useState } from 'react';
-import { Box, Grid, Toolbar, Typography, InputBase, Button, AppBar } from '@mui/material';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useNavigate } from "react-router";
 import routes from '../../shared/constants/routes';
 import GlobalContext from "../../shared/contexts/GlobalContext";
 import { FormattedMessage } from "react-intl";
-import { logOut } from '../../shared/apis/userAPI';
-import Sidebar from '../sidebar/Sidebar';
 import styles from './style.module.scss';
 import algoliasearch from 'algoliasearch';
-import {
-  InstantSearch,
-  Hits,
-  SearchBox,
-} from 'react-instantsearch-hooks-web';
-import { getAllTags, getTwentyTags } from '../../shared/apis/tagAPI';
-import { getAllFields } from '../../shared/apis/fieldAPI';
-import Item from '../../app/user/item/Item';
+import { InstantSearch, Hits, SearchBox } from 'react-instantsearch-hooks-web';
 
-const theme = createTheme({
+import { Box, Grid, Toolbar, Typography, InputBase, Button, AppBar } from '@mui/material';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+import Item from '../../app/user/item/Item';
+import Sidebar from '../sidebar/Sidebar';
+
+import { getAllTags } from '../../shared/apis/tagAPI';
+import { getAllFields } from '../../shared/apis/fieldAPI';
+import { logOut } from '../../shared/apis/userAPI';
+
+const dark = {
   palette: {
     mode: 'dark',
     text: {
       dark: '#212121',
     }
   }
-});
+};
+
+const light = {
+  palette: {
+    mode: 'light',
+    text: {
+      dark: '#212121',
+    }
+  }
+};
 
 export default function Navbar() {
   let navigate = useNavigate();
+  const [isDarkTheme, setIsDarkTheme] = useState(localStorage.getItem('theme') || true);
   const {adminUserId, setAdminUserId} = useContext(GlobalContext);
   const { client } = useContext(GlobalContext);
   const { isLoading } = useContext(GlobalContext);
@@ -116,10 +125,13 @@ export default function Navbar() {
         optionFields={itemOptionFields}
         tags={itemTags}
       />
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={isDarkTheme ? createTheme(dark) : createTheme(light)}>
         <AppBar position="static">
           <Toolbar >
-            <Sidebar />
+            <Sidebar 
+            theme={isDarkTheme}
+            setTheme={setIsDarkTheme}
+            />
             <Box
               sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
             >

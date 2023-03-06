@@ -1,24 +1,27 @@
 import React, { useState, useContext, } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
-import { Box, TextField, Button, Grid, Typography } from '@mui/material';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import LinearProgress from '@mui/material/LinearProgress';
+import GlobalContext from "../../../shared/contexts/GlobalContext";
+import { useEffectOnce } from '../../../shared/functions/useEffectOnce';
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { storage } from '../../../shared/configs/firebaseConfig'
+import { FormattedMessage } from "react-intl";
+import { GetTranslateText } from '../../../shared/functions/IntlHelpers';
 import topics from '../../../shared/constants/topics';
-import { ErrorMessage } from '@hookform/error-message';
 import { useNavigate } from "react-router";
 import FormSelect from "../../../common/forms/FormSelect";
 import routes from "../../../shared/constants/routes";
 import MarkdownIt from 'markdown-it';
 import optionFields from '../../../shared/constants/optionsFields';
+import styles from './style.module.scss';
+
+import { Box, TextField, Button, Grid, Typography } from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import LinearProgress from '@mui/material/LinearProgress';
+import { ErrorMessage } from '@hookform/error-message';
+
 import { addCollection, getCollection, updateCollection } from '../../../shared/apis/collectionAPI';
 import { addPhoto, updatePhoto } from '../../../shared/apis/photoAPI';
-import GlobalContext from "../../../shared/contexts/GlobalContext";
-import { useEffectOnce } from '../../../shared/functions/useEffectOnce';
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { storage } from '../../../shared/configs/firebaseConfig'
-import styles from './style.module.scss';
-import { FormattedMessage } from "react-intl";
-import { GetTranslateText } from '../../../shared/functions/IntlHelpers';
+
 
 const theme = createTheme({
   palette: {

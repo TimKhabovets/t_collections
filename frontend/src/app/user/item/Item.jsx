@@ -1,4 +1,8 @@
 import React, { useState, useContext } from 'react';
+import styles from './style.module.scss';
+import GlobalContext from "../../../shared/contexts/GlobalContext";
+import parse from 'html-react-parser';
+
 import { Button, Box, Typography, Grid, IconButton, } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Dialog from '@mui/material/Dialog';
@@ -6,13 +10,10 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import styles from './style.module.scss';
 
 import { addLike, getLike, removeLike } from '../../../shared/apis/likeAPI';
 import { getAllComments, addComment } from '../../../shared/apis/commentAPI';
 import { getUserName } from '../../../shared/apis/userAPI';
-import GlobalContext from "../../../shared/contexts/GlobalContext";
-import parse from 'html-react-parser';
 
 export default function Item({ open, setOpen, item, optionFields, tags }) {
   const [isLiked, setIsLiked] = useState(false);

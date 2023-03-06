@@ -30,7 +30,7 @@ a {
   margin-right: 14px;
   margin-bottom: 0;
   margin-left: 14px;
-  font-family: "Roboto","Helvetica","Arial",sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   color: #d32f2f;
   font-weight: 400;
   font-size: 0.75rem;
@@ -39,7 +39,7 @@ a {
   text-align: left;
 }
 
-.hrColor{
+.hrColor {
   color: white;
 }
 
@@ -86,10 +86,11 @@ textarea {
   --bez: cubic-bezier(0, 0, 0.43, 1.49);
 }
 
-.ais-SearchBox { 
+.ais-SearchBox {
   width: 15em;
-  margin: 1em 0; 
+  margin: 1em 0;
 }
+
 .ais-SearchBox-reset {
   display: none;
 }
@@ -100,17 +101,19 @@ textarea {
   width: 100%;
 }
 
-.ais-SearchBox-input, .ais-SearchBox-submit {
+.ais-SearchBox-input,
+.ais-SearchBox-submit {
   font-family: var(--font-fam);
   border: 0;
   color: var(--color-dark);
 }
+
 input[type="search"] {
-  outline: 0; 
+  outline: 0;
   width: 100%;
   background: var(--color-light);
   border-radius: var(--rad);
-  appearance: none; 
+  appearance: none;
   transition: all var(--dur) var(--bez);
   transition-property: width, border-radius;
   z-index: 1;
@@ -120,7 +123,8 @@ input[type="search"] {
 .ais-SearchBox-input:not(:placeholder-shown) {
   border-radius: var(--rad) 0 0 var(--rad);
   width: calc(100% - var(--btn-width));
-  + .ais-SearchBox-submit {
+
+  +.ais-SearchBox-submit {
     display: block;
   }
 }
@@ -133,9 +137,18 @@ input[type="search"] {
   border-radius: 0 var(--rad) var(--rad) 0;
 }
 
-.ais-Pagination { margin-top: 1em }
-.left-panel { float: left; width: 250px; }
-.right-panel { margin-left: 260px; }
+.ais-Pagination {
+  margin-top: 1em
+}
+
+.left-panel {
+  float: left;
+  width: 250px;
+}
+
+.right-panel {
+  margin-left: 260px;
+}
 
 .ais-Hits--empty {
   display: none;

@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
 import { useEffectOnce } from '../../shared/functions/useEffectOnce';
-import { getFourItems, getTagItems, getAllItems } from '../../shared/apis/itemAPI';
-import { getAllTags, getTwentyTags } from '../../shared/apis/tagAPI';
-import { getAllFields } from '../../shared/apis/fieldAPI';
-import { getFourCollections } from '../../shared/apis/collectionAPI';
-import { getPhoto } from '../../shared/apis/photoAPI';
-import styles from './style.module.scss';
-import Item from '../user/item/Item';
 import parse from 'html-react-parser';
 import { FormattedMessage } from "react-intl";
 
@@ -18,6 +11,15 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import CardMedia from '@mui/material/CardMedia';
 import Skeleton from '@mui/material/Skeleton';
+import styles from './style.module.scss';
+
+import { getFourItems, getTagItems, getAllItems } from '../../shared/apis/itemAPI';
+import { getAllTags, getTwentyTags } from '../../shared/apis/tagAPI';
+import { getAllFields } from '../../shared/apis/fieldAPI';
+import { getFourCollections } from '../../shared/apis/collectionAPI';
+import { getPhoto } from '../../shared/apis/photoAPI';
+
+import Item from '../user/item/Item';
 
 function Home() {
   const [items, setItems] = useState([]);

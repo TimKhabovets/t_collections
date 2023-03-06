@@ -5,10 +5,12 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Alert from '@mui/material/Alert';
 import { Link } from 'react-router-dom'
 import routes from "../../../shared/constants/routes";
-import { toLogIn } from '../../../shared/apis/userAPI';
 import { useNavigate } from "react-router";
+
 import GlobalContext from "../../../shared/contexts/GlobalContext";
 import { FormattedMessage } from "react-intl";
+
+import { toLogIn } from '../../../shared/apis/userAPI';
 
 function LogIn() {
   const { register, handleSubmit, formState: { errors } } = useForm();

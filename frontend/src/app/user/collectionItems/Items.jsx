@@ -2,9 +2,7 @@ import React, { useContext, useState } from 'react';
 import parse from 'html-react-parser';
 import styles from './style.module.scss';
 import { useNavigate } from "react-router";
-import GlobalContext from "../../../shared/contexts/GlobalContext";
 import routes from '../../../shared/constants/routes';
-import { FormattedMessage } from "react-intl";
 
 import { Box, Button, Grid, Typography, ButtonGroup } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -15,6 +13,10 @@ import { getAllItems, removeItem } from '../../../shared/apis/itemAPI';
 import { getAllTags } from '../../../shared/apis/tagAPI';
 import { getAllFields } from '../../../shared/apis/fieldAPI';
 import { getPhoto } from '../../../shared/apis/photoAPI';
+
+import GlobalContext from "../../../shared/contexts/GlobalContext";
+import { FormattedMessage } from "react-intl";
+
 import Item from '../item/Item';
 
 const theme = createTheme({
