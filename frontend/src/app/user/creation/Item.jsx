@@ -3,9 +3,6 @@ import { useForm, useFieldArray} from "react-hook-form";
 import GlobalContext from "../../../shared/contexts/GlobalContext";
 import { useEffectOnce } from '../../../shared/functions/useEffectOnce';
 import styles from './style.module.scss';
-<<<<<<< HEAD
-import { FormattedMessage } from "react-intl";
-=======
 import { useNavigate } from "react-router";
 import routes from "../../../shared/constants/routes";
 import MarkdownIt from 'markdown-it';
@@ -21,7 +18,6 @@ import { ErrorMessage } from '@hookform/error-message';
 import { addField, updateField, getAllFields } from '../../../shared/apis/fieldAPI';
 import { addItem, updateItem, getItem, addItemToAlgolia } from '../../../shared/apis/itemAPI';
 import { addTag, updateTag, removeOneTag, getAllTags} from '../../../shared/apis/tagAPI';
->>>>>>> dev
 
 const theme = createTheme({
   palette: {
