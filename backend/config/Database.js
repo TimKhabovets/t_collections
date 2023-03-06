@@ -5,7 +5,7 @@ const db = new Sequelize('railway', 'root', 'WiTiYaW7hphPTjhm5AfC', {
   dialect: 'mysql',
   port: 6573,
   pool: {
-    max: 7,
+    max: 25,
     min: 0,
     acquire: 50000,
     idle: 10000,

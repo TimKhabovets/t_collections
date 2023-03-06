@@ -65,7 +65,7 @@ export const getFour = async () => {
 export const create = async (item) => {
   const itemData = await Item.create(item);
   await changeCollectionItemCount(itemData.collection);
-  setTimeout(() => createAlgoliaObject(itemData), 1000*30);
+  setTimeout(() => createAlgoliaObject(itemData).bind(this), 20000);
   return itemData;
 }
 

@@ -108,7 +108,7 @@ export default function Navbar() {
   }
 
   return (
-    <Box sx={{ flexGrow: 1 }} width="100%">
+    <Box sx={{ flexGrow: 1, position: "fixed", zIndex: 3 }} width="100%">
       <Item
         open={openItem}
         setOpen={setOpenItem}
